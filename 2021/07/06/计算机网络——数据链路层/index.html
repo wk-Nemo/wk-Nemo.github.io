@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="3.1 数据链路层功能概述 一些概念  结点：主机和路由器 链路：网络中两个节点之间的物理通道，链路的传输媒介有双绞线、光纤和微波。分为有线链路和无线链路。 数据链路：网络中两个节点之间的逻辑通道，把实现控制数据传输协议的硬件和软件加到链路上就构成数据链路。 帧：链路层的协议数据单元，封装网络层数据报   数据链路层的功能  数据链路层负责通过一条数据链路从一个结点向另一个物理链路直接相连的相邻结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络——数据链路层">
+<meta property="og:url" content="http://example.com/2021/07/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/index.html">
+<meta property="og:site_name" content="wk的博客">
+<meta property="og:description" content="3.1 数据链路层功能概述 一些概念  结点：主机和路由器 链路：网络中两个节点之间的物理通道，链路的传输媒介有双绞线、光纤和微波。分为有线链路和无线链路。 数据链路：网络中两个节点之间的逻辑通道，把实现控制数据传输协议的硬件和软件加到链路上就构成数据链路。 帧：链路层的协议数据单元，封装网络层数据报   数据链路层的功能  数据链路层负责通过一条数据链路从一个结点向另一个物理链路直接相连的相邻结">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/03d62e0d481d4b049ea9dd9c4d7b16a6~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a0ffc2422a7f4c65a033ac9e938ad46f~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2d90597720734b0fb498af9d1d9ffd57~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/259edaab33cf44c498e761b0f95e39b6~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ec7ebebf6989470d823a6bfdb32a0804~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/36ffee21ffe24f9b82ea0b72ff0a802a~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/367beefe3870485aa50b99cf86d9623a~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/130746b4b1f549adb319db90ae20e956~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/40ba6e5aaecc44afa7488ce638334a4d~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/20e3f1df7d0e492d8eddd374a0cb9961~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0c9b21558fe14ca0ac6be22ac2015ce2~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/866c1829708a4848992ba37c2997a824~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1dbf6854643646c59c71cf0daca2a8bd~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aba8b8b273d84b62ab68980a8d32c946~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/69831723412f4d9cb36d248f180afdfc~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/527a56e2e1ad42eeb00928e8ce45bfcb~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d984804320054079b8a832a3383308cd~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/90fa6aef7078425d9f3cd090f981372e~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/10a21adb2ba1454fb8eb7f55a978a4a5~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b0d56c76dd6a4c649948bfb68595ead9~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/083b0347b00144b7bab966bc8749a070~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/eeddc7e1c03047e9982945cfba3e57bc~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2d823767612d413ebff7ab22b15982a1~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2b612f6430e24a7ebdfa9d7bdfdb2876~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e5e273f46218476baa82e56638c8e51c~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4184d8529d79488d9da822c54fb280fe~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/46bf8bf3f97c4ba3997f92a1e9d67f37~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9b13a12b15024da09e6c69c6ab092233~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/89d268c043f346169e2a29c4b7a2f5c7~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/59739bfec626422abe1a7a6874e93107~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8a1d9ebc24664e679505b1317fa9f83a~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8320ebd6fe1647edb1d4dea55da6781a~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d370baefb89148648c2535486146d2a2~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/12539c1ce9ee4c90bc390be302e07968~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e5c99ef7e422499b8cc48f29c0690983~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9ef29d62721c438ebe52251cce3d3933~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4fc22d372f6b432a96a147cd450e076a~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7db16c1b9f8e4a3a8c23e07f42de438e~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5d32b315cd254f97b2a2d46af7f56ced~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/466c72463b3f46ff967de3b73db4ddfb~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/37ce7ef2d6c64374905505ab388d461d~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9560d844329741a4bef57a7d19b2d4cc~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/23c3e5ae8de146f793c87b43dcb20fdc~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4642a827eb4149448ece058579a8cc57~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6e93de2fc9e049fd9f46ac70d3233df7~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e2b530482eff4492839727b4b244bceb~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/68e6c9a65af2477194b7883116285135~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4c37f10c412a40e683a04c817aec20a7~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/eec2179a92ee498a98876d1f45f3b514~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fb0ac71e8c9d425982cb82455925677a~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ae28d4c0bf044578ac93e23a5113d1c2~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e9740d9e693d413289807c89d0a40875~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f1239dc65b554c009d62c27e8ae16ba6~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0fe5c9ea22754595848d3872364bcff2~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5fe57e98a840444c9715bab997ac0bbd~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e988a1e3666e487dbbff187f1eef6b18~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bae5c152881942d6bc047d342c2abfcc~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2a91a786911b4565ab982844af37f3a1~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/48fdd7426100470c9b32272378497b63~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e54fcf31dd744364bbba2fa4dff0c816~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/02ba30e93deb40059db48e372dcbd264~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f2d8db49ceea44a5b357cd477ad260ba~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7cfce87b940045b4ac2681d45f036420~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e0b4836f11b7413cb27337cdfb20ddba~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4562e5f012fa4d27b483b32fda5be18a~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aef8ed3b1188450b8d8a463267747262~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/217c36127cd644f293f5045df8a5e165~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/538d2831299b41d3bf904eed5aa77c77~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b85ed0b23960422292c31e969abd0235~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9d3727be1cc64f11bd0be9d97a87624e~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1b909c232dca4b01bd7ede42ee166f57~tplv-k3u1fbpfcp-watermark.image">
+<meta property="article:published_time" content="2021-07-06T13:45:00.000Z">
+<meta property="article:modified_time" content="2023-05-07T09:40:53.685Z">
+<meta property="article:author" content="wk">
+<meta property="article:tag" content="计算机网络">
+<meta property="article:tag" content="计算机基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/03d62e0d481d4b049ea9dd9c4d7b16a6~tplv-k3u1fbpfcp-watermark.image">
+
+
+<link rel="canonical" href="http://example.com/2021/07/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/07/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/","path":"2021/07/06/计算机网络——数据链路层/","title":"计算机网络——数据链路层"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算机网络——数据链路层 | wk的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wk的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录技术、学习和生活的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">3.1 数据链路层功能概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%B0%81%E8%A3%85%E6%88%90%E5%B8%A7%E5%92%8C%E9%80%8F%E6%98%8E%E4%BC%A0%E8%BE%93"><span class="nav-number">2.</span> <span class="nav-text">3.2 封装成帧和透明传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6"><span class="nav-number">3.</span> <span class="nav-text">3.3 差错控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6%E5%92%8C%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E6%9C%BA%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">3.4 流量控制和可靠传输机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-1-%E5%81%9C%E6%AD%A2%E7%AD%89%E5%BE%85%E5%8D%8F%E8%AE%AE"><span class="nav-number">4.1.</span> <span class="nav-text">3.4.1 停止等待协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-2-%E6%B5%81%E6%B0%B4%E7%BA%BF"><span class="nav-number">4.2.</span> <span class="nav-text">3.4.2 流水线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-3-%E5%9B%9E%E9%80%80N%E6%AD%A5%E5%8D%8F%E8%AE%AE%EF%BC%88GBN%EF%BC%89"><span class="nav-number">4.3.</span> <span class="nav-text">3.4.3 回退N步协议（GBN）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-4-%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0%E5%8D%8F%E8%AE%AE%EF%BC%88SR%EF%BC%89"><span class="nav-number">4.4.</span> <span class="nav-text">3.4.4 选择重传协议（SR）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="nav-number">5.</span> <span class="nav-text">3.5 介质访问控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-1-%E4%BF%A1%E9%81%93%E5%88%92%E5%88%86%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="nav-number">5.1.</span> <span class="nav-text">3.5.1 信道划分介质访问控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-2-%E9%9A%8F%E6%9C%BA%E8%AE%BF%E9%97%AE%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="nav-number">5.2.</span> <span class="nav-text">3.5.2 随机访问介质访问控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-3-%E8%BD%AE%E8%AF%A2%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="nav-number">5.3.</span> <span class="nav-text">3.5.3 轮询介质访问控制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="nav-number">6.</span> <span class="nav-text">3.6 局域网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-1-%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">6.1.</span> <span class="nav-text">3.6.1 以太网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-2-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="nav-number">6.2.</span> <span class="nav-text">3.6.2 无线局域网</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-%E5%B9%BF%E5%9F%9F%E7%BD%91"><span class="nav-number">7.</span> <span class="nav-text">3.7 广域网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-1-PPP%E5%8D%8F%E8%AE%AE"><span class="nav-number">7.1.</span> <span class="nav-text">3.7.1 PPP协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-2-HDLC%E5%8D%8F%E8%AE%AE"><span class="nav-number">7.2.</span> <span class="nav-text">3.7.2 HDLC协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-3-PPP%E5%92%8CHDLC%E5%AF%B9%E6%AF%94"><span class="nav-number">7.3.</span> <span class="nav-text">3.7.3 PPP和HDLC对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-8-%E9%93%BE%E8%B7%AF%E5%B1%82%E7%9A%84%E8%AE%BE%E5%A4%87"><span class="nav-number">8.</span> <span class="nav-text">3.8 链路层的设备</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wk"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">wk</p>
+  <div class="site-description" itemprop="description">一个前端程序员</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wk-Nemo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wk-Nemo" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://juejin.cn/user/3122268755465879" title="掘金 → https:&#x2F;&#x2F;juejin.cn&#x2F;user&#x2F;3122268755465879" rel="noopener me" target="_blank">掘金</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="wk">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wk的博客">
+      <meta itemprop="description" content="一个前端程序员">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="计算机网络——数据链路层 | wk的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络——数据链路层
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-06 21:45:00" itemprop="dateCreated datePublished" datetime="2021-07-06T21:45:00+08:00">2021-07-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-05-07 17:40:53" itemprop="dateModified" datetime="2023-05-07T17:40:53+08:00">2023-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">计算机基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="3-1-数据链路层功能概述"><a href="#3-1-数据链路层功能概述" class="headerlink" title="3.1 数据链路层功能概述"></a>3.1 数据链路层功能概述</h2><ol>
+<li><p>一些概念</p>
+<ul>
+<li>结点：主机和路由器</li>
+<li>链路：网络中两个节点之间的<strong>物理通道</strong>，链路的传输媒介有双绞线、光纤和微波。分为有线链路和无线链路。</li>
+<li>数据链路：网络中两个节点之间的<strong>逻辑通道</strong>，把实现控制数据传输协议的硬件和软件加到链路上就构成数据链路。</li>
+<li>帧：链路层的协议数据单元，封装网络层数据报</li>
+</ul>
+</li>
+<li><p>数据链路层的功能</p>
+<p> 数据链路层负责通过一条数据链路从一个结点向另一个物理链路直接相连的相邻结点传送数据报</p>
+<ul>
+<li>功能一：为网络层提供服务。无确认无连接服务，有确认无连接服务，有确认面向连接服务。</li>
+<li>功能二：链路管理，即连接的建立、维持、释放（用于面向连接服务）</li>
+<li>功能三：组帧</li>
+<li>功能四：流量控制</li>
+<li>功能五：差错控制</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-2-封装成帧和透明传输"><a href="#3-2-封装成帧和透明传输" class="headerlink" title="3.2 封装成帧和透明传输"></a>3.2 封装成帧和透明传输</h2><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/03d62e0d481d4b049ea9dd9c4d7b16a6~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ol>
+<li><p>封装成帧</p>
+<p> 就是在一段数据的前后添加首部和尾部。接收端在收到物理层上交的比特流后，就能根据首部和尾部的标记，从收到的比特流中识别帧的开始和结束。</p>
+<p> <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a0ffc2422a7f4c65a033ac9e938ad46f~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>透明传输</p>
+<p> 透明传输是指不管传输的数据是什么样的比特组合，都应该能在链路上传送。当所传的数据中的比特组合恰好与某一控制信息是一样的时候，就必须采取适当的措施，使接收方不会将这样的数据误认为是某种控制信息。</p>
+<ul>
+<li><p>字符计数法：即在开头规定好了每个帧的长度</p>
+<p>  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2d90597720734b0fb498af9d1d9ffd57~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>字符填充法：在开头和结尾填充特定数字</p>
+<p>  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/259edaab33cf44c498e761b0f95e39b6~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<p>  <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ec7ebebf6989470d823a6bfdb32a0804~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<blockquote>
+<ul>
+<li>当传输的帧是文本文件组成的时候（即都是ASCII码），都可以传输过去</li>
+<li>当传输的帧是非ASCII码的文本文件组成时（二进制代码的程序或图像），采用字符填充法实习透明传输</li>
+</ul>
+</blockquote>
+</li>
+<li><p>零比特填充法：</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/36ffee21ffe24f9b82ea0b72ff0a802a~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>违规编码法</p>
+<p> <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/367beefe3870485aa50b99cf86d9623a~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ul>
+<p> 因为<strong>字节计数法</strong>的count字段脆弱，有差值会造成毁灭性的后果。<strong>字符填充法</strong>的是线上会有复杂性和不兼容性，目前比较普遍使用的是<strong>比特填充</strong>和<strong>违规编码法</strong>。</p>
+</li>
+</ol>
+<h2 id="3-3-差错控制"><a href="#3-3-差错控制" class="headerlink" title="3.3 差错控制"></a>3.3 差错控制</h2><ol>
+<li><p>什么是差错？</p>
+<ul>
+<li>错位：比特位出现错误，1变成0，0变成1</li>
+<li>帧错<ul>
+<li>丢失</li>
+<li>重复</li>
+<li>失序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>差错怎么来的？</p>
+<ul>
+<li>全局性：线路本身的电器特性<ul>
+<li>解决办法：可以通过物理层提到的香农公式，提高信噪比（S&#x2F;N）来减小误差</li>
+</ul>
+</li>
+<li>局部性：外界短暂原因造成的冲击噪声，是产生差错的主要原因<ul>
+<li>解决办法：编码技术</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>差错控制（比特错）的方法</p>
+</li>
+</ol>
+<p>（1）检错编码</p>
+<ul>
+<li><p>奇偶校验码</p>
+<p>  <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/130746b4b1f549adb319db90ae20e956~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>循环冗余码CRC</p>
+<p>  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/40ba6e5aaecc44afa7488ce638334a4d~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ul>
+<p>（2）纠错编码</p>
+<ul>
+<li>海明码：发现双比特错，纠正单比特错</li>
+</ul>
+<h2 id="3-4-流量控制和可靠传输机制"><a href="#3-4-流量控制和可靠传输机制" class="headerlink" title="3.4 流量控制和可靠传输机制"></a>3.4 流量控制和可靠传输机制</h2><ol>
+<li><p>较高的发送速度和较低的接受能力不匹配，会造成传输的错误，因此流量控制也是数据链路层的一项重要工作。</p>
+<ul>
+<li>数据链路层的流量控制是点对点的，而传输层的流量控制是端到端的。</li>
+<li>数据链路层流量控制手段：接受方收不下就不回复确认</li>
+<li>传输层流量控制手段：接收端给发送端一个窗口公告</li>
+</ul>
+</li>
+<li><p>流量控制的方法：</p>
+<ul>
+<li><p>停止-等待协议</p>
+</li>
+<li><p>滑动窗口协议</p>
+<ul>
+<li>后退N帧协议（GBN）</li>
+<li>选择重传协议（SR）</li>
+</ul>
+</li>
+</ul>
+<p> <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/20e3f1df7d0e492d8eddd374a0cb9961~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>可靠传输、滑动窗口、流量控制</p>
+<ul>
+<li>可靠传输：发送端发送啥，接收端接受啥</li>
+<li>流量控制：控制发送速度，使接收方有足够的缓冲空间接受每一个帧</li>
+<li>滑动窗口：实现了流量控制（限制传输大小）和可靠传输（重传机制）</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-4-1-停止等待协议"><a href="#3-4-1-停止等待协议" class="headerlink" title="3.4.1 停止等待协议"></a>3.4.1 停止等待协议</h3><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0c9b21558fe14ca0ac6be22ac2015ce2~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ol>
+<li><p>无差错的情况下</p>
+<p> <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/866c1829708a4848992ba37c2997a824~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>有差错的情况下</p>
+<ul>
+<li>数据帧丢失或检测到帧出错</li>
+</ul>
+<p> <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1dbf6854643646c59c71cf0daca2a8bd~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ul>
+<li>ACK丢失</li>
+</ul>
+<p> <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aba8b8b273d84b62ab68980a8d32c946~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ul>
+<li>ACK迟到</li>
+</ul>
+<p> <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/69831723412f4d9cb36d248f180afdfc~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>性能分析</p>
+<p> 信道利用率太低</p>
+</li>
+<li><p>信道利用率</p>
+<p> <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/527a56e2e1ad42eeb00928e8ce45bfcb~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ol>
+<h3 id="3-4-2-流水线"><a href="#3-4-2-流水线" class="headerlink" title="3.4.2 流水线"></a>3.4.2 流水线</h3><p>rdt3.0是一个功能正确的传输协议，但是他的<strong>停等协议</strong>（等待接收方返回的ACK后才能进入等待上层调用的状态）的特殊性能也造成了效率较低的问题。</p>
+<p>解决办法：不以停等的方式运行，允许发送方发送多个分组，无需等待确认。这种技术称为<strong>流水线</strong>。<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d984804320054079b8a832a3383308cd~tplv-k3u1fbpfcp-zoom-1.image" alt="在这里插入图片描述"></p>
+<p>流水线带来的影响：</p>
+<ul>
+<li>必须增加序号范围，因为每个分组必须有唯一的标识符</li>
+<li>协议的发送发和接收方必须缓存多个分组</li>
+<li>所需序号范围对缓冲的要求取决于数据传输协议如何处理丢失、损坏以及延时过大的分组。解决流水线差错恢复的两种基本方法是：<strong>回退N步</strong>（GBN）和<strong>选择重传</strong>（SR）</li>
+</ul>
+<h3 id="3-4-3-回退N步协议（GBN）"><a href="#3-4-3-回退N步协议（GBN）" class="headerlink" title="3.4.3 回退N步协议（GBN）"></a>3.4.3 回退N步协议（GBN）</h3><ol>
+<li><p>回退N步协议（GBN协议，滑动窗口协议）：允许发送发发送多个分组不需要等待确认，但是未确认的分组数不能超过某个最大值N。接收方窗口为1。</p>
+</li>
+<li><p>设置N的原因：流量控制、拥塞控制</p>
+<p> 若采用k个比特对帧编号，那么发送窗口的n应该满足 1&lt;&#x3D; n &lt;&#x3D; 2^k - 1。因为窗口尺寸过大会使得接收方无法区别新帧和旧帧。</p>
+</li>
+<li><p>GBN协议响应的事件：</p>
+<ul>
+<li>发送方：<ul>
+<li>当上层调用时<ul>
+<li>窗口已满，告诉发送方等待一会</li>
+<li>窗口未满，产生一个分组并传送</li>
+</ul>
+</li>
+<li>收到一个ACK<ul>
+<li>窗口向右滑动</li>
+<li>GBN协议中，对n号帧采用累计确认的方式，也就是收到了n号帧表示n号帧之前的所有帧都被接受到了。</li>
+</ul>
+</li>
+<li>超时事件<ul>
+<li>回退N帧的含义就是，当出现丢失和时延较长的帧的情况时，定时器会重新发送所有已发送但未被确认的帧。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>接收方：<ul>
+<li>序号为n的分组被正确接收到，并且按序，为n发一个ACK</li>
+<li>其它所有情况，接收方丢弃该分组，并选择最近序列的分组重新发ACK</li>
+</ul>
+</li>
+</ul>
+<p> <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/90fa6aef7078425d9f3cd090f981372e~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ol>
+<p>例子：</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/10a21adb2ba1454fb8eb7f55a978a4a5~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<h3 id="3-4-4-选择重传协议（SR）"><a href="#3-4-4-选择重传协议（SR）" class="headerlink" title="3.4.4 选择重传协议（SR）"></a>3.4.4 选择重传协议（SR）</h3><ol>
+<li><p>GBN协议的问题：</p>
+<p>滑动窗口协议潜为了保证分组的正确顺序，对数据进行重传，但是考虑到窗口长度和带宽较大的情况，就会造成重复传递带来的效率问题。</p>
+</li>
+<li><p>选择重传响应的事件</p>
+<ul>
+<li>发送方：<ul>
+<li>当上层调用时<ul>
+<li>窗口已满，告诉发送方等待一会</li>
+<li>窗口未满，产生一个分组并传送</li>
+</ul>
+</li>
+<li>收到一个ACK<ul>
+<li>如果收到的窗口最小序号，窗口向右滑动到下一个未被确认的帧。</li>
+<li>其他情况对接收到的帧进行缓存。</li>
+</ul>
+</li>
+<li>超时事件<ul>
+<li>当每个帧都有自己的定时器，当超时时重传一个帧。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>接收方：<ul>
+<li>接到一个帧不管序号如何都进行缓存，并返回一个确认帧，直到滑动窗口内的所有帧都被接受才将一批帧交付给上层，再进行窗口滑动。</li>
+</ul>
+</li>
+</ul>
+<p> <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b0d56c76dd6a4c649948bfb68595ead9~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ol>
+<p>例子：</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/083b0347b00144b7bab966bc8749a070~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<h2 id="3-5-介质访问控制"><a href="#3-5-介质访问控制" class="headerlink" title="3.5 介质访问控制"></a>3.5 介质访问控制</h2><ol>
+<li><p>传输数据使用的两种链路</p>
+<ul>
+<li><p>点对点链路</p>
+<ul>
+<li>两个相邻结点通过一条链路相连，没有第三者</li>
+<li>应用：PPP协议，常用于广域网</li>
+</ul>
+</li>
+<li><p>广播式链路</p>
+<ul>
+<li>所有主机共享介质</li>
+<li>应用：早起的以太网、无线局域网，常用于局域网</li>
+<li>经典拓扑结构：总线型、星型</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>介质访问控制</p>
+<p> 采取一定的措施，使得两对结点之间的通信不会出现互相干扰的情况</p>
+<p> <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/eeddc7e1c03047e9982945cfba3e57bc~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<p> 对比：</p>
+<p> <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2d823767612d413ebff7ab22b15982a1~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ol>
+<h3 id="3-5-1-信道划分介质访问控制"><a href="#3-5-1-信道划分介质访问控制" class="headerlink" title="3.5.1 信道划分介质访问控制"></a>3.5.1 信道划分介质访问控制</h3><p>信道划分介质访问控制：将使用介质的每个设备与来自同一信道上的其他设备的通信隔离，把时域和频域资源合理的分配给网络上的设备</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2b612f6430e24a7ebdfa9d7bdfdb2876~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ul>
+<li><p>频分复用 FDM：所有用户在同样的时间占用不同的带宽资源。</p>
+<p>  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e5e273f46218476baa82e56638c8e51c~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>时分复用 TDM：所有用户在不同的时间占用同样的频带宽度。 </p>
+<p>  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4184d8529d79488d9da822c54fb280fe~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<p>  STDM是改进的时分复用，他可以动态的分配时隙</p>
+</li>
+<li><p>波分复用 WDM：就是光的频分复用。</p>
+<p>  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/46bf8bf3f97c4ba3997f92a1e9d67f37~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>码分复用 CDM：在同一时间同一频率根据传输的数据码进行区分</p>
+</li>
+</ul>
+<h3 id="3-5-2-随机访问介质访问控制"><a href="#3-5-2-随机访问介质访问控制" class="headerlink" title="3.5.2 随机访问介质访问控制"></a>3.5.2 随机访问介质访问控制</h3><ul>
+<li><p>ALOHA协议</p>
+<ul>
+<li><p>纯ALOHA协议</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9b13a12b15024da09e6c69c6ab092233~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>时隙ALOHA协议</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/89d268c043f346169e2a29c4b7a2f5c7~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>信息传输的效率低</p>
+</li>
+</ul>
+</li>
+<li><p>CSMA协议（载波监听多路访问协议）：发送帧之前，监听信道。</p>
+<ul>
+<li>如果信道忙线：推迟发送</li>
+<li>如果信道空闲：<ul>
+<li><p>1-坚持CSMA</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/59739bfec626422abe1a7a6874e93107~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>非坚持CSMA</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8a1d9ebc24664e679505b1317fa9f83a~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>p-坚持CSMA</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8320ebd6fe1647edb1d4dea55da6781a~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>比较</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d370baefb89148648c2535486146d2a2~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>CSMA&#x2F;CD协议（载波监听多点接入&#x2F;碰撞协议）</p>
+<p>  <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/12539c1ce9ee4c90bc390be302e07968~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ul>
+<li><p>传播时延对载波监听的影响：电磁波的传输需要时间，会造成冲突</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e5c99ef7e422499b8cc48f29c0690983~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>重传机制</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9ef29d62721c438ebe52251cce3d3933~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>最小帧长，以太网的最短帧长是64B</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4fc22d372f6b432a96a147cd450e076a~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ul>
+</li>
+<li><p>CSMA&#x2F;CA协议（载波监听多点接入&#x2F;碰撞避免协议）</p>
+<ul>
+<li><p>工作原理</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7db16c1b9f8e4a3a8c23e07f42de438e~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>对比CSMA&#x2F;CD</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5d32b315cd254f97b2a2d46af7f56ced~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-5-3-轮询介质访问控制"><a href="#3-5-3-轮询介质访问控制" class="headerlink" title="3.5.3 轮询介质访问控制"></a>3.5.3 轮询介质访问控制</h3><ul>
+<li><p>轮询协议</p>
+<p>  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/466c72463b3f46ff967de3b73db4ddfb~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>令牌传递协议</p>
+<p>  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/37ce7ef2d6c64374905505ab388d461d~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ul>
+<h2 id="3-6-局域网"><a href="#3-6-局域网" class="headerlink" title="3.6 局域网"></a>3.6 局域网</h2><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9560d844329741a4bef57a7d19b2d4cc~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ol>
+<li><p>网络拓扑</p>
+<p> 总线型较好，现在普遍使用</p>
+<p> <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/23c3e5ae8de146f793c87b43dcb20fdc~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>传输介质</p>
+<p> <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4642a827eb4149448ece058579a8cc57~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>介质访问控制方法</p>
+<p> <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6e93de2fc9e049fd9f46ac70d3233df7~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>局域网的分类</p>
+<p> <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e2b530482eff4492839727b4b244bceb~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>IEEE 802系列标准</p>
+<p> EEE 802又称为LMSC（LAN &#x2F;MAN Standards Committee， 局域网&#x2F;<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%9F%8E%E5%9F%9F%E7%BD%91">城域网</a>标准委员会），致力于研究局域网和城域网的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%89%A9%E7%90%86%E5%B1%82/4329158">物理层</a>和<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/MAC">MAC</a>层中定义的服务和协议，对应<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/OSI">OSI</a>网络参考模型的最低两层（即物理层和<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/4329290">数据链路层</a>）。</p>
+<p> <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/68e6c9a65af2477194b7883116285135~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>MAC子层和LLC子层</p>
+<p> <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4c37f10c412a40e683a04c817aec20a7~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ol>
+<h3 id="3-6-1-以太网"><a href="#3-6-1-以太网" class="headerlink" title="3.6.1 以太网"></a>3.6.1 以太网</h3><p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/eec2179a92ee498a98876d1f45f3b514~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ol>
+<li><p>以太网提供无连接、不可靠服务</p>
+<ul>
+<li>无连接：发送方和接收方之间无握手</li>
+<li>不可靠：不对发送方的数据帧编号，接收方不向发送方确认，差错帧直接丢弃，差错纠正由高层次负责</li>
+</ul>
+</li>
+<li><p>以太网传输介质与拓扑结构的发展</p>
+<p> <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fb0ac71e8c9d425982cb82455925677a~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>10BASE-T以太网</p>
+<p> <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ae28d4c0bf044578ac93e23a5113d1c2~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>适配器和MAC地址</p>
+<p> <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e9740d9e693d413289807c89d0a40875~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>以太网的MAC帧</p>
+<p> <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f1239dc65b554c009d62c27e8ae16ba6~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>高速以太网</p>
+<p> <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0fe5c9ea22754595848d3872364bcff2~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ol>
+<h3 id="3-6-2-无线局域网"><a href="#3-6-2-无线局域网" class="headerlink" title="3.6.2 无线局域网"></a>3.6.2 无线局域网</h3><p>IEEE802.11 是无线局域网的通用标准，它是由IEEE所定义的无线网络通信的标准</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5fe57e98a840444c9715bab997ac0bbd~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ol>
+<li><p>802.11的MAC帧头格式</p>
+<p> <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e988a1e3666e487dbbff187f1eef6b18~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>无线局域网分类</p>
+<ul>
+<li><p>有固定基础设施无线局域网</p>
+<p>  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bae5c152881942d6bc047d342c2abfcc~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>无固定基础设施无线局域网的自组织网络</p>
+<p>  <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2a91a786911b4565ab982844af37f3a1~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-7-广域网"><a href="#3-7-广域网" class="headerlink" title="3.7 广域网"></a>3.7 广域网</h2><p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/48fdd7426100470c9b32272378497b63~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<h3 id="3-7-1-PPP协议"><a href="#3-7-1-PPP协议" class="headerlink" title="3.7.1 PPP协议"></a>3.7.1 PPP协议</h3><p>点对点协议PPP（Point-to-Point Protocol）是目前使用最广泛的数据链路层协议，用户使用拨号电话接入因特网时一般都使用PPP协议</p>
+<ol>
+<li><p>特点：只支持全双工链路</p>
+</li>
+<li><p>满足的要求：</p>
+<ul>
+<li>简单：无需纠错，无需序号，无需流量控制</li>
+<li>封装成帧</li>
+<li>透明传输<ul>
+<li>异步线路：字节填充</li>
+<li>同步线路：比特填充</li>
+</ul>
+</li>
+<li>多种网络层协议：封装的IP数据报可以采用多种协议</li>
+<li>多种类型链路：串行&#x2F;并行，同步&#x2F;异步，电&#x2F;光</li>
+<li>差错检查：错就丢弃</li>
+<li>检测连接状态：链路是否正常工作</li>
+<li>最大传送单元：数据部分最大长度MTU</li>
+<li>网络层地址协商：通信双方必须知道彼此地址</li>
+<li>数据压缩协商</li>
+</ul>
+</li>
+<li><p>无需满足的要求</p>
+<ul>
+<li>纠错</li>
+<li>流量控制</li>
+<li>序号</li>
+<li>不支持多点线路</li>
+</ul>
+</li>
+<li><p>PPP协议组成的三个部分</p>
+<p> <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e54fcf31dd744364bbba2fa4dff0c816~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>PPP协议的状态图</p>
+<p> <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/02ba30e93deb40059db48e372dcbd264~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>PPP协议帧格式</p>
+<p> <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f2d8db49ceea44a5b357cd477ad260ba~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ol>
+<h3 id="3-7-2-HDLC协议"><a href="#3-7-2-HDLC协议" class="headerlink" title="3.7.2 HDLC协议"></a>3.7.2 HDLC协议</h3><p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7cfce87b940045b4ac2681d45f036420~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ol>
+<li>HDLC的站</li>
+</ol>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e0b4836f11b7413cb27337cdfb20ddba~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ol start="2">
+<li>HDLC的帧格式</li>
+</ol>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4562e5f012fa4d27b483b32fda5be18a~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<h3 id="3-7-3-PPP和HDLC对比"><a href="#3-7-3-PPP和HDLC对比" class="headerlink" title="3.7.3 PPP和HDLC对比"></a>3.7.3 PPP和HDLC对比</h3><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aef8ed3b1188450b8d8a463267747262~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<h2 id="3-8-链路层的设备"><a href="#3-8-链路层的设备" class="headerlink" title="3.8 链路层的设备"></a>3.8 链路层的设备</h2><p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/217c36127cd644f293f5045df8a5e165~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ol>
+<li><p>网桥的分类</p>
+<ul>
+<li><p>透明网桥</p>
+<p>  <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/538d2831299b41d3bf904eed5aa77c77~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>源路由网桥</p>
+<p>  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b85ed0b23960422292c31e969abd0235~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ul>
+</li>
+<li><p>多接口网桥——以太网交换机</p>
+<p> <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9d3727be1cc64f11bd0be9d97a87624e~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li><p>冲突域和广播域</p>
+<p> <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1b909c232dca4b01bd7ede42ee166f57~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" rel="tag"># 计算机基础</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82/" rel="prev" title="计算机网络——物理层">
+                  <i class="fa fa-chevron-left"></i> 计算机网络——物理层
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E2%80%94%E2%80%94%E7%BD%91%E7%BB%9C%E5%B1%82/" rel="next" title="计算机网络——网络层">
+                  计算机网络——网络层 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wk</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="数据库基础课程之一，开发过程中经常使用。先看视频简历知识体系，后学习java的过程中逐渐深入。 基本概念1. 什么是数据库？什么是数据库管理系统？什么是SQL？他们的关系是什么？数据库（database）：按照一定格式存储数据的一些文件的组合 数据库管理系统（DataBaseManagement）：用于管理数据库中的数据，可以对数据进行增删改查 SQL：结构化查询语言，程序运猿编写SQL语句，DB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="秋招保驾护航——数据库篇">
+<meta property="og:url" content="http://example.com/2021/09/09/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AF%87/index.html">
+<meta property="og:site_name" content="wk的博客">
+<meta property="og:description" content="数据库基础课程之一，开发过程中经常使用。先看视频简历知识体系，后学习java的过程中逐渐深入。 基本概念1. 什么是数据库？什么是数据库管理系统？什么是SQL？他们的关系是什么？数据库（database）：按照一定格式存储数据的一些文件的组合 数据库管理系统（DataBaseManagement）：用于管理数据库中的数据，可以对数据进行增删改查 SQL：结构化查询语言，程序运猿编写SQL语句，DB">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-09-09T03:29:04.000Z">
+<meta property="article:modified_time" content="2023-05-07T09:43:39.338Z">
+<meta property="article:author" content="wk">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/09/09/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AF%87/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/09/09/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AF%87/","path":"2021/09/09/秋招保驾护航——数据库篇/","title":"秋招保驾护航——数据库篇"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>秋招保驾护航——数据库篇 | wk的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wk的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录技术、学习和生活的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9F%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%EF%BC%9F%E4%BB%80%E4%B9%88%E6%98%AFSQL%EF%BC%9F%E4%BB%96%E4%BB%AC%E7%9A%84%E5%85%B3%E7%B3%BB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">1. 什么是数据库？什么是数据库管理系统？什么是SQL？他们的关系是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B8%B8%E8%A7%81%E6%8C%87%E4%BB%A4"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">2. 数据库常见指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%A1%A8"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">3. 表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.2.</span> <span class="nav-text">SQL语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%81%87%E8%AE%BE%E4%B8%80%E4%B8%AA%E8%A1%A8%E7%9A%84%E4%B8%BB%E9%94%AE%E6%98%AF%E5%88%9B%E5%BB%BA%E6%97%A5%E6%9C%9F%E5%92%8Cid%EF%BC%8C%E8%BF%98%E6%9C%89%E4%B8%80%E4%B8%AA%E5%B1%9E%E6%80%A7%E6%98%AF%E8%AE%BF%E9%97%AE%E9%87%8F%EF%BC%8C%E6%80%8E%E4%B9%88%E9%80%9A%E8%BF%87sql%E8%AF%AD%E5%8F%A5%E6%B1%82%E5%87%BA%E5%B9%B3%E5%9D%87%E6%AF%8F%E5%A4%A9%E8%AE%BF%E9%97%AE%E9%87%8F%E6%9C%80%E5%A4%A7%E7%9A%84id"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">1. 假设一个表的主键是创建日期和id，还有一个属性是访问量，怎么通过sql语句求出平均每天访问量最大的id</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F"><span class="nav-number">1.3.</span> <span class="nav-text">约束</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">1. 非空约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">2. 唯一约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="nav-number">1.3.0.3.</span> <span class="nav-text">3. 主键约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="nav-number">1.3.0.4.</span> <span class="nav-text">4. 外键约束</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-number">1.4.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8B%E5%8A%A1%EF%BC%9F"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">1. 什么是事务？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%8F%AA%E6%9C%89DML%E6%89%8D%E6%9C%89%E4%BA%8B%E5%8A%A1%E4%B8%80%E8%AF%B4%EF%BC%8C%E5%85%B6%E4%BB%96%E8%AF%AD%E5%8F%A5%E5%92%8C%E4%BA%8B%E5%8A%A1%E6%97%A0%E5%85%B3"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">2. 只有DML才有事务一说，其他语句和事务无关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%BA%8B%E5%8A%A1%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">1.4.0.3.</span> <span class="nav-text">3. 事务的理解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E4%BA%8B%E5%8A%A1%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F"><span class="nav-number">1.4.0.4.</span> <span class="nav-text">4. 事务是如何实现的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E4%BA%8B%E5%8A%A1%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">1.4.0.5.</span> <span class="nav-text">5. 事务的特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="nav-number">1.4.0.6.</span> <span class="nav-text">6. 事务隔离级别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95"><span class="nav-number">1.5.</span> <span class="nav-text">索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E7%B4%A2%E5%BC%95%EF%BC%9F"><span class="nav-number">1.5.0.1.</span> <span class="nav-text">1. 什么是索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-MySql%E4%B8%A4%E7%A7%8D%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E5%8C%BA%E5%88%AB"><span class="nav-number">1.5.0.2.</span> <span class="nav-text">2. MySql两种存储引擎区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%B4%A2%E5%BC%95%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">1.5.0.3.</span> <span class="nav-text">3. 索引的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E7%B4%A2%E5%BC%95%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">1.5.0.4.</span> <span class="nav-text">4. 索引的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9%EF%BC%8C%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BD%BF%E7%94%A8%E7%B4%A2%E5%BC%95%EF%BC%8C%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8%E7%B4%A2%E5%BC%95"><span class="nav-number">1.5.0.5.</span> <span class="nav-text">5. 索引的优缺点，什么时候使用索引，什么时候不能使用索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.6.</span> <span class="nav-text">数据库的设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%A1%A8%E4%B8%8E%E8%A1%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.6.0.1.</span> <span class="nav-text">1. 表与表之间的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%8C%83%E5%BC%8F"><span class="nav-number">1.6.0.2.</span> <span class="nav-text">2. 范式</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wk"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">wk</p>
+  <div class="site-description" itemprop="description">一个前端程序员</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wk-Nemo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wk-Nemo" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://juejin.cn/user/3122268755465879" title="掘金 → https:&#x2F;&#x2F;juejin.cn&#x2F;user&#x2F;3122268755465879" rel="noopener me" target="_blank">掘金</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/09/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="wk">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wk的博客">
+      <meta itemprop="description" content="一个前端程序员">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="秋招保驾护航——数据库篇 | wk的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          秋招保驾护航——数据库篇
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-09-09 11:29:04" itemprop="dateCreated datePublished" datetime="2021-09-09T11:29:04+08:00">2021-09-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-05-07 17:43:39" itemprop="dateModified" datetime="2023-05-07T17:43:39+08:00">2023-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">计算机基础</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><p>基础课程之一，开发过程中经常使用。先看视频简历知识体系，后学习java的过程中逐渐深入。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h4 id="1-什么是数据库？什么是数据库管理系统？什么是SQL？他们的关系是什么？"><a href="#1-什么是数据库？什么是数据库管理系统？什么是SQL？他们的关系是什么？" class="headerlink" title="1. 什么是数据库？什么是数据库管理系统？什么是SQL？他们的关系是什么？"></a>1. 什么是数据库？什么是数据库管理系统？什么是SQL？他们的关系是什么？</h4><p>数据库（database）：按照一定格式存储数据的一些文件的组合</p>
+<p>数据库管理系统（DataBaseManagement）：用于管理数据库中的数据，可以对数据进行增删改查</p>
+<p>SQL：结构化查询语言，程序运猿编写SQL语句，DBMS负责执行SQL语句，最终完成数据的增删改查</p>
+<p>关系：DBMS执行SQL语句操作DB</p>
+<h4 id="2-数据库常见指令"><a href="#2-数据库常见指令" class="headerlink" title="2. 数据库常见指令"></a>2. 数据库常见指令</h4><ul>
+<li>exit：退出</li>
+<li>show databases：查看数据库</li>
+<li>use name：使用某个数据库</li>
+<li>create database name：创建数据库</li>
+</ul>
+<h4 id="3-表"><a href="#3-表" class="headerlink" title="3. 表"></a>3. 表</h4><p>表（table）：数据库中最基本的单元</p>
+<ul>
+<li><p>数据库中以表的形式存储数据，表的形式比较直观</p>
+</li>
+<li><p>任何一张表都有行和列</p>
+<ul>
+<li>行（row）：称位数据&#x2F;记录</li>
+<li>列（column）：被称为字段</li>
+</ul>
+</li>
+</ul>
+<h2 id="SQL语句"><a href="#SQL语句" class="headerlink" title="SQL语句"></a>SQL语句</h2><h4 id="1-假设一个表的主键是创建日期和id，还有一个属性是访问量，怎么通过sql语句求出平均每天访问量最大的id"><a href="#1-假设一个表的主键是创建日期和id，还有一个属性是访问量，怎么通过sql语句求出平均每天访问量最大的id" class="headerlink" title="1. 假设一个表的主键是创建日期和id，还有一个属性是访问量，怎么通过sql语句求出平均每天访问量最大的id"></a>1. 假设一个表的主键是创建日期和id，还有一个属性是访问量，怎么通过sql语句求出平均每天访问量最大的id</h4><p><strong>主要思路：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">select  id  </span><br><span class="line">from ( select </span><br><span class="line">       表名.id as id, </span><br><span class="line">       表名.访问量/(日期差计算函数(表名.create_time , now())+1) as 平均日访问量</span><br><span class="line">    from 表名</span><br><span class="line">)  as  临时表</span><br><span class="line">where 临时表.平均日访问量 = (</span><br><span class="line">    select</span><br><span class="line">         max( 表名.访问量/(日期差计算函数(表名.create_time , now())+1) )</span><br><span class="line">    from 表名  </span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在<code>mysql</code>中,如果<code>create_time</code>使用的是<code>TIMESTAMP</code>类型，则用 <code>TIMESTAMPDIFF( DAY, create_time , now()) + 1</code> 计算日期差</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">select  表名.id </span><br><span class="line">from    表名 </span><br><span class="line">inner join (</span><br><span class="line">    select </span><br><span class="line">        表名.id as id,</span><br><span class="line">        表名.create_time as create_time,</span><br><span class="line">        max( 表名.访问量/(日期差计算函数(表名.create_time , now())+1) ) as 最大平均日访问量</span><br><span class="line">    from 表名 </span><br><span class="line">) as 临时表 on (表名.id = 临时表.id and 表名.create_time = 临时表.create_time)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2><p>对表中的数据进行限定，保证数据的正确性、有效性和完整性</p>
+<ul>
+<li><p>非空约束：<code>not null</code></p>
+</li>
+<li><p>唯一约束：<code>unique</code></p>
+</li>
+<li><p>主键约束：<code>primary key</code></p>
+</li>
+<li><p>外键约束：<code>foreign key</code></p>
+</li>
+</ul>
+<h4 id="1-非空约束"><a href="#1-非空约束" class="headerlink" title="1. 非空约束"></a>1. 非空约束</h4><p><code>not null</code>，限制某一列的值不能为null</p>
+<ul>
+<li><p>创建表时添加约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE stu(</span><br><span class="line">    id INT,</span><br><span class="line">    NAME VARCHAR(20) NOT NULL -- name不能为null</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建表后添加约束：<code>ALTER TABLE stu MODIFY NAME VARCHAR(20) NOT NULL;</code></p>
+</li>
+<li><p>删除约束：<code>ALTER TABLE stu MODIFY NAME VARCHAR(20);</code></p>
+</li>
+</ul>
+<h4 id="2-唯一约束"><a href="#2-唯一约束" class="headerlink" title="2. 唯一约束"></a>2. 唯一约束</h4><p><code>unique</code>，限制某一列的值不能重复，受约束的列最多只能有一条记录为null</p>
+<ul>
+<li><p>创建表时添加约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE stu(</span><br><span class="line">    id INT,</span><br><span class="line">    phone_number VARCHAR(20) UNIQUE -- 手机号</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建表后添加约束：<code>ALTER TABLE stu MODIFY phone_number VARCHAR(20) UNIQUE;</code></p>
+</li>
+<li><p>删除唯一约束：<code>ALTER TABLE stu DROP INDEX phone_number;</code></p>
+</li>
+</ul>
+<h4 id="3-主键约束"><a href="#3-主键约束" class="headerlink" title="3. 主键约束"></a>3. 主键约束</h4><p><code>primary key</code>，（1）主键非空且唯一（2）主键就是记录的唯一标识（3）一张表只能有一个字段为主键</p>
+<ul>
+<li><p>创建表时添加约束：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create table stu(</span><br><span class="line">    id int primary key,-- 给id添加主键约束</span><br><span class="line">    name varchar(20)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建表后添加约束：<code>ALTER TABLE stu MODIFY id INT PRIMARY KEY;</code></p>
+</li>
+<li><p>删除主键约束</p>
+<ul>
+<li>（错误）<code>alter table stu modify id int;</code></li>
+<li>（正确）<code>ALTER TABLE stu DROP PRIMARY KEY;</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>自动增长:</strong></p>
+<ol>
+<li><p>概念：如果某一列的数据类型为数值类型，可以使用<code>auto_increment</code>设置值的自动增长</p>
+</li>
+<li><p>创建表时，添加主键约束，并且设置自动增长</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> stu(</span><br><span class="line">    id <span class="type">int</span> <span class="keyword">primary</span> key auto_increment,<span class="comment">-- 给id添加主键约束</span></span><br><span class="line">    name <span class="type">varchar</span>(<span class="number">20</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建表后，设置自动增长：<code>ALTER TABLE stu MODIFY id INT AUTO_INCREMENT;</code></p>
+</li>
+<li><p>删除自动增长：<code>ALTER TABLE stu MODIFY id INT;</code></p>
+</li>
+</ol>
+<h4 id="4-外键约束"><a href="#4-外键约束" class="headerlink" title="4. 外键约束"></a>4. 外键约束</h4><p><code>foreign key</code>，让表与表产生关系，从而保证数据的正确性</p>
+<ul>
+<li><p>创建表时添加外键：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">create table 表名(</span><br><span class="line">    ...</span><br><span class="line">    外键列名 数据类型,</span><br><span class="line">    constraint 外键名称 foreign key (外键列名) references 主表名称(主表列名)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除外键：<code>alter table 表名 drop foreign key 外键名称;</code></p>
+</li>
+<li><p>创建表后添加外键：<code>alter table 表名 add constraint 外键名称 foreign key (外键列名) references 主表名称(主表列名);</code></p>
+</li>
+<li><p>级联操作</p>
+<ul>
+<li><p>添加级联：<code>alter table 表名 add constraint 外键名称 foreign key (外键列名) references 主表名称(主表列名) on update cascade on delete cascade;</code></p>
+</li>
+<li><p>级联分类</p>
+<ul>
+<li><p>级联更新：<code>on update cascade</code></p>
+</li>
+<li><p>级联删除：<code>on delete cascade</code></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>外键可以为null，但是不可以为不存在的外键值</p>
+</li>
+</ul>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><h4 id="1-什么是事务？"><a href="#1-什么是事务？" class="headerlink" title="1. 什么是事务？"></a>1. 什么是事务？</h4><p>一个事务其实就是一个完整的业务逻辑</p>
+<p>eg. a账户向b账户转账100元</p>
+<ul>
+<li>a账户钱 -100（update语句）</li>
+<li>b账户 +100（update语句）</li>
+</ul>
+<p>以上操作是一个最小的工作单元，要么同时成功，要么同时失败，不可再分。</p>
+<h4 id="2-只有DML才有事务一说，其他语句和事务无关"><a href="#2-只有DML才有事务一说，其他语句和事务无关" class="headerlink" title="2. 只有DML才有事务一说，其他语句和事务无关"></a>2. 只有DML才有事务一说，其他语句和事务无关</h4><p>只有insert、delete、update三个语句和事务有关，因为只有以上三个语句是数据库表中的数据进行增删改。而涉及到增删改就要考虑安全问题。</p>
+<h4 id="3-事务的理解"><a href="#3-事务的理解" class="headerlink" title="3. 事务的理解"></a>3. 事务的理解</h4><p>事务不是一个语句完成的，是由多个语句共同协作完成的。因为完成一个业务逻辑，需要多个步骤对应多个语句完成，如果任何事务一条DML语句执行，那么事务就失去了价值。<strong>所以事务可以认为是一批同时成功、同时失败的DML语句。</strong></p>
+<h4 id="4-事务是如何实现的？"><a href="#4-事务是如何实现的？" class="headerlink" title="4. 事务是如何实现的？"></a>4. 事务是如何实现的？</h4><p>在执行事务时，每一条DML的操作都会记录到“事务性活动文件中”，在事务执行的过程中可以<strong>提交事务</strong>，也可以<strong>回滚事务</strong>。</p>
+<ul>
+<li>提交事务：清空事务性活动日志，将数据全部彻底持久化到数据库表中。标志着事务的成功结束。</li>
+<li>回滚事务：将之前的所有DML操作全部撤销，清空事务性活动日志。标志着事务的失败结束。</li>
+</ul>
+<h4 id="5-事务的特性"><a href="#5-事务的特性" class="headerlink" title="5. 事务的特性"></a>5. 事务的特性</h4><ul>
+<li>原子性：事务是最小的工作单元，不可再分</li>
+<li>一致性：同一个事务中的操作同时成功或同时失败，以保证数据的一致性</li>
+<li>隔离性：两个事务之间有一定的隔离</li>
+<li>持久性：事务最终结束时，将数据进行存储</li>
+</ul>
+<h4 id="6-事务隔离级别"><a href="#6-事务隔离级别" class="headerlink" title="6. 事务隔离级别"></a>6. 事务隔离级别</h4><p>四个级别：</p>
+<ul>
+<li>读未提交：read uncommitted（级别最低）<ul>
+<li>事务A可以读取到事务B未提交的数据</li>
+<li>存在的问题：脏读（Dirty Read）现象</li>
+</ul>
+</li>
+<li>读已提交：read committed<ul>
+<li>事务A只能读取到事务B已提交的数据，这是大多数据库的隔离级别</li>
+<li>解决的问题：脏读现象</li>
+<li>存在的问题：不可重复读取数据，在事务开启后</li>
+</ul>
+</li>
+<li>可重复读：repeatable read<ul>
+<li>可重复读取：事务A开启后，不管多久，每一次在事务A中读取的数据都是一致的。</li>
+<li>解决了问题：不可重复读</li>
+</ul>
+</li>
+<li>序列化：serializable（级别最高）</li>
+</ul>
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><h4 id="1-什么是索引？"><a href="#1-什么是索引？" class="headerlink" title="1. 什么是索引？"></a>1. 什么是索引？</h4><p>索引是在数据库表的字段上添加的，是为了提高查询效率的一种机制。</p>
+<h4 id="2-MySql两种存储引擎区别"><a href="#2-MySql两种存储引擎区别" class="headerlink" title="2. MySql两种存储引擎区别"></a>2. MySql两种存储引擎区别</h4><table>
+<thead>
+<tr>
+<th>引擎</th>
+<th>特性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MYISAM</td>
+<td>不支持外键，表锁，插入数据时，锁定整个表，查表总行数时，不需要全表扫描</td>
+</tr>
+<tr>
+<td>INNODB</td>
+<td>支持外键，行锁，查表总行数时，全表扫描</td>
+</tr>
+</tbody></table>
+<h4 id="3-索引的方式"><a href="#3-索引的方式" class="headerlink" title="3. 索引的方式"></a>3. 索引的方式</h4><table>
+<thead>
+<tr>
+<th>索引</th>
+<th>区别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hash</td>
+<td>hash索引，等值查询效率高，不能排序,不能进行范围查询</td>
+</tr>
+<tr>
+<td>B+</td>
+<td>数据有序,范围查询</td>
+</tr>
+</tbody></table>
+<h4 id="4-索引的分类"><a href="#4-索引的分类" class="headerlink" title="4. 索引的分类"></a>4. 索引的分类</h4><table>
+<thead>
+<tr>
+<th>索引类型</th>
+<th>概念</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>普通索引</td>
+<td>最基本的索引，没有任何限制</td>
+</tr>
+<tr>
+<td>唯一索引</td>
+<td>数据有序,范围查询</td>
+</tr>
+<tr>
+<td>主键索引</td>
+<td>它是一种特殊的唯一索引，不允许有空值。</td>
+</tr>
+<tr>
+<td>全文索引</td>
+<td>针对较大的数据，生成全文索引很耗时好空间。</td>
+</tr>
+<tr>
+<td>组合索引</td>
+<td>为了更多的提高mysql效率可建立组合索引，遵循”最左前缀“原则</td>
+</tr>
+</tbody></table>
+<h4 id="5-索引的优缺点，什么时候使用索引，什么时候不能使用索引"><a href="#5-索引的优缺点，什么时候使用索引，什么时候不能使用索引" class="headerlink" title="5. 索引的优缺点，什么时候使用索引，什么时候不能使用索引"></a>5. 索引的优缺点，什么时候使用索引，什么时候不能使用索引</h4><p>索引最大的好处是提高查询速度， 缺点是更新数据时效率低，因为要同时更新索引 对数据进行频繁查询进建立索引，如果要频繁更改数据不建议使用索引。</p>
+<h2 id="数据库的设计"><a href="#数据库的设计" class="headerlink" title="数据库的设计"></a>数据库的设计</h2><h4 id="1-表与表之间的关系"><a href="#1-表与表之间的关系" class="headerlink" title="1. 表与表之间的关系"></a>1. 表与表之间的关系</h4><p>（1）<strong>一对多（多对一）</strong></p>
+<ul>
+<li>在<strong>多</strong>的一方建立外键，指向<strong>一</strong>的一方的主键</li>
+</ul>
+<p>（2）<strong>多对多</strong></p>
+<ul>
+<li>借助第三张中间表，中间表至少包含两个字段，这两个字段作为中间表的外键，分别指向两张表的主键</li>
+</ul>
+<p>（3）<strong>一对一</strong></p>
+<ul>
+<li>在任意一方添加唯一外键指向另一方的主键</li>
+<li>一对一通常合并为一张表，不必拆分为两张表。</li>
+</ul>
+<h4 id="2-范式"><a href="#2-范式" class="headerlink" title="2. 范式"></a>2. 范式</h4><p>设计数据库时，为了设计出合理的关系型数据库，所遵循的不同的规范要求</p>
+<ul>
+<li><p><strong>第一范式（1NF）</strong>每一列都是不可分割的原子数据项</p>
+</li>
+<li><p><strong>第二范式（2NF）</strong>在1NF的基础上，非主属性必须完全依赖于主属性（在1NF的基础上，消除非主属性对主属性的部分函数依赖）</p>
+</li>
+<li><p><strong>第三范式（3NF）</strong>在2NF的基础上，任何非主属性不依赖于其他非主属性（在2NF的基础上，消除传递依赖）</p>
+</li>
+<li><p><strong>巴斯-科德范式（BCNF）</strong></p>
+</li>
+<li><p><strong>第四范式(4NF）</strong></p>
+</li>
+<li><p><strong>第五范式（5NF，又称完美范式</strong>）</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/07/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="prev" title="秋招保驾护航——计算机网络">
+                  <i class="fa fa-chevron-left"></i> 秋招保驾护航——计算机网络
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/14/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AF%87/" rel="next" title="秋招保驾护航——操作系统篇">
+                  秋招保驾护航——操作系统篇 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wk</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

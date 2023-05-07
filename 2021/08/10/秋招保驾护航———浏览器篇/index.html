@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="浏览器的相关知识从以下几个角度出发进行总结。  网页中使用js 浏览器缓存：强缓存和协商缓存 浏览器本地存储:cookie、localStorage和sessionStore 从网络的角度：输入URL发生了什么 从浏览器解析的角度：输入URL发生了什么 从浏览器渲染的角度：输入URL发生了什么 从浏览器回流和重绘的角度：输入URL发生了什么 跨域的解决办法 网络安全  网页中使用js 参考：浏览器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端秋招保驾护航——浏览器篇">
+<meta property="og:url" content="http://example.com/2021/08/10/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E2%80%94%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AF%87/index.html">
+<meta property="og:site_name" content="wk的博客">
+<meta property="og:description" content="浏览器的相关知识从以下几个角度出发进行总结。  网页中使用js 浏览器缓存：强缓存和协商缓存 浏览器本地存储:cookie、localStorage和sessionStore 从网络的角度：输入URL发生了什么 从浏览器解析的角度：输入URL发生了什么 从浏览器渲染的角度：输入URL发生了什么 从浏览器回流和重绘的角度：输入URL发生了什么 跨域的解决办法 网络安全  网页中使用js 参考：浏览器">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6d3936b63a9e43aaae9f72086899a8e5~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/76abac73addd452bb35c1ede3df0a904~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/507d2f8b12f14e48983267afcb44b349~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/77e9f1df70e04c75b9203948a928c92d~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9a5b870563504bf98894d07114de5e94~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f8e936917e7045c29dea0a98d77eaff7~tplv-k3u1fbpfcp-watermark.image">
+<meta property="article:published_time" content="2021-08-10T15:55:57.000Z">
+<meta property="article:modified_time" content="2023-05-07T09:42:02.918Z">
+<meta property="article:author" content="wk">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6d3936b63a9e43aaae9f72086899a8e5~tplv-k3u1fbpfcp-zoom-1.image">
+
+
+<link rel="canonical" href="http://example.com/2021/08/10/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E2%80%94%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AF%87/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/08/10/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E2%80%94%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AF%87/","path":"2021/08/10/秋招保驾护航———浏览器篇/","title":"前端秋招保驾护航——浏览器篇"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>前端秋招保驾护航——浏览器篇 | wk的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wk的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录技术、学习和生活的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E9%A1%B5%E4%B8%AD%E4%BD%BF%E7%94%A8js"><span class="nav-number">1.</span> <span class="nav-text">网页中使用js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BB%A3%E7%A0%81%E5%B5%8C%E5%85%A5%E7%BD%91%E9%A1%B5%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">1. 代码嵌入网页的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-script%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">2. script的工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%A7%A3%E5%86%B3%E7%BD%91%E9%A1%B5%E9%98%BB%E5%A1%9E"><span class="nav-number">1.3.</span> <span class="nav-text">3. 解决网页阻塞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS%E7%BC%93%E5%AD%98"><span class="nav-number">2.</span> <span class="nav-text">DNS缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%EF%BC%88HTTP%E7%BC%93%E5%AD%98%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">浏览器缓存（HTTP缓存）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BC%BA%E7%BC%93%E5%AD%98"><span class="nav-number">3.1.</span> <span class="nav-text">1. 强缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98"><span class="nav-number">3.2.</span> <span class="nav-text">2. 协商缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E6%80%BB%E7%BB%93"><span class="nav-number">3.3.</span> <span class="nav-text">3. 浏览器缓存总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%BC%93%E5%AD%98%E6%96%87%E6%A1%88"><span class="nav-number">3.4.</span> <span class="nav-text">4. 缓存文案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8-cookie%E3%80%81localStorage%E5%92%8CsessionStore"><span class="nav-number">4.</span> <span class="nav-text">浏览器本地存储:cookie、localStorage和sessionStore</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-cookie"><span class="nav-number">4.1.</span> <span class="nav-text">1. cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-localStorage"><span class="nav-number">4.2.</span> <span class="nav-text">2. localStorage</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">4.2.1.</span> <span class="nav-text">应用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-sessionStorage"><span class="nav-number">4.3.</span> <span class="nav-text">3. sessionStorage</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="nav-number">4.3.1.</span> <span class="nav-text">应用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-IndexedDB"><span class="nav-number">4.4.</span> <span class="nav-text">4. IndexedDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%AF%B9%E6%AF%94"><span class="nav-number">4.5.</span> <span class="nav-text">5. 对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E7%BD%91%E7%BB%9C%E7%9A%84%E8%A7%92%E5%BA%A6%EF%BC%9A%E8%BE%93%E5%85%A5URL%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-number">5.</span> <span class="nav-text">从网络的角度：输入URL发生了什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E8%A7%A3%E6%9E%90%E7%9A%84%E8%A7%92%E5%BA%A6%EF%BC%9A%E8%BE%93%E5%85%A5URL%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-number">6.</span> <span class="nav-text">从浏览器解析的角度：输入URL发生了什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E7%9A%84%E8%A7%92%E5%BA%A6%EF%BC%9A%E8%BE%93%E5%85%A5URL%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-number">7.</span> <span class="nav-text">从浏览器渲染的角度：输入URL发生了什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E5%9B%9E%E6%B5%81%E5%92%8C%E9%87%8D%E7%BB%98%E7%9A%84%E8%A7%92%E5%BA%A6%EF%BC%9A%E8%BE%93%E5%85%A5URL%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-number">8.</span> <span class="nav-text">从浏览器回流和重绘的角度：输入URL发生了什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%A8%E5%9F%9F%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="nav-number">9.</span> <span class="nav-text">跨域的解决办法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8"><span class="nav-number">10.</span> <span class="nav-text">网络安全</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wk"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">wk</p>
+  <div class="site-description" itemprop="description">一个前端程序员</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wk-Nemo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wk-Nemo" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://juejin.cn/user/3122268755465879" title="掘金 → https:&#x2F;&#x2F;juejin.cn&#x2F;user&#x2F;3122268755465879" rel="noopener me" target="_blank">掘金</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/10/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E2%80%94%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="wk">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wk的博客">
+      <meta itemprop="description" content="一个前端程序员">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="前端秋招保驾护航——浏览器篇 | wk的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          前端秋招保驾护航——浏览器篇
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-08-10 23:55:57" itemprop="dateCreated datePublished" datetime="2021-08-10T23:55:57+08:00">2021-08-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-05-07 17:42:02" itemprop="dateModified" datetime="2023-05-07T17:42:02+08:00">2023-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>浏览器的相关知识从以下几个角度出发进行总结。</p>
+<ul>
+<li>网页中使用js</li>
+<li>浏览器缓存：强缓存和协商缓存</li>
+<li>浏览器本地存储:cookie、localStorage和sessionStore</li>
+<li>从网络的角度：输入URL发生了什么</li>
+<li>从浏览器解析的角度：输入URL发生了什么</li>
+<li>从浏览器渲染的角度：输入URL发生了什么</li>
+<li>从浏览器回流和重绘的角度：输入URL发生了什么</li>
+<li>跨域的解决办法</li>
+<li>网络安全</li>
+</ul>
+<h2 id="网页中使用js"><a href="#网页中使用js" class="headerlink" title="网页中使用js"></a>网页中使用js</h2><blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://wangdoc.com/javascript/bom/engine.html#%E4%BB%A3%E7%A0%81%E5%B5%8C%E5%85%A5%E7%BD%91%E9%A1%B5%E7%9A%84%E6%96%B9%E6%B3%95">浏览器环境描述</a></p>
+</blockquote>
+<h3 id="1-代码嵌入网页的方法"><a href="#1-代码嵌入网页的方法" class="headerlink" title="1. 代码嵌入网页的方法"></a>1. 代码嵌入网页的方法</h3><ul>
+<li><p><code>&lt;script&gt;</code>元素直接嵌入代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  var x = 1 + 5;</span><br><span class="line">  console.log(x);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>&lt;script&gt;</code>标签加载外部脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;https://www.example.com/script.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>事件属性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button id=&quot;myBtn&quot; onclick=&quot;console.log(this.id)&quot;&gt;点击&lt;/button&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>URL 协议：URL 支持<code>javascript:</code>协议，即在 URL 的位置写入代码，使用这个 URL 的时候就会执行 JavaScript 代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;javascript:console.log(&#x27;Hello&#x27;)&quot;&gt;点击&lt;/a&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-script的工作原理"><a href="#2-script的工作原理" class="headerlink" title="2. script的工作原理"></a>2. script的工作原理</h3><ul>
+<li>浏览器一边下载 HTML 网页，一边开始解析。也就是说，不等到下载完，就开始解析。</li>
+<li>解析过程中，浏览器发现<code>&lt;script&gt;</code>元素，就暂停解析，把网页渲染的控制权转交给 JavaScript 引擎。</li>
+<li>如果<code>&lt;script&gt;</code>元素引用了外部脚本，就下载该脚本再执行，否则就直接执行代码。</li>
+<li>JavaScript 引擎执行完毕，控制权交还渲染引擎，恢复往下解析 HTML 网页。</li>
+</ul>
+<p>如果外部脚本加载时间很长（一直无法完成下载），那么浏览器就会一直等待脚本下载完成，造成网页长时间失去响应，浏览器就会呈现“假死”状态，这被称为“阻塞效应”。</p>
+<p>为了避免这种情况，较好的做法是将<code>&lt;script&gt;</code>标签都放在页面底部，而不是头部。这样即使遇到脚本失去响应，网页主体的渲染也已经完成了，用户至少可以看到内容，而不是面对一张空白的页面。如果某些脚本代码非常重要，一定要放在页面头部的话，最好直接将代码写入页面，而不是连接外部脚本文件，这样能缩短加载时间。</p>
+<h3 id="3-解决网页阻塞"><a href="#3-解决网页阻塞" class="headerlink" title="3. 解决网页阻塞"></a>3. 解决网页阻塞</h3><p><strong>（1）defer属性</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;a.js&quot; defer&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;b.js&quot; defer&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>浏览器开始解析 HTML 网页。</li>
+<li>解析过程中，发现带有<code>defer</code>属性的<code>&lt;script&gt;</code>元素。</li>
+<li>浏览器继续往下解析 HTML 网页，同时并行下载<code>&lt;script&gt;</code>元素加载的外部脚本。</li>
+<li>浏览器完成解析 HTML 网页，此时再回过头执行已经下载完成的脚本。</li>
+</ul>
+<p><strong>（2）async属性</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;a.js&quot; async&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;b.js&quot; async&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>浏览器开始解析 HTML 网页。</li>
+<li>解析过程中，发现带有<code>async</code>属性的<code>script</code>标签。</li>
+<li>浏览器继续往下解析 HTML 网页，同时并行下载<code>&lt;script&gt;</code>标签中的外部脚本。</li>
+<li>脚本下载完成，浏览器暂停解析 HTML 网页，开始执行下载的脚本。</li>
+<li>脚本执行完毕，浏览器恢复解析 HTML 网页。</li>
+</ul>
+<h2 id="DNS缓存"><a href="#DNS缓存" class="headerlink" title="DNS缓存"></a>DNS缓存</h2><p>进入页面的时候会进行DNS查询，找到域名对应的服务器的IP地址，再发送请求</p>
+<p>网上流程图很多，我从中借鉴了两张</p>
+<p>DNS域名查找先在客户端进行<code>递归查询</code>，如图</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6d3936b63a9e43aaae9f72086899a8e5~tplv-k3u1fbpfcp-zoom-1.image"> 在任何一步找到就会结束查找流程，而整个过程客户端只发出一次查询请求</p>
+<p>如果都没有找到，就会走DNS服务器设置的转发器，如果没设置转发模式，则向<code>13根</code>发起解析请求，这里就是<code>迭代查询</code>，如图</p>
+<blockquote>
+<p>13根：<br>全球共有13个根域服务器IP地址，不是13台服务器！<br>因为借助任播技术，可以在全球设立这些IP的镜像站点，所以访问的不是唯一的那台主机</p>
+</blockquote>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/76abac73addd452bb35c1ede3df0a904~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p>很明显，整个过程会发出多次查询请求</p>
+<p>在第一次进入页面后就会把DNS解析的地址记录缓存在客户端，之后再进的话至少不需要发起后面的迭代查询了，从而速度更快</p>
+<h2 id="浏览器缓存（HTTP缓存）"><a href="#浏览器缓存（HTTP缓存）" class="headerlink" title="浏览器缓存（HTTP缓存）"></a>浏览器缓存（HTTP缓存）</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6993358764481085453#heading-11">(建议收藏)为什么第二次打开页面快？五步吃透前端缓存，让页面飞起</a></p>
+</blockquote>
+<p>浏览器缓是指将http请求获取的页面资源存储在本地，之后再加载直接从缓存中获取而不用请求服务器，从而响应的更快</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/507d2f8b12f14e48983267afcb44b349~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<h3 id="1-强缓存"><a href="#1-强缓存" class="headerlink" title="1. 强缓存"></a>1. 强缓存</h3><p>第一次请求，服务器把资源过期的时间通过响应头中的<code>Expires</code>和<code>Cache-Control</code>两个字段告诉浏览器。通过这两个字段的内容，浏览器之后请求这个服务器的资源前，会判断有没有过期，如果没有过期就直接使用，不用再发HTTP请求。</p>
+<p><strong>（1）Expires</strong></p>
+<p><code>Expires</code>即过期时间，存在于服务端返回的响应头中，告诉浏览器在这个过期时间之前可以直接从缓存里面获取数据，无需再次请求。比如下面这样:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 表示资源在2019年11月22号8点41分过期，过期了就得向服务端发请求。</span></span><br><span class="line"><span class="title class_">Expires</span>: <span class="title class_">Wed</span>, <span class="number">22</span> <span class="title class_">Nov</span> <span class="number">2019</span> <span class="number">08</span>:<span class="number">41</span>:<span class="number">00</span> <span class="variable constant_">GMT</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>缺点：</strong> <strong>服务器的时间和浏览器的时间可能并不一致</strong>，那服务器返回的这个过期时间可能就是不准确的。因此这种方式很快在后来的HTTP1.1版本中被抛弃了。</p>
+<p><strong>（2）Cache-Control</strong></p>
+<p>基于<code>Expires</code>的缺点，在HTTP1.1中采用了<code>Cache-Control</code>。<code>Cache-Control</code>通过过期时长来控制缓存。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代表这个响应返回后在 3600 秒，也就是一个小时之内可以直接使用缓存。</span></span><br><span class="line"><span class="title class_">Cache</span>-<span class="title class_">Control</span>:max-age=<span class="number">3600</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Cache-Control<code>请求头</code>常见属性</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段(单位秒)</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>max-age&#x3D;300</td>
+<td>拒绝接受长于300秒的资源，为0时表示获取最新资源</td>
+</tr>
+<tr>
+<td>max-stale&#x3D;100</td>
+<td>缓存过期之后的100秒内，依然拿来用</td>
+</tr>
+<tr>
+<td>min-fresh&#x3D;50</td>
+<td>缓存到期时间还剩余50秒开始，就不给拿了，不新鲜了</td>
+</tr>
+<tr>
+<td>no-cache</td>
+<td>协商缓存验证</td>
+</tr>
+<tr>
+<td>no-store</td>
+<td>不使用缓存</td>
+</tr>
+<tr>
+<td>only-if-chached</td>
+<td>只使用缓存，没有就报504错误</td>
+</tr>
+<tr>
+<td>no-transform</td>
+<td>不得对资源进行转换或转变。Content-Encoding, Content-Range, Content-Type等HTTP头不能由代理修改。</td>
+</tr>
+</tbody></table>
+<p><strong>Cache-Control<code>响应头</code>常见属性</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段(单位秒)</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>max-age&#x3D;300</td>
+<td>缓存有效期300秒</td>
+</tr>
+<tr>
+<td>s-maxage&#x3D;500</td>
+<td>有效期500秒，优先级高于max-age，适用于共享缓存(如CDN)</td>
+</tr>
+<tr>
+<td>public</td>
+<td>可以被任何终端缓存，包括代理服务器、CDN等</td>
+</tr>
+<tr>
+<td>private</td>
+<td>只能被用户的浏览器终端缓存(私有缓存)</td>
+</tr>
+<tr>
+<td>no-cache</td>
+<td>先和服务端确认资源是否发生变化，没有就使用</td>
+</tr>
+<tr>
+<td>no-store</td>
+<td>不缓存</td>
+</tr>
+<tr>
+<td>no-transform</td>
+<td>与上面请求指令中的一样</td>
+</tr>
+<tr>
+<td>must-revalidate</td>
+<td>客户端缓存过期了就向源服务器验证</td>
+</tr>
+<tr>
+<td>proxy-revalidate</td>
+<td>代理缓存过期了就去源服务器重新获取</td>
+</tr>
+</tbody></table>
+<p><strong>（3）强缓存总结</strong></p>
+<p>强缓存最开始是使用<code>Expires</code>，它通过返回日期来控制缓存的时间，但是潜在的问题是如果浏览器的时间和服务器的时间不一致就会产生缓存失效的问题；于是在<code>HTTP1.1</code>中提出了<code>Cache-Control</code>，<code>Cache-Control</code>通过返回接收到请求后存储的时间来控制缓存的时间。</p>
+<p>当<strong>Expires</strong>和<strong>Cache-Control</strong>同时存在的时候，<strong>Cache-Control</strong>会优先考虑。</p>
+<p>强缓存的缺点是<strong>不管资源有没有变化，都会重新发起请求，重新获取资源</strong>。而我们希望的是在资源文件没有更新的情况下，即使过期了也不重新获取资源，继续使用旧资源。所以当强缓存失效后，就会进入协商缓存。</p>
+<h3 id="2-协商缓存"><a href="#2-协商缓存" class="headerlink" title="2. 协商缓存"></a>2. 协商缓存</h3><p>强缓存失效之后，浏览器在请求头中携带相应的<code>缓存tag</code>来向服务器发请求，由服务器根据这个tag，来决定是否使用缓存，这就是<strong>协商缓存</strong>。</p>
+<p>具体来说，这样的缓存tag分为两种: <strong>Last-Modified</strong> 和 <strong>ETag</strong>。这两者各有优劣，并不存在谁对谁有<code>绝对的优势</code>，跟上面强缓存的两个 tag 不一样。</p>
+<p><strong>（1）Last-Modified</strong></p>
+<p>第一次请求资源时，服务器除了会返回给浏览器上面说的过期时间，还会在响应头添加 <code>Last-Modified</code> 字段，告诉浏览器该资源的最后修改时间</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">last-<span class="attr">modified</span>: <span class="title class_">Fri</span>, <span class="number">27</span> <span class="title class_">Oct</span> <span class="number">2021</span> <span class="number">08</span>:<span class="number">35</span>:<span class="number">57</span> <span class="variable constant_">GMT</span></span><br></pre></td></tr></table></figure>
+
+<p>然后浏览器再次请求的时候就把这个时间再通过另一个字段<code>If-Modified-Since</code>，发送给服务器</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>-modified-<span class="attr">since</span>: <span class="title class_">Fri</span>, <span class="number">27</span> <span class="title class_">Oct</span> <span class="number">2021</span> <span class="number">08</span>:<span class="number">35</span>:<span class="number">57</span> <span class="variable constant_">GMT</span></span><br></pre></td></tr></table></figure>
+
+<p>服务器再把浏览器传来的<code>if-modified-since</code>和服务器的<code>last-modified</code>这两个字段的时间对比：</p>
+<ul>
+<li>如果是一样的，就说明文件没有被更新过，就返回状态码304和空响应体给浏览器，浏览器直接拿过期了的资源继续使用即可；</li>
+<li>如果对比不一样说明资源有更新，就返回状态码200和新的资源</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>如果本地打开了缓存文件，即使没有对文件进行修改，但还是会造成<code>Last-Modified</code>被修改，服务器端不能命中缓存导致发送相同资源</li>
+<li>因为<code>Last-Modified</code>只能以秒计时，如果在不可感知的时间内修改了文件，服务器端会认为还是命中了，无法返回正确的资源</li>
+<li>如果资源有周期性变化，如资源修改后，在一个周期内又改回了原来的样子，我们认为这个周期前的缓存是可以使用的，但是<code>Last-Modified</code>不这样认为</li>
+</ul>
+<p><strong>（2）ETag</strong></p>
+<p>第一次请求资源时，服务器除了会在响应头上返回<code>Expires</code>、<code>Cache-Control</code>、<code>Last-Modified</code>，还在返回<code>Etag</code>字段，表示当前资源文件的一个唯一标识。这个标识符由服务器基于文件内容编码生成，能精准感知文件的变化，只要文件内容不同，<code>ETag</code>就会重新生成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etag: W/&quot;132489-1627839023000&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后浏览器再次请求的时候就把这个文件标识 再通过另一个字段 <code>If-None-Match</code>，发送给服务器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if-none-match: W/&quot;132489-1627839023000&quot;</span><br></pre></td></tr></table></figure>
+
+<p>服务器再把这两个字段的时间对比：</p>
+<ul>
+<li>如果发现是一样的，就说明文件没有被更新过，就返回状态码304和空响应体给浏览器，浏览器直接拿过期了的资源继续使用；</li>
+<li>如果对比不一样说明资源有更新，就返回状态码200和新的资源</li>
+</ul>
+<p><strong>（3）协商缓存总结</strong></p>
+<p><strong><code>Last-Modified 和 ETag 的区别</code></strong></p>
+<ul>
+<li><code>Etag</code> 感知文件精准度要高于 <code>Last-Modified</code></li>
+<li>同时使用时，服务器校验优先 <code>Etag</code>&#x2F;<code>If-None-Match</code></li>
+<li><code>Last-Modified</code> 性能上要优于 <code>Etag</code>，因为 <code>Etag</code> 生成过程中需要服务器付出额外开销，会影响服务器端的性能，所以它并不能完全替代 <code>Last-Modified</code>，只能作为补充和强化</li>
+</ul>
+<h3 id="3-浏览器缓存总结"><a href="#3-浏览器缓存总结" class="headerlink" title="3. 浏览器缓存总结"></a>3. 浏览器缓存总结</h3><p>第一次请求资源时，服务器在响应头上返回<code>Expires</code>、<code>Cache-Control</code>、<code>Last-Modified</code>和<code>Etag</code>字段。</p>
+<p><code>Expires</code>和<code>Cache-Control</code>是强缓存阶段的，强缓存最开始是使用<code>Expires</code>，它通过返回日期来控制缓存的时间，但是潜在的问题是如果浏览器的时间和服务器的时间不一致就会产生缓存失效的问题；于是在<code>HTTP1.1</code>中提出了<code>Cache-Control</code>，<code>Cache-Control</code>通过返回接收到请求后存储的时间来控制缓存的时间。当<strong>Expires</strong>和<strong>Cache-Control</strong>同时存在的时候，<strong>Cache-Control</strong>会优先考虑。</p>
+<p>强缓存的缺点是<strong>不管资源有没有变化，都会重新发起请求，重新获取资源</strong>。而我们希望的是在资源文件没有更新的情况下，即使过期了也不重新获取资源，继续使用旧资源。所以当强缓存失效后，就会进入协商缓存。</p>
+<p><code>Last-Modified</code>和<code>Etag</code>是协商缓存阶段的，<code>Last-Modified</code>是记录文件最后一次修改的时间，但是有很多的缺点，如：在补课感知的时间内改变了、周期性的变化以及打开文件却没有修改等，都会造成<br><code>Last-Modified</code>修改。<code>Etag</code>则能精准感知文件的变化，只要文件内容不同，<code>ETag</code>就会重新生成。 <code>Etag</code> 感知文件精准度要高于 <code>Last-Modified</code>但是<code>Last-Modified</code> 性能上要优于 <code>Etag</code>，因为 <code>Etag</code> 生成过程中需要服务器付出额外开销，会影响服务器端的性能，所以它并不能完全替代 <code>Last-Modified</code>，只能作为补充和强化</p>
+<h3 id="4-缓存文案"><a href="#4-缓存文案" class="headerlink" title="4. 缓存文案"></a>4. 缓存文案</h3><ul>
+<li>协商缓存一般存储：<code>HTML</code></li>
+<li>强缓存一般存储：<code>css</code>, <code>image</code>, <code>js</code>，文件名带上 <code>hash</code></li>
+</ul>
+<h2 id="浏览器本地存储-cookie、localStorage和sessionStore"><a href="#浏览器本地存储-cookie、localStorage和sessionStore" class="headerlink" title="浏览器本地存储:cookie、localStorage和sessionStore"></a>浏览器本地存储:cookie、localStorage和sessionStore</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6993358764481085453#heading-11">(建议收藏)为什么第二次打开页面快？五步吃透前端缓存，让页面飞起</a></p>
+</blockquote>
+<h3 id="1-cookie"><a href="#1-cookie" class="headerlink" title="1. cookie"></a>1. cookie</h3><p><code>HTTP</code> 协议是一个无状态协议，<code>Cookie</code> 最开始被设计出来其实并不是来做本地存储的，而是为了弥补<code>HTTP</code>在<strong>状态管理上的不足</strong>。</p>
+<p>Cookie 本质上就是浏览器里面存储的一个很小的文本文件，内部以键值对的方式来存储(在chrome开发者面板的<code>Application</code>这一栏可以看到)。</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/77e9f1df70e04c75b9203948a928c92d~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<p>向同一个域名下发送请求，都会携带相同的 Cookie，服务器拿到 Cookie 进行解析，便能拿到客户端的状态。</p>
+<p><strong>Cookie都有哪些字段：</strong></p>
+<ul>
+<li><code>Name</code>、<code>Size</code> 故名思意</li>
+<li><code>Value</code>：保存用户登录状态，应该将该值加密，不能使用明文</li>
+<li><code>Path</code>：可以访问此 Cookie 的路径。比如 juejin.cn&#x2F;editor ，path是&#x2F;editor，只有&#x2F;editor这个路径下的才可以读取 Cookie</li>
+<li><code>httpOnly</code>：表示禁止通过 JS 访问 Cookie，减少 XSS 攻击。</li>
+<li><code>Secure</code>：只能在 https 请求中携带</li>
+<li><code>SameSite</code>：规定浏览器不能在跨域请求中携带 Cookie 减少 CSRF 攻击，详细说明<a target="_blank" rel="noopener" href="https://juejin.cn/post/6991888178890145828" title="https://juejin.cn/post/6991888178890145828">看这里</a></li>
+<li><code>Domain</code>：域名，跨域或者 Cookie 的白名单，允许一个子域获取或操作父域的 Cookie，实现单点登录的话会非常有用</li>
+<li><code>Expires</code>&#x2F;<code>Max-size</code>：指定时间或秒数的过期时间，没设置的话就和 Session 一样关闭浏览器就失效</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>容量缺陷。Cookie 的体积上限只有<code>4KB</code>，只能用来存储少量的信息。</li>
+<li>性能缺陷。Cookie 紧跟域名，不管域名下面的某一个地址需不需要这个 Cookie ，请求都会携带上完整的 Cookie，这样随着请求数的增多，其实会造成巨大的性能浪费的，因为请求携带了很多不必要的内容。</li>
+<li>安全缺陷。由于 Cookie 以纯文本的形式在浏览器和服务器中传递，很容易被非法用户截获，然后进行一系列的篡改，在 Cookie 的有效期内重新发送给服务器，这是相当危险的。另外，在<code>HttpOnly</code>为 false 的情况下，Cookie 信息能直接通过 JS 脚本来读取。</li>
+<li>夸域名不能共享 Cookie</li>
+</ul>
+<h3 id="2-localStorage"><a href="#2-localStorage" class="headerlink" title="2. localStorage"></a>2. localStorage</h3><p><code>localStorage</code>有一点跟<code>Cookie</code>一样，就是针对一个域名，即在同一个域名下，会存储相同的一段<strong>localStorage</strong>。</p>
+<p>不过它相对<code>Cookie</code>还是有相当多的区别的:</p>
+<ul>
+<li>容量。localStorage 的容量上限为<strong>5M</strong>，相比于<code>Cookie</code>的 4K 大大增加。当然这个 5M 是针对一个域名的，因此对于一个域名是持久存储的。</li>
+<li>只存在客户端，默认不参与与服务端的通信。这样就很好地避免了 Cookie 带来的<strong>性能问题</strong>和<strong>安全问题</strong>。</li>
+<li>接口封装。通过<code>localStorage</code>暴露在全局，并通过它的 <code>setItem</code> 和 <code>getItem</code>等方法进行操作，非常方便。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置</span></span><br><span class="line"><span class="keyword">let</span> obj = &#123; <span class="attr">name</span>: <span class="string">&quot;wk&quot;</span>, <span class="attr">age</span>: <span class="number">18</span> &#125;;</span><br><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;wk&quot;</span>); </span><br><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;info&quot;</span>, <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(obj));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取值</span></span><br><span class="line"><span class="keyword">let</span> name = <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> info = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;info&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h4 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h4><p>利用<code>localStorage</code>的较大容量和持久特性，可以利用<code>localStorage</code>存储一些内容稳定的资源，比如官网的<code>logo</code>，存储<code>Base64</code>格式的图片资源，因此利用<code>localStorage</code></p>
+<h3 id="3-sessionStorage"><a href="#3-sessionStorage" class="headerlink" title="3. sessionStorage"></a>3. sessionStorage</h3><p><code>sessionStorage</code>以下方面和<code>localStorage</code>一致:</p>
+<ul>
+<li>容量。容量上限也为 5M。</li>
+<li>只存在客户端，默认不参与与服务端的通信。</li>
+<li>接口封装。除了<code>sessionStorage</code>名字有所变化，存储方式、操作方式均和<code>localStorage</code>一样。</li>
+</ul>
+<p>但<code>sessionStorage</code>和<code>localStorage</code>有一个本质的区别，那就是前者只是会话级别的存储，并不是持久化存储。会话结束，也就是页面关闭，这部分<code>sessionStorage</code>就不复存在了。</p>
+<h4 id="应用场景-1"><a href="#应用场景-1" class="headerlink" title="应用场景"></a>应用场景</h4><ul>
+<li>可以用它对表单信息进行维护，将表单信息存储在里面，可以保证页面即使刷新也不会让之前的表单信息丢失。</li>
+<li>可以用它存储本次浏览记录。如果关闭页面后不需要这些记录，用<code>sessionStorage</code>就再合适不过了。</li>
+</ul>
+<h3 id="4-IndexedDB"><a href="#4-IndexedDB" class="headerlink" title="4. IndexedDB"></a>4. IndexedDB</h3><p><code>IndexedDB</code>是运行在浏览器中的<code>非关系型数据库</code>, 本质上是数据库，绝不是和刚才WebStorage的 5M 一个量级，理论上这个容量是没有上限的。</p>
+<p>关于它的使用，本文侧重原理，而且 MDN 上的教程文档已经非常详尽，这里就不做赘述了，感兴趣可以看一下<a href="https://link.juejin.cn/?target=https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API/Using_IndexedDB" title="https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API/Using_IndexedDB">使用文档</a>。</p>
+<p>接着我们来分析一下<code>IndexedDB</code>的一些重要特性，除了拥有数据库本身的特性，比如<code>支持事务</code>，<code>存储二进制数据</code>，还有这样一些特性需要格外注意：</p>
+<ul>
+<li>键值对存储。内部采用<code>对象仓库</code>存放数据，在这个对象仓库中数据采用<strong>键值对</strong>的方式来存储。</li>
+<li>异步操作。数据库的读写属于 I&#x2F;O 操作, 浏览器中对异步 I&#x2F;O 提供了支持。</li>
+<li>受同源策略限制，即无法访问跨域的数据库。</li>
+</ul>
+<h3 id="5-对比"><a href="#5-对比" class="headerlink" title="5. 对比"></a>5. 对比</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>Cookie</th>
+<th>SessionStorage</th>
+<th>LocalStorage</th>
+<th>indexDB</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存储大小</td>
+<td>4k</td>
+<td>5M或更大</td>
+<td>5M或更大</td>
+<td>无限</td>
+</tr>
+<tr>
+<td>存储时间</td>
+<td>可指定时间,没指定关闭窗口就失效</td>
+<td>浏览器窗口关闭就失效</td>
+<td>永久有效</td>
+<td>永久有效</td>
+</tr>
+<tr>
+<td>作用域</td>
+<td>同浏览器，所有同源标签页</td>
+<td>当前标签页</td>
+<td>同浏览器，所有同源标签页</td>
+<td></td>
+</tr>
+<tr>
+<td>存在于</td>
+<td>请求中来回传递</td>
+<td>客户端本地</td>
+<td>客户端本地</td>
+<td>客户端本地</td>
+</tr>
+<tr>
+<td>同源策略</td>
+<td>同浏览器，只能被同源同路径页面访问共享</td>
+<td>自己用</td>
+<td>同浏览器，只能被同源页面访问共享</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="从网络的角度：输入URL发生了什么"><a href="#从网络的角度：输入URL发生了什么" class="headerlink" title="从网络的角度：输入URL发生了什么"></a>从网络的角度：输入URL发生了什么</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904021308735502">(1.6w字)浏览器灵魂之问，请问你能接得住几个？</a></p>
+</blockquote>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9a5b870563504bf98894d07114de5e94~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<h2 id="从浏览器解析的角度：输入URL发生了什么"><a href="#从浏览器解析的角度：输入URL发生了什么" class="headerlink" title="从浏览器解析的角度：输入URL发生了什么"></a>从浏览器解析的角度：输入URL发生了什么</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904021308735502">(1.6w字)浏览器灵魂之问，请问你能接得住几个？</a></p>
+</blockquote>
+<p>进过网络请求以后，因为浏览器不认识HTML和CSS的语法，所以需要先将HTML和CSS转换成浏览器认识的DOM树和CSSOM树，接着浏览器会将DOM树和CSSOM树生成一棵布局树。接着要做的事情就是要将这些内容渲染到屏幕上，让用户可以看得见。</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f8e936917e7045c29dea0a98d77eaff7~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<h2 id="从浏览器渲染的角度：输入URL发生了什么"><a href="#从浏览器渲染的角度：输入URL发生了什么" class="headerlink" title="从浏览器渲染的角度：输入URL发生了什么"></a>从浏览器渲染的角度：输入URL发生了什么</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904021308735502">(1.6w字)浏览器灵魂之问，请问你能接得住几个？</a></p>
+</blockquote>
+<p>渲染的过程挺复杂的，没看明白，日后有机会接触再去了解。</p>
+<h2 id="从浏览器回流和重绘的角度：输入URL发生了什么"><a href="#从浏览器回流和重绘的角度：输入URL发生了什么" class="headerlink" title="从浏览器回流和重绘的角度：输入URL发生了什么"></a>从浏览器回流和重绘的角度：输入URL发生了什么</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904021308735502">(1.6w字)浏览器灵魂之问，请问你能接得住几个？</a></p>
+</blockquote>
+<p><strong>回流</strong>：当我们对 DOM 的修改引发了 DOM 几何尺寸的变化（比如修改元素的宽、高或隐藏元素等）时，浏览器需要重新计算元素的几何属性（其他元素的几何属性和位置也会因此受到影响），然后再将计算的结果绘制出来。这个过程就是回流（也叫重排）。</p>
+<p><strong>重绘</strong>：当我们对 DOM 的修改导致了样式的变化、却并未影响其几何属性（比如修改了颜色或背景色）时，浏览器不需重新计算元素的几何属性、直接为该元素绘制新的样式（跳过了上图所示的回流环节）。这个过程叫做重绘。</p>
+<p>由此我们可以看出，<strong>重绘不一定导致回流，回流一定会导致重绘</strong>。硬要比较的话，回流比重绘做的事情更多，带来的开销也更大。但这两个说到底都是吃性能的，所以都不是什么善茬。我们在开发中，要从代码层面出发，尽可能把回流和重绘的次数最小化。</p>
+<h2 id="跨域的解决办法"><a href="#跨域的解决办法" class="headerlink" title="跨域的解决办法"></a>跨域的解决办法</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903767226351623">九种跨域方式实现原理（完整版)</a></p>
+</blockquote>
+<ul>
+<li>JSONP</li>
+<li>CORS：后端设置可以跨域的网站</li>
+<li>服务器之间没有跨域，可以用服务器向资源服务器请求到数据进行一次代理</li>
+<li>webSocket可以建立双向通信，支持跨域</li>
+</ul>
+<h2 id="网络安全"><a href="#网络安全" class="headerlink" title="网络安全"></a>网络安全</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6991888178890145828#heading-13">吃透浏览器安全（同源限制&#x2F;XSS&#x2F;CSRF&#x2F;中间人攻击）｜ 8月更文挑战</a></p>
+</blockquote>
+<ul>
+<li>同源策略</li>
+<li>XSS攻击</li>
+<li>CSRF攻击</li>
+<li>对称加密、非对称加密</li>
+<li>HTTPS、数字签名</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/10/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E2%80%94js%E9%9D%A2%E8%AF%95%E7%AF%87%EF%BC%88%E4%B8%8B%EF%BC%89/" rel="prev" title="秋招保驾护航——js面试篇（下）">
+                  <i class="fa fa-chevron-left"></i> 秋招保驾护航——js面试篇（下）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/21/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94HTML%E3%80%81CSS%E7%AF%87/" rel="next" title="秋招保驾护航——HTML、CSS篇">
+                  秋招保驾护航——HTML、CSS篇 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wk</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

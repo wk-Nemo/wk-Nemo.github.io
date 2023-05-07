@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="go程序结构 一个Go语言编写的程序对应一个或多个以.go为文件后缀名的源文件 每个源文件中以包的声明语句开始，说明该源文件是属于哪个包 包声明语句之后是import语句导入依赖的其它包 然后是包一级的类型、变量、常量、函数的声明语句，包一级声明语句声明的名字可在整个包对应的每个源文件中访问 最后是各个局部声明，局部声明的名字就只能在函数内部很小的范围被访问。  声明Go语言主要有四种类型的声明语">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go的程序结构">
+<meta property="og:url" content="http://example.com/2021/10/29/go%E7%9A%84%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="wk的博客">
+<meta property="og:description" content="go程序结构 一个Go语言编写的程序对应一个或多个以.go为文件后缀名的源文件 每个源文件中以包的声明语句开始，说明该源文件是属于哪个包 包声明语句之后是import语句导入依赖的其它包 然后是包一级的类型、变量、常量、函数的声明语句，包一级声明语句声明的名字可在整个包对应的每个源文件中访问 最后是各个局部声明，局部声明的名字就只能在函数内部很小的范围被访问。  声明Go语言主要有四种类型的声明语">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-29T09:06:13.000Z">
+<meta property="article:modified_time" content="2023-05-07T09:46:53.437Z">
+<meta property="article:author" content="wk">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/10/29/go%E7%9A%84%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/10/29/go%E7%9A%84%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/","path":"2021/10/29/go的程序结构/","title":"go的程序结构"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>go的程序结构 | wk的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wk的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录技术、学习和生活的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#go%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">go程序结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E7%AE%80%E7%9F%AD%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">1. 简短变量声明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E6%8C%87%E9%92%88"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">2. 指针</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-new-%E5%87%BD%E6%95%B0"><span class="nav-number">3.0.0.3.</span> <span class="nav-text">3. new 函数</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%8B%E5%80%BC"><span class="nav-number">4.</span> <span class="nav-text">赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%85%E5%92%8C%E6%96%87%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">包和文件</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wk"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">wk</p>
+  <div class="site-description" itemprop="description">一个前端程序员</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wk-Nemo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wk-Nemo" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://juejin.cn/user/3122268755465879" title="掘金 → https:&#x2F;&#x2F;juejin.cn&#x2F;user&#x2F;3122268755465879" rel="noopener me" target="_blank">掘金</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/29/go%E7%9A%84%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="wk">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wk的博客">
+      <meta itemprop="description" content="一个前端程序员">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="go的程序结构 | wk的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          go的程序结构
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-10-29 17:06:13" itemprop="dateCreated datePublished" datetime="2021-10-29T17:06:13+08:00">2021-10-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-05-07 17:46:53" itemprop="dateModified" datetime="2023-05-07T17:46:53+08:00">2023-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/go/" itemprop="url" rel="index"><span itemprop="name">go</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="go程序结构"><a href="#go程序结构" class="headerlink" title="go程序结构"></a>go程序结构</h2><ul>
+<li>一个Go语言编写的程序对应一个或多个以.go为文件后缀名的源文件</li>
+<li>每个源文件中以包的声明语句开始，说明该源文件是属于哪个包</li>
+<li>包声明语句之后是import语句导入依赖的其它包</li>
+<li>然后是包一级的类型、变量、常量、函数的声明语句，包一级声明语句声明的名字可在整个包对应的每个源文件中访问</li>
+<li>最后是各个局部声明，局部声明的名字就只能在函数内部很小的范围被访问。</li>
+</ul>
+<h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p>Go语言主要有四种类型的声明语句：</p>
+<ul>
+<li>var：变量</li>
+<li>const：常量</li>
+<li>type：类型</li>
+<li>func：函数实体</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 包一级声明</span></span><br><span class="line"><span class="keyword">const</span> boilingF = <span class="number">212.0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 局部声明</span></span><br><span class="line">    <span class="keyword">var</span> f = boilingF</span><br><span class="line">    <span class="keyword">var</span> c = (f - <span class="number">32</span>) * <span class="number">5</span> / <span class="number">9</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;boiling point = %g°F or %g°C\n&quot;</span>, f, c)</span><br><span class="line">    <span class="comment">// Output:</span></span><br><span class="line">    <span class="comment">// boiling point = 212°F or 100°C</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><p>var声明语句可以创建一个特定类型的变量，然后给变量附加一个名字，并且设置变量的初始值。变量声明的一般语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var 变量名字 类型 = 表达式</span><br></pre></td></tr></table></figure>
+
+<p>其中“<em>类型</em>”或“*&#x3D; 表达式*”两个部分可以省略其中的一个。</p>
+<ul>
+<li>如果省略的是类型信息，那么将根据初始化表达式来推导变量的类型信息。</li>
+<li>如果初始化表达式被省略，那么将用零值初始化该变量。 <ul>
+<li>数值类型变量对应的零值是0</li>
+<li>布尔类型变量对应的零值是false</li>
+<li>字符串类型对应的零值是空字符串</li>
+<li>接口或引用类型（包括slice、指针、map、chan和函数）变量对应的零值是nil</li>
+<li>数组或结构体等聚合类型对应的零值是每个元素或字段都是对应该类型的零值。</li>
+</ul>
+</li>
+</ul>
+<h5 id="1-简短变量声明"><a href="#1-简短变量声明" class="headerlink" title="1. 简短变量声明"></a>1. 简短变量声明</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">anim := gif.GIF&#123;LoopCount: nframes&#125;</span><br><span class="line">freq := rand.Float64() * <span class="number">3.0</span></span><br><span class="line">t := <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 同时声明多个变量</span></span><br><span class="line">i, j := <span class="number">0</span>, <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>简短变量声明左边的变量可能并不是全部都是刚刚声明的。如果有一些已经在相同的词法域声明过了，那么简短变量声明语句对这些已经声明过的变量就只有赋值行为了。</li>
+<li>简短变量声明语句中必须至少要声明一个新的变量，否则编译无法通过</li>
+</ul>
+<h5 id="2-指针"><a href="#2-指针" class="headerlink" title="2. 指针"></a>2. 指针</h5><p>一个指针的值是另一个变量的地址。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x := <span class="number">1</span></span><br><span class="line">p := &amp;x         <span class="comment">// &amp;x 取x的内存地址</span></span><br><span class="line">fmt.Println(*p) <span class="comment">// &quot;1&quot;</span></span><br><span class="line">*p = <span class="number">2</span>          <span class="comment">// *p p指针指向的变量的值</span></span><br><span class="line">fmt.Println(x)  <span class="comment">// &quot;2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="3-new-函数"><a href="#3-new-函数" class="headerlink" title="3. new 函数"></a>3. new 函数</h5><p>另一个创建变量的方法是调用内建的new函数。表达式new(T)将创建一个T类型的匿名变量，初始化为T类型的零值，然后返回变量地址，返回的指针类型为<code>*T</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">p := <span class="built_in">new</span>(<span class="type">int</span>)   <span class="comment">// p, *int 类型, 指向匿名的 int 变量</span></span><br><span class="line">fmt.Println(*p) <span class="comment">// &quot;0&quot;</span></span><br><span class="line">*p = <span class="number">2</span>          <span class="comment">// 设置 int 匿名变量的值为 2</span></span><br><span class="line">fmt.Println(*p) <span class="comment">// &quot;2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>new函数类似是一种语法糖，用new创建变量和普通变量声明语句方式创建变量没有什么区别</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newInt</span><span class="params">()</span></span> *<span class="type">int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">new</span>(<span class="type">int</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newInt</span><span class="params">()</span></span> *<span class="type">int</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> dummy <span class="type">int</span></span><br><span class="line">    <span class="keyword">return</span> &amp;dummy</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面了解了变量的声明，下面继续学习<strong>变量的生命周期</strong></p>
+<ul>
+<li>对于在包一级声明的变量来说，它们的生命周期和整个程序的运行周期是一致的。</li>
+<li>而相比之下，局部变量的生命周期则是动态的：每次从创建一个新变量的声明语句开始，直到该变量不再被引用为止，然后变量的存储空间可能被回收。函数的参数变量和返回值变量都是局部变量</li>
+</ul>
+<h2 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">1</span>                       <span class="comment">// 命名变量的赋值</span></span><br><span class="line">*p = <span class="literal">true</span>                   <span class="comment">// 通过指针间接赋值</span></span><br><span class="line">person.name = <span class="string">&quot;bob&quot;</span>         <span class="comment">// 结构体字段赋值</span></span><br><span class="line">count[x] = count[x] * scale <span class="comment">// 数组、slice或map的元素赋值</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>元组赋值：</strong> 元组赋值是另一种形式的赋值语句，它允许同时更新多个变量的值。在赋值之前，赋值语句右边的所有表达式将会先进行求值，然后再统一更新左边对应变量的值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x, y = y, x</span><br><span class="line"></span><br><span class="line">a[i], a[j] = a[j], a[i]</span><br></pre></td></tr></table></figure>
+
+<p><strong>可赋值性：</strong> 赋值语句是显式的赋值形式，但是程序中还有很多地方会发生隐式的赋值行为。</p>
+<ul>
+<li>函数调用会隐式地将调用参数的值赋值给函数的参数变量</li>
+<li>一个返回语句会隐式地将返回操作的值赋值给结果变量</li>
+<li>一个复合类型的字面量也会产生赋值行为。</li>
+</ul>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><p>一个类型声明语句创建了一个新的类型名称，和现有类型具有相同的底层结构。新命名的类型提供了一个方法，用来分隔不同概念的类型，这样即使它们底层类型相同也是不兼容的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type 类型名字 底层类型</span><br></pre></td></tr></table></figure>
+
+<p>类型声明语句一般出现在包一级，因此如果新创建的类型名字的首字符大写，则在包外部也可以使用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> tempconv</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Celsius <span class="type">float64</span>    <span class="comment">// 摄氏温度</span></span><br><span class="line"><span class="keyword">type</span> Fahrenheit <span class="type">float64</span> <span class="comment">// 华氏温度</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    AbsoluteZeroC Celsius = <span class="number">-273.15</span> <span class="comment">// 绝对零度</span></span><br><span class="line">    FreezingC     Celsius = <span class="number">0</span>       <span class="comment">// 结冰点温度</span></span><br><span class="line">    BoilingC      Celsius = <span class="number">100</span>     <span class="comment">// 沸水温度</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CToF</span><span class="params">(c Celsius)</span></span> Fahrenheit &#123; <span class="keyword">return</span> Fahrenheit(c*<span class="number">9</span>/<span class="number">5</span> + <span class="number">32</span>) &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">FToC</span><span class="params">(f Fahrenheit)</span></span> Celsius &#123; <span class="keyword">return</span> Celsius((f - <span class="number">32</span>) * <span class="number">5</span> / <span class="number">9</span>) &#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于每一个类型T，都有一个对应的类型转换操作T(x)，用于将x转为T类型（译注：如果T是指针类型，可能会需要用小括弧包装T，比如<code>(*int)(0)</code>）。</p>
+<ul>
+<li>只有当两个类型的底层基础类型相同时，才允许这种转型操作</li>
+<li>或者是两者都是指向相同底层结构的指针类型，这些转换只改变类型而不会影响值本身。</li>
+<li>如果x是可以赋值给T类型的值，那么x必然也可以被转为T类型，但是一般没有这个必要。</li>
+</ul>
+<h2 id="包和文件"><a href="#包和文件" class="headerlink" title="包和文件"></a>包和文件</h2><p>Go语言中的包和其他语言的库或模块的概念类似，目的都是为了支持模块化、封装、单独编译和代码重用。一个包的源代码保存在一个或多个以.go为文件后缀名的源文件中，通常一个包所在目录路径的后缀是包的导入路径；</p>
+<ul>
+<li><p>每个包都对应一个独立的名字空间。</p>
+<p> 在image包中的Decode函数和在unicode&#x2F;utf16包中的 Decode函数是不同的。要在外部引用该函数，必须显式使用image.Decode或utf16.Decode形式访问。</p>
+</li>
+<li><p>包还可以让我们通过控制哪些名字是外部可见的来隐藏内部实现信息。</p>
+<p>  在Go语言中，一个简单的规则是：如果一个名字是大写字母开头的，那么该名字是导出的</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/29/go%E5%BC%80%E7%AF%87/" rel="prev" title="go开篇">
+                  <i class="fa fa-chevron-left"></i> go开篇
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/01/go%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="next" title="go的数据结构">
+                  go的数据结构 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wk</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

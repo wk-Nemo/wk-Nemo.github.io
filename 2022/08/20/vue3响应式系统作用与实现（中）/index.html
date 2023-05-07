@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="0 调度执行可调度性是响应式系统非常重要的特性，它是指当trigger触发副作用函数重新执行时，有能力决定副作用函数执行的时机、次数和方式。实现可调度性，可以为用户设计一个选择参数options，它允许客户指定调度器： 12345678910111213141516171819202122232425262728293031323334353637&#x2F;&#x2F; 为副作用函数新增选项入口function e">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue3响应式系统作用与实现（中）">
+<meta property="og:url" content="http://example.com/2022/08/20/vue3%E5%93%8D%E5%BA%94%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BD%9C%E7%94%A8%E4%B8%8E%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%AD%EF%BC%89/index.html">
+<meta property="og:site_name" content="wk的博客">
+<meta property="og:description" content="0 调度执行可调度性是响应式系统非常重要的特性，它是指当trigger触发副作用函数重新执行时，有能力决定副作用函数执行的时机、次数和方式。实现可调度性，可以为用户设计一个选择参数options，它允许客户指定调度器： 12345678910111213141516171819202122232425262728293031323334353637&#x2F;&#x2F; 为副作用函数新增选项入口function e">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220724144941211.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220724145439211.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220724150211462.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220724152505285.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220818230818531.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220819002031612.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220820152345561.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220820154630971.png">
+<meta property="article:published_time" content="2022-08-20T07:53:18.000Z">
+<meta property="article:modified_time" content="2023-05-07T09:49:37.288Z">
+<meta property="article:author" content="wk">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220724144941211.png">
+
+
+<link rel="canonical" href="http://example.com/2022/08/20/vue3%E5%93%8D%E5%BA%94%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BD%9C%E7%94%A8%E4%B8%8E%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%AD%EF%BC%89/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/08/20/vue3%E5%93%8D%E5%BA%94%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BD%9C%E7%94%A8%E4%B8%8E%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%AD%EF%BC%89/","path":"2022/08/20/vue3响应式系统作用与实现（中）/","title":"vue3响应式系统作用与实现（中）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>vue3响应式系统作用与实现（中） | wk的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wk的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录技术、学习和生活的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E8%B0%83%E5%BA%A6%E6%89%A7%E8%A1%8C"><span class="nav-number">1.</span> <span class="nav-text">0 调度执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7computed"><span class="nav-number">2.</span> <span class="nav-text">1 计算属性computed</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BE%A6%E5%90%AC%E5%99%A8watched"><span class="nav-number">3.</span> <span class="nav-text">2 侦听器watched</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.1.</span> <span class="nav-text">基本实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C-amp-%E5%9B%9E%E8%B0%83%E6%97%B6%E6%9C%BA"><span class="nav-number">3.2.</span> <span class="nav-text">立即执行 &amp; 回调时机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%9E%E6%80%81%E9%97%AE%E9%A2%98-amp-%E8%BF%87%E6%9C%9F%E7%9A%84%E5%89%AF%E4%BD%9C%E7%94%A8"><span class="nav-number">3.3.</span> <span class="nav-text">竞态问题 &amp; 过期的副作用</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wk"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">wk</p>
+  <div class="site-description" itemprop="description">一个前端程序员</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wk-Nemo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wk-Nemo" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://juejin.cn/user/3122268755465879" title="掘金 → https:&#x2F;&#x2F;juejin.cn&#x2F;user&#x2F;3122268755465879" rel="noopener me" target="_blank">掘金</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/20/vue3%E5%93%8D%E5%BA%94%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BD%9C%E7%94%A8%E4%B8%8E%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%AD%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="wk">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wk的博客">
+      <meta itemprop="description" content="一个前端程序员">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="vue3响应式系统作用与实现（中） | wk的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vue3响应式系统作用与实现（中）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-08-20 15:53:18" itemprop="dateCreated datePublished" datetime="2022-08-20T15:53:18+08:00">2022-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-05-07 17:49:37" itemprop="dateModified" datetime="2023-05-07T17:49:37+08:00">2023-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="0-调度执行"><a href="#0-调度执行" class="headerlink" title="0 调度执行"></a>0 调度执行</h2><p>可调度性是响应式系统非常重要的特性，它是指当<code>trigger</code>触发副作用函数重新执行时，有能力决定副作用函数执行的时机、次数和方式。实现可调度性，可以为用户设计一个选择参数<code>options</code>，它允许客户指定调度器：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 为副作用函数新增选项入口</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">effect</span>(<span class="params">fn, options = &#123;&#125;</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">effectFn</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">        <span class="title function_">cleanup</span>(effectFn)</span><br><span class="line">        activeEffect = effectFn</span><br><span class="line">        effectStack.<span class="title function_">push</span>(effectFn)</span><br><span class="line">        <span class="title function_">fn</span>()</span><br><span class="line">        effectStack.<span class="title function_">pop</span>()</span><br><span class="line">        activeEffect = effectStack[effectStack.<span class="property">length</span> - <span class="number">1</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 将options挂在到effectFn上</span></span><br><span class="line">    effectFn.<span class="property">options</span> = options</span><br><span class="line">    effectFn.<span class="property">deps</span> = []</span><br><span class="line">    <span class="title function_">effectFn</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">trigger</span>(<span class="params">target, key</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> depsMap = bucket.<span class="title function_">get</span>(target)</span><br><span class="line">    <span class="keyword">if</span>(!depsMap) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">const</span> effects = depsMap.<span class="title function_">get</span>(key)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> effectsToRun = <span class="keyword">new</span> <span class="title class_">Set</span>()</span><br><span class="line">    effects &amp;&amp; effects.<span class="title function_">forEach</span>(<span class="function"><span class="params">effectFn</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(effectFn !== activeEffect) &#123;</span><br><span class="line">            effectsToRun.<span class="title function_">add</span>(effectFn)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    effectsToRun.<span class="title function_">forEach</span>(<span class="function"><span class="params">effectFn</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// 如果副作用函数存在调度器，则调用该调度器</span></span><br><span class="line">        <span class="keyword">if</span>(effectFn.<span class="property">options</span>.<span class="property">scheduler</span>) &#123;</span><br><span class="line">            effectFn.<span class="property">options</span>.<span class="title function_">scheduler</span>(effectFn)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 否则直接执行副作用函数</span></span><br><span class="line">            <span class="title function_">effectFn</span>()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一、有了调度器，我们可以控制副作用函数执行的时机</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> data = &#123;</span><br><span class="line">    <span class="attr">foo</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = <span class="keyword">new</span> <span class="title class_">Proxy</span>(data, &#123;...&#125;)</span><br><span class="line"></span><br><span class="line"><span class="title function_">effect</span>(</span><br><span class="line">    <span class="function">() =&gt;</span> &#123; <span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">foo</span>) &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">obj.<span class="property">foo</span> += <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>上述代码没有加入调度器，执行结果如下：</p>
+<p><img src="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220724144941211.png" alt="image-20220724144941211"></p>
+<p>给副作用函数添加调度器，如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">effect</span>(</span><br><span class="line">    <span class="function">() =&gt;</span> &#123; <span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">foo</span>) &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="title function_">scheduler</span>(<span class="params">fn</span>) &#123;</span><br><span class="line">            <span class="built_in">setTimeout</span>(fn)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>重新执行代码结果如下：</p>
+<p><img src="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220724145439211.png" alt="image-20220724145439211"></p>
+<p>通过配置<code>scheduler</code>，使用<code>setTimeout</code>开启了一个宏任务来执行副作用函数，对副作用函数的<strong>再次执行的时机</strong>进行了控制。</p>
+<p>二、有了调度器，我们可以控制副作用函数执行的次数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">effect</span>(</span><br><span class="line">    <span class="function">() =&gt;</span> &#123; <span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">foo</span>) &#125;,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">obj.<span class="property">foo</span>++</span><br><span class="line">obj.<span class="property">foo</span>++</span><br></pre></td></tr></table></figure>
+
+<p>该代码的执行结果如下：</p>
+<p><img src="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220724150211462.png" alt="image-20220724150211462"></p>
+<p>因为<code>obj.foo</code>进行了两次写操作，所以上述的副作用函数执行了两次，但如果我们并不关心中间的过程，只关心最后的结果，那么第二次打印就是多余的。下面使用调度器来实现此功能。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> jobQueue = <span class="keyword">new</span> <span class="title class_">Set</span>()</span><br><span class="line"><span class="keyword">const</span> p = <span class="title class_">Promise</span>.<span class="title function_">resolve</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> isFlushing = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">flushJob</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span>(isFlushing) <span class="keyword">return</span></span><br><span class="line">    isFlushing = <span class="literal">true</span></span><br><span class="line">    p.<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        jobQueue.<span class="title function_">forEach</span>(<span class="function"><span class="params">job</span> =&gt;</span> <span class="title function_">job</span>())</span><br><span class="line">    &#125;).<span class="property">finally</span> (<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        isFlushing = <span class="literal">false</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">effect</span>(</span><br><span class="line">    <span class="function">() =&gt;</span> &#123; <span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">foo</span>) &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="title function_">scheduler</span>(<span class="params">fn</span>) &#123;</span><br><span class="line">            jobQueue.<span class="title function_">add</span>(fn)</span><br><span class="line">            <span class="title function_">flushJob</span>()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">obj.<span class="property">foo</span>++</span><br><span class="line">obj.<span class="property">foo</span>++</span><br></pre></td></tr></table></figure>
+
+<p>在该调度器下，代码的执行逻辑如下：</p>
+<ul>
+<li>执行同步任务<code>effect</code>函数，输出了<code>foo</code>的值1，触发了<code>track</code>，将副作用函数和该属性进行依赖绑定</li>
+<li>执行同步任务<code>obj.foo++</code>，触发<code>trigger</code>，检查存在调度器，执行调度器<code>scheduler</code></li>
+<li>将副作用函数加入<code>jobQueue</code>，设置<code>isFlushing</code>为<code>true</code>，将<code>jobQueue</code>的执行加入微任务队列</li>
+<li>再次执行同步任务<code>obj.foo++</code>，触发<code>trigger</code>，检查存在调度器，执行调度器<code>scheduler</code></li>
+<li>将副作用函数再次加入<code>jobQueue</code>，再次执行<code>flushJob</code><ul>
+<li>因为<code>jobQueue</code>是<code>set</code>结构，和前一次添加的副作用函数一样，故不执行添加动作。</li>
+<li>因为<code>isFlushing</code>为<code>true</code>，直接<code>return</code></li>
+</ul>
+</li>
+<li>执行微任务<code> jobQueue.forEach(job =&gt; job())</code>，输出<code>foo</code>的值3</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220724152505285.png" alt="image-20220724152505285"></p>
+<h2 id="1-计算属性computed"><a href="#1-计算属性computed" class="headerlink" title="1 计算属性computed"></a>1 计算属性computed</h2><p>计算属性用于描述和依赖响应式数据的逻辑，它具有<strong>缓存</strong>的特点，即依赖的响应式数据没有变化的话，无论如何访问该计算属性都不会重新计算。实现如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">computed</span>(<span class="params">getter</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> value</span><br><span class="line">    <span class="keyword">let</span> dirty = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> effectFn = <span class="title function_">effect</span>(getter, &#123;</span><br><span class="line">        <span class="attr">lazy</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="comment">// 如果触发track，就会执行调度，设置dirty为true，重新执行</span></span><br><span class="line">        <span class="comment">// 如股不触发track，不会执行调度，dirty保持false，取值缓存</span></span><br><span class="line">        <span class="title function_">scheduler</span>(<span class="params"></span>) &#123;</span><br><span class="line">            dirty = <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> obj = &#123;</span><br><span class="line">        <span class="keyword">get</span> <span class="title function_">value</span>() &#123;</span><br><span class="line">            <span class="keyword">if</span>(dirty) &#123;</span><br><span class="line">                value = <span class="title function_">effectFn</span>()</span><br><span class="line">                dirty = <span class="literal">false</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> value</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> obj</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">effect</span>(<span class="params">fn, options = &#123;&#125;</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">effectFn</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">        <span class="title function_">cleanup</span>(effectFn)</span><br><span class="line">        activeEffect = effectFn</span><br><span class="line">        effectStack.<span class="title function_">push</span>(effectFn)</span><br><span class="line">        <span class="comment">// 将结果存储到res，并返回</span></span><br><span class="line">        <span class="keyword">const</span> res = <span class="title function_">fn</span>()</span><br><span class="line">        effectStack.<span class="title function_">pop</span>()</span><br><span class="line">        activeEffect = effectStack[effectStack.<span class="property">length</span> - <span class="number">1</span>]</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    &#125;</span><br><span class="line">    effectFn.<span class="property">options</span> = options</span><br><span class="line">    effectFn.<span class="property">deps</span> = []</span><br><span class="line">    <span class="comment">// 只有非 lazy 时，才执行</span></span><br><span class="line">    <span class="keyword">if</span>(!options.<span class="property">lazy</span>) &#123;</span><br><span class="line">        <span class="title function_">effectFn</span>()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> effectFn</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>computed属性通过设置lazy属性实现懒加载，只有当真正的访问该计算属性，才会执行副作用函数。</p>
+<p>computed方法内置了dirty字段用于判断是否需要重新执行副作用函数：</p>
+<ul>
+<li>首次调用computed时，lazy为true，因此会执行副作用函数getter，设置dirty为false并将值存储在value中返回；</li>
+<li>若副作用函数getter依赖的响应式数据没有变化，则不会触发scheduler，dirty依然为false，故访问computed不会执行副作用函数getter，直接返回缓存的值value；</li>
+<li>若副作用函数getter依赖的响应式数据发生变化，则会触发scheduler，dirty变为true，访问computed重新执行副作用函数getter，并返回执行执行副作用函数getter后的value；</li>
+</ul>
+<p>看一个例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sumRes = <span class="title function_">computed</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> value = obj.<span class="property">foo</span> + obj.<span class="property">bar</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;computed run!&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> value</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(sumRes.<span class="property">value</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(sumRes.<span class="property">value</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(sumRes.<span class="property">value</span>)</span><br><span class="line"></span><br><span class="line">obj.<span class="property">foo</span>++</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(sumRes.<span class="property">value</span>)</span><br></pre></td></tr></table></figure>
+
+<p>结果如下，符合预期。</p>
+<p><img src="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220818230818531.png" alt="image-20220818230818531"></p>
+<p>但是现在的计算属性还不完善，当我们在另一个effect中读取computed属性时：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sumRes = <span class="title function_">computed</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> value = obj.<span class="property">foo</span> + obj.<span class="property">bar</span></span><br><span class="line">    <span class="keyword">return</span> value</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="title function_">effect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(sumRes.<span class="property">value</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">obj.<span class="property">foo</span>++</span><br></pre></td></tr></table></figure>
+
+<p>当obj.foo修改时，我们期望副作用函数会重新执行，就如同我们在vue中使用计算属性时，希望计算属性变化时会重新渲染模板一样，但是上述代码并没有重新执行effect函数。因为计算属性是懒加载的，必须访问才能触发，对于计算属性的getter副作用函数而言，它内部访问的像原始数据只会把getter副作用函数收集为依赖，不会收集调用computed的副作用函数effect。修改起来也很简单，需要我们手动调用track进行跟踪；当计算属性依赖的响应式数据发生变化时，手动调用trigger触发响应：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">computed</span>(<span class="params">getter</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> value</span><br><span class="line">    <span class="keyword">let</span> dirty = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> effectFn = <span class="title function_">effect</span>(getter, &#123;</span><br><span class="line">        <span class="attr">lazy</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="title function_">scheduler</span>(<span class="params"></span>) &#123;</span><br><span class="line">            dirty = <span class="literal">true</span></span><br><span class="line">            <span class="comment">// 手动触发函数响应</span></span><br><span class="line">            <span class="title function_">trigger</span>(obj, <span class="string">&#x27;value&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> obj = &#123;</span><br><span class="line">        <span class="keyword">get</span> <span class="title function_">value</span>() &#123;</span><br><span class="line">            <span class="keyword">if</span>(dirty) &#123;</span><br><span class="line">                value = <span class="title function_">effectFn</span>()</span><br><span class="line">                dirty = <span class="literal">false</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 手动追踪</span></span><br><span class="line">            <span class="title function_">track</span>(obj, <span class="string">&#x27;value&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span> value</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> obj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220819002031612.png" alt="image-20220819002031612"></p>
+<h2 id="2-侦听器watched"><a href="#2-侦听器watched" class="headerlink" title="2 侦听器watched"></a>2 侦听器watched</h2><p>在vue中，侦听器watched应该包含如下功能：监听数据变化（存储旧值的能力），并执行回调函数</p>
+<table>
+<thead>
+<tr>
+<th>划分层次</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>监听数据</td>
+<td>1）监听响应式数据 <br />2）监听getter函数</td>
+</tr>
+<tr>
+<td>从监听层次</td>
+<td>1）浅监听：某个值的变化<br />2）深监听：对象的每个属性</td>
+</tr>
+<tr>
+<td>第一次是否执行</td>
+<td>1）回调懒执行：默认 <br />2）立即回调：immediate为true</td>
+</tr>
+<tr>
+<td>回调执行时机</td>
+<td>1）组件更新之前调用：默认，flush为pre<br />2）同步执行：flush为sync<br />3）组件更新后调用：flush为post</td>
+</tr>
+</tbody></table>
+<h3 id="基本实现"><a href="#基本实现" class="headerlink" title="基本实现"></a>基本实现</h3><p>watch的本质就是观测一个响应式数据，并在数据发生变化时通知执行相应的回调函数。</p>
+<ul>
+<li>首先判断监听的数据是响应式数据还是getter函数<ul>
+<li>响应式数据递归读取，建立依赖关系</li>
+<li>getter函数直接执行</li>
+</ul>
+</li>
+<li>lazy属性配合schedule使用，在数据变化时，触发回调函数，并且带上新老value</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">watch</span>(<span class="params">source, cb</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> getter</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> source === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">        getter = source</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        getter = <span class="function">() =&gt;</span> <span class="title function_">traverse</span>(source)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> newValue, oldValue</span><br><span class="line">    <span class="keyword">const</span> effectFn = <span class="title function_">effect</span>(</span><br><span class="line">        <span class="function">() =&gt;</span> <span class="title function_">getter</span>(),</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">lazy</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="comment">// 数据变化时，触发回调函数</span></span><br><span class="line">            <span class="title function_">scheduler</span>(<span class="params"></span>) &#123;</span><br><span class="line">                newValue = <span class="title function_">effectFn</span>()</span><br><span class="line">                <span class="title function_">cb</span>(newValue, oldValue)</span><br><span class="line">                oldValue = newValue</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    oldValue = <span class="title function_">effectFn</span>()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 递归读取，建立依赖关系</span></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">traverse</span>(<span class="params">value, seen = <span class="keyword">new</span> <span class="built_in">Set</span>()</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">typeof</span> value !== <span class="string">&#x27;object&#x27;</span> || value ===<span class="literal">null</span> || seen.<span class="title function_">has</span>(value)) <span class="keyword">return</span></span><br><span class="line">        seen.<span class="title function_">add</span>(value)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">const</span> k <span class="keyword">in</span> value) &#123;</span><br><span class="line">            <span class="title function_">traverse</span>(value[k], seen)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="立即执行-amp-回调时机"><a href="#立即执行-amp-回调时机" class="headerlink" title="立即执行 &amp; 回调时机"></a>立即执行 &amp; 回调时机</h3><p>watch的回调函数一般只会在响应式数据变化时执行，而如果我们希望watch创建时立即执行一次回调函数，可以指定immediate为true。</p>
+<ul>
+<li>这里将执行回调的逻辑抽离出来，可以在不同的地方使用</li>
+<li>immediate则立即执行一次回调，否则值设置oldValue</li>
+<li>flush选项决定回调触发时的执行时机<ul>
+<li>flush为pre，在组件更新之前调用，涉及组件更新时机，暂时无法模拟</li>
+<li>flush不存在时相当于sync，即同步执行</li>
+<li>flush为post，将回调放入微任务队列，实现异步延迟执行</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">watch</span>(<span class="params">source, cb, options</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> getter</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> source === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">        getter = source</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        getter = <span class="function">() =&gt;</span> <span class="title function_">traverse</span>(source)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 递归读取，建立依赖关系</span></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">traverse</span>(<span class="params">value, seen = <span class="keyword">new</span> <span class="built_in">Set</span>()</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">typeof</span> value !== <span class="string">&#x27;object&#x27;</span> || value ===<span class="literal">null</span> || seen.<span class="title function_">has</span>(value)) <span class="keyword">return</span></span><br><span class="line">        seen.<span class="title function_">add</span>(value)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">const</span> k <span class="keyword">in</span> value) &#123;</span><br><span class="line">            <span class="title function_">traverse</span>(value[k], seen)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> newValue, oldValue</span><br><span class="line">    <span class="comment">// 提取公共逻辑</span></span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">job</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">        newValue = <span class="title function_">effectFn</span>()</span><br><span class="line">        <span class="title function_">cb</span>(newValue, oldValue)</span><br><span class="line">        oldValue = newValue</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> effectFn = <span class="title function_">effect</span>(</span><br><span class="line">        <span class="function">() =&gt;</span> <span class="title function_">getter</span>(),</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">lazy</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="comment">// 数据变化时，触发回调函数</span></span><br><span class="line">            <span class="attr">scheduler</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span>(opeions.<span class="property">flush</span> === <span class="string">&#x27;post&#x27;</span>) &#123;</span><br><span class="line">                    <span class="keyword">const</span> p = <span class="title class_">Promise</span>.<span class="title function_">resolve</span>()</span><br><span class="line">                    p.<span class="title function_">then</span>(job)</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="title function_">job</span>()</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment">// immediate为true立即执行回调</span></span><br><span class="line">    <span class="keyword">if</span>(options.<span class="property">immediate</span>) &#123;</span><br><span class="line">        <span class="title function_">job</span>()</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        oldValue = <span class="title function_">effectFn</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="竞态问题-amp-过期的副作用"><a href="#竞态问题-amp-过期的副作用" class="headerlink" title="竞态问题 &amp; 过期的副作用"></a>竞态问题 &amp; 过期的副作用</h3><p>竞态问题通常在多进程或多线程中被提及，而在前端开发中，也会遇到类似的场景。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> finalData</span><br><span class="line"><span class="title function_">watch</span>(obj, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&#x27;/path/to/request&#x27;</span>)</span><br><span class="line">    finalData = res</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>上述代码中，通过修改obj的值触发回调，先后发出了两次请求A和B。我们期望的是finalData拿到最新的结果，也就是B返回的数据，但是若B的响应较快，则可能出现A响应数据后到的情况，并且将B返回的值给覆盖掉。</p>
+<p><img src="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220820152345561.png" alt="image-20220820152345561"></p>
+<p>在vue中，watch函数的回调函数接受第三个参数onInvalidate，onInvalidate函数会在当前副作用函数过期时执行。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> finalData</span><br><span class="line"><span class="title function_">watch</span>(obj, <span class="keyword">async</span> (newValue, oldValue, onInvalidate) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> expired = <span class="literal">false</span></span><br><span class="line">    <span class="title function_">onInvalidate</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        expired = <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&#x27;/path/to/request&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!expired) &#123;</span><br><span class="line">        finalData = res</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>onInvalidate实现的原理是什么呢？在watch每次检测到变更后，在副作用函数重新执行前，会调用我们通过onInvalidate函数注册的过期回调。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">watch</span>(<span class="params">source, cb, options</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> getter</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> source === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">        getter = source</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        getter = <span class="function">() =&gt;</span> <span class="title function_">traverse</span>(source)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 递归读取，建立依赖关系</span></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">traverse</span>(<span class="params">value, seen = <span class="keyword">new</span> <span class="built_in">Set</span>()</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">typeof</span> value !== <span class="string">&#x27;object&#x27;</span> || value ===<span class="literal">null</span> || seen.<span class="title function_">has</span>(value)) <span class="keyword">return</span></span><br><span class="line">        seen.<span class="title function_">add</span>(value)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">const</span> k <span class="keyword">in</span> value) &#123;</span><br><span class="line">            <span class="title function_">traverse</span>(value[k], seen)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> newValue, oldValue</span><br><span class="line">    <span class="keyword">let</span> cleanup <span class="comment">// 存储过期函数</span></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">onInvalidate</span>(<span class="params">fn</span>) &#123;</span><br><span class="line">        cleanup = fn</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 提取公共逻辑</span></span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">job</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">        newValue = <span class="title function_">effectFn</span>()</span><br><span class="line">        <span class="comment">// 调用回调函数之前，先调用过期回调</span></span><br><span class="line">        <span class="keyword">if</span>(cleanup) &#123;</span><br><span class="line">            <span class="title function_">cleanup</span>()</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// onInvalidate作为第三个参数供用户使用</span></span><br><span class="line">        <span class="title function_">cb</span>(newValue, oldValue, onInvalidate)</span><br><span class="line">        oldValue = newValue</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> effectFn = <span class="title function_">effect</span>(</span><br><span class="line">        <span class="function">() =&gt;</span> <span class="title function_">getter</span>(),</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">lazy</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="comment">// 数据变化时，触发回调函数</span></span><br><span class="line">            <span class="attr">scheduler</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span>(opeions.<span class="property">flush</span> === <span class="string">&#x27;post&#x27;</span>) &#123;</span><br><span class="line">                    <span class="keyword">const</span> p = <span class="title class_">Promise</span>.<span class="title function_">resolve</span>()</span><br><span class="line">                    p.<span class="title function_">then</span>(job)</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="title function_">job</span>()</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment">// immediate为true立即执行回调</span></span><br><span class="line">    <span class="keyword">if</span>(options.<span class="property">immediate</span>) &#123;</span><br><span class="line">        <span class="title function_">job</span>()</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        oldValue = <span class="title function_">effectFn</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有了上述的代码后，我们再看一个示例了解执行的顺序：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">obj.<span class="property">foo</span>++</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    obj.<span class="property">foo</span>++</span><br><span class="line">&#125;, <span class="number">200</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在我们第一次修改foo时，cleanup为空，不触发过期回调，直接执行watch的回调函数</li>
+<li>第一次执行watch回调时，设置expiredA为false，注册了过期回调cleanupA</li>
+<li>第二次修改foo时，过期回调cleanup不为空，因此先执行cleanupA，设置expiredA为true，再执行回调函数</li>
+<li>第二次执行watch回调时，设置expiredB为false，注册了过期回调cleanupB</li>
+<li>B先响应，因为expiredB为false，设置finalData为B返回的值</li>
+<li>A后响应，因为expiredA为true，不设置finalData的值</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/wk-Nemo/imgBed/main/imgimage-20220820154630971.png" alt="image-20220820154630971"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/23/2022%E6%AF%95%E4%B8%9A%E6%80%BB%E7%BB%93/" rel="prev" title="2022毕业总结">
+                  <i class="fa fa-chevron-left"></i> 2022毕业总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wk</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
