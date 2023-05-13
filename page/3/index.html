@@ -124,13 +124,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -160,6 +160,297 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/29/go%E7%9A%84%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="wk">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wk的博客">
+      <meta itemprop="description" content="一个前端程序员">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | wk的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/29/go%E7%9A%84%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">go的程序结构</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-10-29 17:06:13" itemprop="dateCreated datePublished" datetime="2021-10-29T17:06:13+08:00">2021-10-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-05-07 17:46:53" itemprop="dateModified" datetime="2023-05-07T17:46:53+08:00">2023-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/go/" itemprop="url" rel="index"><span itemprop="name">go</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="go程序结构"><a href="#go程序结构" class="headerlink" title="go程序结构"></a>go程序结构</h2><ul>
+<li>一个Go语言编写的程序对应一个或多个以.go为文件后缀名的源文件</li>
+<li>每个源文件中以包的声明语句开始，说明该源文件是属于哪个包</li>
+<li>包声明语句之后是import语句导入依赖的其它包</li>
+<li>然后是包一级的类型、变量、常量、函数的声明语句，包一级声明语句声明的名字可在整个包对应的每个源文件中访问</li>
+<li>最后是各个局部声明，局部声明的名字就只能在函数内部很小的范围被访问。</li>
+</ul>
+<h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p>Go语言主要有四种类型的声明语句：</p>
+<ul>
+<li>var：变量</li>
+<li>const：常量</li>
+<li>type：类型</li>
+<li>func：函数实体</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 包一级声明</span></span><br><span class="line"><span class="keyword">const</span> boilingF = <span class="number">212.0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 局部声明</span></span><br><span class="line">    <span class="keyword">var</span> f = boilingF</span><br><span class="line">    <span class="keyword">var</span> c = (f - <span class="number">32</span>) * <span class="number">5</span> / <span class="number">9</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;boiling point = %g°F or %g°C\n&quot;</span>, f, c)</span><br><span class="line">    <span class="comment">// Output:</span></span><br><span class="line">    <span class="comment">// boiling point = 212°F or 100°C</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><p>var声明语句可以创建一个特定类型的变量，然后给变量附加一个名字，并且设置变量的初始值。变量声明的一般语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var 变量名字 类型 = 表达式</span><br></pre></td></tr></table></figure>
+
+<p>其中“<em>类型</em>”或“*&#x3D; 表达式*”两个部分可以省略其中的一个。</p>
+<ul>
+<li>如果省略的是类型信息，那么将根据初始化表达式来推导变量的类型信息。</li>
+<li>如果初始化表达式被省略，那么将用零值初始化该变量。 <ul>
+<li>数值类型变量对应的零值是0</li>
+<li>布尔类型变量对应的零值是false</li>
+<li>字符串类型对应的零值是空字符串</li>
+<li>接口或引用类型（包括slice、指针、map、chan和函数）变量对应的零值是nil</li>
+<li>数组或结构体等聚合类型对应的零值是每个元素或字段都是对应该类型的零值。</li>
+</ul>
+</li>
+</ul>
+<h5 id="1-简短变量声明"><a href="#1-简短变量声明" class="headerlink" title="1. 简短变量声明"></a>1. 简短变量声明</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">anim := gif.GIF&#123;LoopCount: nframes&#125;</span><br><span class="line">freq := rand.Float64() * <span class="number">3.0</span></span><br><span class="line">t := <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 同时声明多个变量</span></span><br><span class="line">i, j := <span class="number">0</span>, <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>简短变量声明左边的变量可能并不是全部都是刚刚声明的。如果有一些已经在相同的词法域声明过了，那么简短变量声明语句对这些已经声明过的变量就只有赋值行为了。</li>
+<li>简短变量声明语句中必须至少要声明一个新的变量，否则编译无法通过</li>
+</ul>
+<h5 id="2-指针"><a href="#2-指针" class="headerlink" title="2. 指针"></a>2. 指针</h5><p>一个指针的值是另一个变量的地址。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x := <span class="number">1</span></span><br><span class="line">p := &amp;x         <span class="comment">// &amp;x 取x的内存地址</span></span><br><span class="line">fmt.Println(*p) <span class="comment">// &quot;1&quot;</span></span><br><span class="line">*p = <span class="number">2</span>          <span class="comment">// *p p指针指向的变量的值</span></span><br><span class="line">fmt.Println(x)  <span class="comment">// &quot;2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="3-new-函数"><a href="#3-new-函数" class="headerlink" title="3. new 函数"></a>3. new 函数</h5><p>另一个创建变量的方法是调用内建的new函数。表达式new(T)将创建一个T类型的匿名变量，初始化为T类型的零值，然后返回变量地址，返回的指针类型为<code>*T</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">p := <span class="built_in">new</span>(<span class="type">int</span>)   <span class="comment">// p, *int 类型, 指向匿名的 int 变量</span></span><br><span class="line">fmt.Println(*p) <span class="comment">// &quot;0&quot;</span></span><br><span class="line">*p = <span class="number">2</span>          <span class="comment">// 设置 int 匿名变量的值为 2</span></span><br><span class="line">fmt.Println(*p) <span class="comment">// &quot;2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>new函数类似是一种语法糖，用new创建变量和普通变量声明语句方式创建变量没有什么区别</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newInt</span><span class="params">()</span></span> *<span class="type">int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">new</span>(<span class="type">int</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newInt</span><span class="params">()</span></span> *<span class="type">int</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> dummy <span class="type">int</span></span><br><span class="line">    <span class="keyword">return</span> &amp;dummy</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面了解了变量的声明，下面继续学习<strong>变量的生命周期</strong></p>
+<ul>
+<li>对于在包一级声明的变量来说，它们的生命周期和整个程序的运行周期是一致的。</li>
+<li>而相比之下，局部变量的生命周期则是动态的：每次从创建一个新变量的声明语句开始，直到该变量不再被引用为止，然后变量的存储空间可能被回收。函数的参数变量和返回值变量都是局部变量</li>
+</ul>
+<h2 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">1</span>                       <span class="comment">// 命名变量的赋值</span></span><br><span class="line">*p = <span class="literal">true</span>                   <span class="comment">// 通过指针间接赋值</span></span><br><span class="line">person.name = <span class="string">&quot;bob&quot;</span>         <span class="comment">// 结构体字段赋值</span></span><br><span class="line">count[x] = count[x] * scale <span class="comment">// 数组、slice或map的元素赋值</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>元组赋值：</strong> 元组赋值是另一种形式的赋值语句，它允许同时更新多个变量的值。在赋值之前，赋值语句右边的所有表达式将会先进行求值，然后再统一更新左边对应变量的值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x, y = y, x</span><br><span class="line"></span><br><span class="line">a[i], a[j] = a[j], a[i]</span><br></pre></td></tr></table></figure>
+
+<p><strong>可赋值性：</strong> 赋值语句是显式的赋值形式，但是程序中还有很多地方会发生隐式的赋值行为。</p>
+<ul>
+<li>函数调用会隐式地将调用参数的值赋值给函数的参数变量</li>
+<li>一个返回语句会隐式地将返回操作的值赋值给结果变量</li>
+<li>一个复合类型的字面量也会产生赋值行为。</li>
+</ul>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><p>一个类型声明语句创建了一个新的类型名称，和现有类型具有相同的底层结构。新命名的类型提供了一个方法，用来分隔不同概念的类型，这样即使它们底层类型相同也是不兼容的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type 类型名字 底层类型</span><br></pre></td></tr></table></figure>
+
+<p>类型声明语句一般出现在包一级，因此如果新创建的类型名字的首字符大写，则在包外部也可以使用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> tempconv</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Celsius <span class="type">float64</span>    <span class="comment">// 摄氏温度</span></span><br><span class="line"><span class="keyword">type</span> Fahrenheit <span class="type">float64</span> <span class="comment">// 华氏温度</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    AbsoluteZeroC Celsius = <span class="number">-273.15</span> <span class="comment">// 绝对零度</span></span><br><span class="line">    FreezingC     Celsius = <span class="number">0</span>       <span class="comment">// 结冰点温度</span></span><br><span class="line">    BoilingC      Celsius = <span class="number">100</span>     <span class="comment">// 沸水温度</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CToF</span><span class="params">(c Celsius)</span></span> Fahrenheit &#123; <span class="keyword">return</span> Fahrenheit(c*<span class="number">9</span>/<span class="number">5</span> + <span class="number">32</span>) &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">FToC</span><span class="params">(f Fahrenheit)</span></span> Celsius &#123; <span class="keyword">return</span> Celsius((f - <span class="number">32</span>) * <span class="number">5</span> / <span class="number">9</span>) &#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于每一个类型T，都有一个对应的类型转换操作T(x)，用于将x转为T类型（译注：如果T是指针类型，可能会需要用小括弧包装T，比如<code>(*int)(0)</code>）。</p>
+<ul>
+<li>只有当两个类型的底层基础类型相同时，才允许这种转型操作</li>
+<li>或者是两者都是指向相同底层结构的指针类型，这些转换只改变类型而不会影响值本身。</li>
+<li>如果x是可以赋值给T类型的值，那么x必然也可以被转为T类型，但是一般没有这个必要。</li>
+</ul>
+<h2 id="包和文件"><a href="#包和文件" class="headerlink" title="包和文件"></a>包和文件</h2><p>Go语言中的包和其他语言的库或模块的概念类似，目的都是为了支持模块化、封装、单独编译和代码重用。一个包的源代码保存在一个或多个以.go为文件后缀名的源文件中，通常一个包所在目录路径的后缀是包的导入路径；</p>
+<ul>
+<li><p>每个包都对应一个独立的名字空间。</p>
+<p> 在image包中的Decode函数和在unicode&#x2F;utf16包中的 Decode函数是不同的。要在外部引用该函数，必须显式使用image.Decode或utf16.Decode形式访问。</p>
+</li>
+<li><p>包还可以让我们通过控制哪些名字是外部可见的来隐藏内部实现信息。</p>
+<p>  在Go语言中，一个简单的规则是：如果一个名字是大写字母开头的，那么该名字是导出的</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/29/go%E5%BC%80%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="wk">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wk的博客">
+      <meta itemprop="description" content="一个前端程序员">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | wk的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/29/go%E5%BC%80%E7%AF%87/" class="post-title-link" itemprop="url">go开篇</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-10-29 17:05:50" itemprop="dateCreated datePublished" datetime="2021-10-29T17:05:50+08:00">2021-10-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-05-07 17:47:14" itemprop="dateModified" datetime="2023-05-07T17:47:14+08:00">2023-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF/go/" itemprop="url" rel="index"><span itemprop="name">go</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Golang的学习方向"><a href="#Golang的学习方向" class="headerlink" title="Golang的学习方向"></a>Golang的学习方向</h2><ul>
+<li>区块链研发工程师</li>
+<li>Go服务端工程师</li>
+<li>Go游戏软件工程师</li>
+<li>Golang分布式&#x2F;云计算软件工程师</li>
+</ul>
+<h2 id="Go开发环境准备"><a href="#Go开发环境准备" class="headerlink" title="Go开发环境准备"></a>Go开发环境准备</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zsy/p/5215336.html">GO语言下载、安装、配置</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zsy/p/5223957.html">在Visual Studio Code中配置GO开发环境</a></p>
+</blockquote>
+<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p>传世经典<code>Hello World</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">&quot;hello world&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line">	<span class="string">&quot;strings&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(os.Args[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> s, sep <span class="type">string</span></span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">1</span>; i &lt; <span class="built_in">len</span>(os.Args); i++ &#123;</span><br><span class="line">		s += sep + os.Args[i]</span><br><span class="line">		sep = <span class="string">&quot; &quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(s)</span><br><span class="line"></span><br><span class="line">	s = <span class="string">&quot;&quot;</span></span><br><span class="line">	sep =  <span class="string">&quot;&quot;</span></span><br><span class="line">	<span class="keyword">for</span> _, arg := <span class="keyword">range</span> os.Args[<span class="number">1</span>:] &#123;</span><br><span class="line">		s += sep + arg</span><br><span class="line">		sep = <span class="string">&quot; &quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(s)</span><br><span class="line"></span><br><span class="line">	fmt.Println(strings.Join(os.Args[<span class="number">1</span>:], <span class="string">&quot; &quot;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="输入输出流"><a href="#输入输出流" class="headerlink" title="输入输出流"></a>输入输出流</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;bufio&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	counts := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">int</span>)</span><br><span class="line">	input := bufio.NewScanner(os.Stdin)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> input.Scan() &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;%s\n&quot;</span>, input.Text())</span><br><span class="line">		counts[input.Text()]++</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> line, n := <span class="keyword">range</span> counts &#123;</span><br><span class="line">			fmt.Printf(<span class="string">&quot;%d %s\n&quot;</span>, n, line)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;io/ioutil&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> _, url := <span class="keyword">range</span> os.Args[<span class="number">1</span>:] &#123;</span><br><span class="line">		resp, err := http.Get(url)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> url != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Fprintf(os.Stderr, <span class="string">&quot;fetch: %v\n&quot;</span>, err)</span><br><span class="line">			os.Exit(<span class="number">1</span>)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		b, err := ioutil.ReadAll(resp.Body)</span><br><span class="line">		resp.Body.Close()</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Fprintf(os.Stderr, <span class="string">&quot;fetch: reading %s: %v\n&quot;</span>, url, err)</span><br><span class="line">			os.Exit(<span class="number">1</span>)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		fmt.Printf(<span class="string">&quot;%s&quot;</span>, b)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="并发编程"><a href="#并发编程" class="headerlink" title="并发编程"></a>并发编程</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Fetchall fetches URLs in parallel and reports their times and sizes.</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">    <span class="string">&quot;io&quot;</span></span><br><span class="line">    <span class="string">&quot;io/ioutil&quot;</span></span><br><span class="line">    <span class="string">&quot;net/http&quot;</span></span><br><span class="line">    <span class="string">&quot;os&quot;</span></span><br><span class="line">    <span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    start := time.Now()</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">string</span>)</span><br><span class="line">    <span class="keyword">for</span> _, url := <span class="keyword">range</span> os.Args[<span class="number">1</span>:] &#123;</span><br><span class="line">        <span class="keyword">go</span> fetch(url, ch) <span class="comment">// start a goroutine</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">range</span> os.Args[<span class="number">1</span>:] &#123;</span><br><span class="line">        fmt.Println(&lt;-ch) <span class="comment">// receive from channel ch</span></span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Printf(<span class="string">&quot;%.2fs elapsed\n&quot;</span>, time.Since(start).Seconds())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">fetch</span><span class="params">(url <span class="type">string</span>, ch <span class="keyword">chan</span>&lt;- <span class="type">string</span>)</span></span> &#123;</span><br><span class="line">    start := time.Now()</span><br><span class="line">    resp, err := http.Get(url)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        ch &lt;- fmt.Sprint(err) <span class="comment">// send to channel ch</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    nbytes, err := io.Copy(ioutil.Discard, resp.Body)</span><br><span class="line">    resp.Body.Close() <span class="comment">// don&#x27;t leak resources</span></span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        ch &lt;- fmt.Sprintf(<span class="string">&quot;while reading %s: %v&quot;</span>, url, err)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    secs := time.Since(start).Seconds()</span><br><span class="line">    ch &lt;- fmt.Sprintf(<span class="string">&quot;%.2fs  %7d  %s&quot;</span>, secs, nbytes, url)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Web服务"><a href="#Web服务" class="headerlink" title="Web服务"></a>Web服务</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> mu sync.Mutex</span><br><span class="line"><span class="keyword">var</span> count <span class="type">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	http.HandleFunc(<span class="string">&quot;/&quot;</span>, handler)</span><br><span class="line">	http.HandleFunc(<span class="string">&quot;/count&quot;</span>, counter)</span><br><span class="line">	log.Fatal(http.ListenAndServe(<span class="string">&quot;localhost:8000&quot;</span>, <span class="literal">nil</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// handler echoes the Path component of the requested URL.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	mu.Lock()</span><br><span class="line">	count++</span><br><span class="line">	mu.Unlock()</span><br><span class="line">	fmt.Fprintf(w, <span class="string">&quot;URL.Path = %q\n&quot;</span>, r.URL.Path)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// counter echoes the number of calls so far.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">counter</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	mu.Lock()</span><br><span class="line">	fmt.Fprintf(w, <span class="string">&quot;Count %d\n&quot;</span>, count)</span><br><span class="line">	mu.Unlock()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3074,673 +3365,6 @@
 <li>执行patch(oldVnode, newVnode)</li>
 </ul>
 <p>当属性被修改时，会触发setter，然后通知dep里的相关依赖，也就是每一个watcher。接着会重新执行render函数，生成newVnode，再调用patch算法，进行同层节点的比较，最后渲染。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/21/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94HTML%E3%80%81CSS%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="wk">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="wk的博客">
-      <meta itemprop="description" content="一个前端程序员">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | wk的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/21/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94HTML%E3%80%81CSS%E7%AF%87/" class="post-title-link" itemprop="url">秋招保驾护航——HTML、CSS篇</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-08-21 02:11:52" itemprop="dateCreated datePublished" datetime="2021-08-21T02:11:52+08:00">2021-08-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-05-07 17:44:01" itemprop="dateModified" datetime="2023-05-07T17:44:01+08:00">2023-05-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%89%8D%E7%AB%AF/HTML%E3%80%81CSS/" itemprop="url" rel="index"><span itemprop="name">HTML、CSS</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="HTML面试题"><a href="#HTML面试题" class="headerlink" title="HTML面试题"></a>HTML面试题</h2><h4 id="1-如何理解HTML语义化"><a href="#1-如何理解HTML语义化" class="headerlink" title="1. 如何理解HTML语义化"></a>1. 如何理解HTML语义化</h4><p>同一个列表可以使用单纯的div也可以使用ul和li完成，虽然两种方式都可以通过css实现完全一样的展示效果，但是HTML语义化的优点如下：</p>
-<ul>
-<li>两套完全一样的代码，第二种方法看起来会更容易理解。（增强代码可读性）</li>
-<li>搜索引擎在第二种方便通过标签会更容易理解。（SEO）</li>
-</ul>
-<h4 id="2-默认情况下，哪些HTML标签是块级元素？哪些是内联元素？"><a href="#2-默认情况下，哪些HTML标签是块级元素？哪些是内联元素？" class="headerlink" title="2. 默认情况下，哪些HTML标签是块级元素？哪些是内联元素？"></a>2. 默认情况下，哪些HTML标签是块级元素？哪些是内联元素？</h4><p>块级元素，不管内容有多少都会独占一行。display:block&#x2F;table，有div、h1、h2、table、ul、ol、p。</p>
-<p>内联元素，会紧挨着上一个元素排列，一直到放不下才会换行。display:inline&#x2F;inline-block，有span、img、input、button。</p>
-<h2 id="CSS面试题"><a href="#CSS面试题" class="headerlink" title="CSS面试题"></a>CSS面试题</h2><ul>
-<li>布局</li>
-<li>定位</li>
-<li>图文样式</li>
-<li>响应式</li>
-<li>CSS3（flex和动画）</li>
-</ul>
-<h2 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h2><h4 id="1-盒子模型"><a href="#1-盒子模型" class="headerlink" title="1. 盒子模型"></a>1. 盒子模型</h4><p>css盒子模型包括：内容宽度、内边距（padding)、边框 （border）、外边框（margin）</p>
-<h5 id="（1）IE盒子模型和标准盒子模型的差异"><a href="#（1）IE盒子模型和标准盒子模型的差异" class="headerlink" title="（1）IE盒子模型和标准盒子模型的差异"></a>（1）IE盒子模型和标准盒子模型的差异</h5><ul>
-<li>W3C的规范下，元素内容占据的空间是由width设置的，而内容周围的padding和margin是另算的。<ul>
-<li>盒子的内容宽度 &#x3D; 我们设置的width。</li>
-<li>盒子的实际宽度 &#x3D; width + padding + border + margin</li>
-</ul>
-</li>
-<li>IE盒子模型的width不是内容宽度，而是内容、内边距和边框宽度的总和。<ul>
-<li>盒子的内容宽度 &#x3D; width - padding - border</li>
-<li>盒子的总宽度 &#x3D; width + margin</li>
-</ul>
-</li>
-</ul>
-<h5 id="（2）如何设置成IE盒子模型？"><a href="#（2）如何设置成IE盒子模型？" class="headerlink" title="（2）如何设置成IE盒子模型？"></a>（2）如何设置成IE盒子模型？</h5><p>设置样式<code>box-sizing: border-box</code>后，盒子模型就会变成IE盒子模型。</p>
-<h4 id="2-margin纵向重叠问题"><a href="#2-margin纵向重叠问题" class="headerlink" title="2. margin纵向重叠问题"></a>2. margin纵向重叠问题</h4><ul>
-<li>相邻元素的margin-top和margin-bottom会发生重叠</li>
-<li>空内容的标签也会重叠</li>
-</ul>
-<p>看个例子：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>AAA<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>BBB<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">10px</span>;</span><br><span class="line">	<span class="attribute">margin-top</span>: <span class="number">10px</span>;</span><br><span class="line">	<span class="attribute">margin-bottom</span>: <span class="number">15px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面内容AAA的p标签和内容为bbb标签的margin距离为15px，两者之间的p标签重叠了，最上面和最下面的两个p标签的外边距也重叠了。</p>
-<h4 id="3-margin负值"><a href="#3-margin负值" class="headerlink" title="3. margin负值"></a>3. margin负值</h4><ul>
-<li><p><code>margin-top</code>和<code>margin-left</code>为负值，元素向上、向左移动</p>
-</li>
-<li><p><code>margin-right</code>为负值，右侧元素左移，自身不受影响</p>
-</li>
-<li><p><code>margin-bottom</code>为负值，下侧元素上移，本身不受影响</p>
-</li>
-</ul>
-<p>ps：绝对定位 top&#x3D;0 right &#x3D; 0时 margin-right 设置负值就能影响本身向右偏移</p>
-<h4 id="4-BFC是什么？如何应用？"><a href="#4-BFC是什么？如何应用？" class="headerlink" title="4. BFC是什么？如何应用？"></a>4. BFC是什么？如何应用？</h4><h5 id="（1）什么是BFC？"><a href="#（1）什么是BFC？" class="headerlink" title="（1）什么是BFC？"></a>（1）什么是BFC？</h5><p><strong><code>Block Format context</code>，”块级格式化上下文”。<code>BFC</code>是一个完全独立的 渲染空间，内部元素的渲染不会影响到边界以外的元素。</strong></p>
-<h5 id="（2）BFC的应用"><a href="#（2）BFC的应用" class="headerlink" title="（2）BFC的应用"></a>（2）BFC的应用</h5><p>那么怎么使用<code>BFC</code>呢，<code>BFC</code>可以看做是一个<code>CSS</code>元素属性。</p>
-<p><strong>触发条件：</strong></p>
-<ul>
-<li><code>overflow</code>不是<code>visible</code></li>
-<li><code>display</code>是<code>flex</code>、<code>inline-block</code>、<code>table-cell</code>等</li>
-<li><code>position</code>是<code> absolute</code>或<code>fixed</code></li>
-</ul>
-<p><strong>解决问题：</strong></p>
-<ul>
-<li>float的高度塌陷</li>
-<li>margin边距重叠</li>
-<li>两栏布局的问题</li>
-</ul>
-<h4 id="5-float布局"><a href="#5-float布局" class="headerlink" title="5. float布局"></a>5. float布局</h4><h5 id="（1）实现圣杯布局"><a href="#（1）实现圣杯布局" class="headerlink" title="（1）实现圣杯布局"></a>（1）实现圣杯布局</h5><ul>
-<li>使用 float布局</li>
-<li>两侧使用margin负值，以便中间内容横向重叠</li>
-<li>防止中间内容被两侧覆盖，一个用padding，一个用margin</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.header</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">text-align</span>: center;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background-color</span>: <span class="number">#00f</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.footer</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">text-align</span>: center;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background-color</span>: <span class="number">#0f0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">clear</span>: both;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.container</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">border</span>: <span class="number">1px</span> solid black;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">300px</span> <span class="number">0</span> <span class="number">200px</span>; <span class="comment">/*为两边留白*/</span></span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.center</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="number">#f00</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.left</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background-color</span>: <span class="built_in">rgb</span>(<span class="number">209</span>, <span class="number">142</span>, <span class="number">55</span>);</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin-left</span>: -<span class="number">200px</span>; <span class="comment">/*这里相当于左移了200px*/</span></span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.right</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">300px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background-color</span>: aquamarine;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin-right</span>: -<span class="number">300px</span>; <span class="comment">/*这里相当于自身的300px消除了*/</span> </span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.colum</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">float</span>: left;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;header&quot;</span>&gt;</span>这是header<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;left colum&quot;</span>&gt;</span>左侧区域<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;center colum&quot;</span>&gt;</span>中间内容<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;right colum&quot;</span>&gt;</span>右侧区域<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;footer&quot;</span>&gt;</span>这是footer<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="（2）双飞翼布局"><a href="#（2）双飞翼布局" class="headerlink" title="（2）双飞翼布局"></a>（2）双飞翼布局</h5><p>思路和圣杯布局差不多，但是使用margin为两边留白</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.main</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="number">#f00</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.main</span> <span class="selector-class">.content</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin-left</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin-right</span>: <span class="number">300px</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.left</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="number">#0f0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin-left</span>: -<span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.right</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">300px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="number">#00f</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin-left</span>: -<span class="number">300px</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.cloum</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">float</span>: left;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;main cloum&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span>hello world<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;left cloum&quot;</span>&gt;</span>你好<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;right cloum&quot;</span>&gt;</span>王鹏浩<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="（3）手写clearfix"><a href="#（3）手写clearfix" class="headerlink" title="（3）手写clearfix"></a>（3）手写clearfix</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">	<span class="attribute">display</span>: table;</span><br><span class="line">	<span class="attribute">clear</span>: both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="6-flex布局-实现一个三点骰子"><a href="#6-flex布局-实现一个三点骰子" class="headerlink" title="6. flex布局: 实现一个三点骰子"></a>6. flex布局: 实现一个三点骰子</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.box</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">width</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">height</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border</span>: <span class="number">2px</span> solid <span class="number">#ccc</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border-radius</span>: <span class="number">10px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">padding</span>: <span class="number">20px</span>;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">justify-content</span>: space-between;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.item</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">width</span>: <span class="number">40px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">height</span>: <span class="number">40px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background-color</span>: black;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">display</span>: block;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.div1</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">align-self</span>: flex-start;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.div2</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">align-self</span>: center;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.div3</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">align-self</span>: flex-end;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">  </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item div1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item div2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item div3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5bb856a71e9942edb3565bbcf1ce9ad3~tplv-k3u1fbpfcp-zoom-1.image" alt="image"></p>
-<h2 id="定位问题"><a href="#定位问题" class="headerlink" title="定位问题"></a>定位问题</h2><h4 id="1-absolute和relative分别依据什么定位"><a href="#1-absolute和relative分别依据什么定位" class="headerlink" title="1. absolute和relative分别依据什么定位"></a>1. absolute和relative分别依据什么定位</h4><ul>
-<li><p>relative：依据自身定位</p>
-</li>
-<li><p>absolute：依据最近的一层<strong>定位元素</strong>进行定位，定位元素如下：</p>
-<ul>
-<li>absolute relative fixed</li>
-<li>body</li>
-</ul>
-</li>
-</ul>
-<h4 id="2-居中对其有哪些方式"><a href="#2-居中对其有哪些方式" class="headerlink" title="2. 居中对其有哪些方式"></a>2. 居中对其有哪些方式</h4><h5 id="（1）水平居中"><a href="#（1）水平居中" class="headerlink" title="（1）水平居中"></a>（1）水平居中</h5><ul>
-<li>inline元素：text-align: center</li>
-<li>block元素：margin: auto</li>
-<li>absolute元素：left: 50% + margin-left 负值</li>
-</ul>
-<h5 id="（2）垂直居中"><a href="#（2）垂直居中" class="headerlink" title="（2）垂直居中"></a>（2）垂直居中</h5><ul>
-<li>inline元素：设置line-height</li>
-<li>absolute： top: 50% + margin-top 负值</li>
-<li>不知道元素的高度和宽度：transform(-50%, -50%) </li>
-<li>absolute: top，left，bottom，right：0 + margin:  auto</li>
-</ul>
-<h2 id="图文样式"><a href="#图文样式" class="headerlink" title="图文样式"></a>图文样式</h2><h4 id="1-line-height如何继承"><a href="#1-line-height如何继承" class="headerlink" title="1. line-height如何继承"></a>1. line-height如何继承</h4><ul>
-<li><p>具体数值，直接继承。如line-height: 30px</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">30px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">	<span class="comment">/*相当于*/</span> </span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">30px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>写比例，继承比例。如line-height: 2</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">	<span class="comment">/*高度为40px*/</span> </span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">2</span>;</span><br><span class="line">	<span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>写百分比，继承计算出来的line-height</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">font-size</span>: <span class="number">30px</span>;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">200%</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">	<span class="comment">/*高度为60px，注意这里和比例的继承的不同*/</span> </span><br><span class="line">	<span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="响应式"><a href="#响应式" class="headerlink" title="响应式"></a>响应式</h2><h4 id="1-rem是什么"><a href="#1-rem是什么" class="headerlink" title="1. rem是什么"></a>1. rem是什么</h4><ul>
-<li><p>px：绝对长度单位，常用</p>
-</li>
-<li><p>em：相对长度单位，相对的是父元素，不常用</p>
-</li>
-<li><p>rem：相对长度单位，相对于根元素（html里设置font-size），常用于响应式布局</p>
-</li>
-</ul>
-<h4 id="2-如何实现响应式"><a href="#2-如何实现响应式" class="headerlink" title="2. 如何实现响应式"></a>2. 如何实现响应式</h4><h5 id="（1）rem实现"><a href="#（1）rem实现" class="headerlink" title="（1）rem实现"></a>（1）rem实现</h5><ul>
-<li>media-quary，根据不同的屏幕宽度设置根元素font-size</li>
-<li>rem基于根元素的相对单位</li>
-</ul>
-<h5 id="（2）vw、vh"><a href="#（2）vw、vh" class="headerlink" title="（2）vw、vh"></a>（2）vw、vh</h5><p>先了解一下网页视口尺寸，宽度类比：</p>
-<ul>
-<li>window.screen.height：屏幕高度，手机屏幕的高度</li>
-<li>window.innerHeight：网页视口高度，浏览器内显示内容的高度</li>
-<li>document.body.clientHeight：body高度，网页内容的实际长度</li>
-</ul>
-<p>下面了解vw和vh</p>
-<ul>
-<li><p>vw：网页视口宽度的1&#x2F;100</p>
-</li>
-<li><p>vh：网页视口高度的1&#x2F;100</p>
-</li>
-<li><p>vmax：取两者的最大值</p>
-</li>
-<li><p>vmin：取两者的最小值</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/10/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E2%80%94%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="wk">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="wk的博客">
-      <meta itemprop="description" content="一个前端程序员">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | wk的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/10/%E7%A7%8B%E6%8B%9B%E4%BF%9D%E9%A9%BE%E6%8A%A4%E8%88%AA%E2%80%94%E2%80%94%E2%80%94%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AF%87/" class="post-title-link" itemprop="url">前端秋招保驾护航——浏览器篇</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-08-10 23:55:57" itemprop="dateCreated datePublished" datetime="2021-08-10T23:55:57+08:00">2021-08-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-05-07 17:42:02" itemprop="dateModified" datetime="2023-05-07T17:42:02+08:00">2023-05-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%89%8D%E7%AB%AF/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>浏览器的相关知识从以下几个角度出发进行总结。</p>
-<ul>
-<li>网页中使用js</li>
-<li>浏览器缓存：强缓存和协商缓存</li>
-<li>浏览器本地存储:cookie、localStorage和sessionStore</li>
-<li>从网络的角度：输入URL发生了什么</li>
-<li>从浏览器解析的角度：输入URL发生了什么</li>
-<li>从浏览器渲染的角度：输入URL发生了什么</li>
-<li>从浏览器回流和重绘的角度：输入URL发生了什么</li>
-<li>跨域的解决办法</li>
-<li>网络安全</li>
-</ul>
-<h2 id="网页中使用js"><a href="#网页中使用js" class="headerlink" title="网页中使用js"></a>网页中使用js</h2><blockquote>
-<p>参考：<a target="_blank" rel="noopener" href="https://wangdoc.com/javascript/bom/engine.html#%E4%BB%A3%E7%A0%81%E5%B5%8C%E5%85%A5%E7%BD%91%E9%A1%B5%E7%9A%84%E6%96%B9%E6%B3%95">浏览器环境描述</a></p>
-</blockquote>
-<h3 id="1-代码嵌入网页的方法"><a href="#1-代码嵌入网页的方法" class="headerlink" title="1. 代码嵌入网页的方法"></a>1. 代码嵌入网页的方法</h3><ul>
-<li><p><code>&lt;script&gt;</code>元素直接嵌入代码。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  var x = 1 + 5;</span><br><span class="line">  console.log(x);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>&lt;script&gt;</code>标签加载外部脚本</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;https://www.example.com/script.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></li>
-<li><p>事件属性</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button id=&quot;myBtn&quot; onclick=&quot;console.log(this.id)&quot;&gt;点击&lt;/button&gt;</span><br></pre></td></tr></table></figure></li>
-<li><p>URL 协议：URL 支持<code>javascript:</code>协议，即在 URL 的位置写入代码，使用这个 URL 的时候就会执行 JavaScript 代码。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;javascript:console.log(&#x27;Hello&#x27;)&quot;&gt;点击&lt;/a&gt;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="2-script的工作原理"><a href="#2-script的工作原理" class="headerlink" title="2. script的工作原理"></a>2. script的工作原理</h3><ul>
-<li>浏览器一边下载 HTML 网页，一边开始解析。也就是说，不等到下载完，就开始解析。</li>
-<li>解析过程中，浏览器发现<code>&lt;script&gt;</code>元素，就暂停解析，把网页渲染的控制权转交给 JavaScript 引擎。</li>
-<li>如果<code>&lt;script&gt;</code>元素引用了外部脚本，就下载该脚本再执行，否则就直接执行代码。</li>
-<li>JavaScript 引擎执行完毕，控制权交还渲染引擎，恢复往下解析 HTML 网页。</li>
-</ul>
-<p>如果外部脚本加载时间很长（一直无法完成下载），那么浏览器就会一直等待脚本下载完成，造成网页长时间失去响应，浏览器就会呈现“假死”状态，这被称为“阻塞效应”。</p>
-<p>为了避免这种情况，较好的做法是将<code>&lt;script&gt;</code>标签都放在页面底部，而不是头部。这样即使遇到脚本失去响应，网页主体的渲染也已经完成了，用户至少可以看到内容，而不是面对一张空白的页面。如果某些脚本代码非常重要，一定要放在页面头部的话，最好直接将代码写入页面，而不是连接外部脚本文件，这样能缩短加载时间。</p>
-<h3 id="3-解决网页阻塞"><a href="#3-解决网页阻塞" class="headerlink" title="3. 解决网页阻塞"></a>3. 解决网页阻塞</h3><p><strong>（1）defer属性</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;a.js&quot; defer&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;b.js&quot; defer&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>浏览器开始解析 HTML 网页。</li>
-<li>解析过程中，发现带有<code>defer</code>属性的<code>&lt;script&gt;</code>元素。</li>
-<li>浏览器继续往下解析 HTML 网页，同时并行下载<code>&lt;script&gt;</code>元素加载的外部脚本。</li>
-<li>浏览器完成解析 HTML 网页，此时再回过头执行已经下载完成的脚本。</li>
-</ul>
-<p><strong>（2）async属性</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;a.js&quot; async&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;b.js&quot; async&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>浏览器开始解析 HTML 网页。</li>
-<li>解析过程中，发现带有<code>async</code>属性的<code>script</code>标签。</li>
-<li>浏览器继续往下解析 HTML 网页，同时并行下载<code>&lt;script&gt;</code>标签中的外部脚本。</li>
-<li>脚本下载完成，浏览器暂停解析 HTML 网页，开始执行下载的脚本。</li>
-<li>脚本执行完毕，浏览器恢复解析 HTML 网页。</li>
-</ul>
-<h2 id="DNS缓存"><a href="#DNS缓存" class="headerlink" title="DNS缓存"></a>DNS缓存</h2><p>进入页面的时候会进行DNS查询，找到域名对应的服务器的IP地址，再发送请求</p>
-<p>网上流程图很多，我从中借鉴了两张</p>
-<p>DNS域名查找先在客户端进行<code>递归查询</code>，如图</p>
-<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6d3936b63a9e43aaae9f72086899a8e5~tplv-k3u1fbpfcp-zoom-1.image"> 在任何一步找到就会结束查找流程，而整个过程客户端只发出一次查询请求</p>
-<p>如果都没有找到，就会走DNS服务器设置的转发器，如果没设置转发模式，则向<code>13根</code>发起解析请求，这里就是<code>迭代查询</code>，如图</p>
-<blockquote>
-<p>13根：<br>全球共有13个根域服务器IP地址，不是13台服务器！<br>因为借助任播技术，可以在全球设立这些IP的镜像站点，所以访问的不是唯一的那台主机</p>
-</blockquote>
-<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/76abac73addd452bb35c1ede3df0a904~tplv-k3u1fbpfcp-zoom-1.image"></p>
-<p>很明显，整个过程会发出多次查询请求</p>
-<p>在第一次进入页面后就会把DNS解析的地址记录缓存在客户端，之后再进的话至少不需要发起后面的迭代查询了，从而速度更快</p>
-<h2 id="浏览器缓存（HTTP缓存）"><a href="#浏览器缓存（HTTP缓存）" class="headerlink" title="浏览器缓存（HTTP缓存）"></a>浏览器缓存（HTTP缓存）</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6993358764481085453#heading-11">(建议收藏)为什么第二次打开页面快？五步吃透前端缓存，让页面飞起</a></p>
-</blockquote>
-<p>浏览器缓是指将http请求获取的页面资源存储在本地，之后再加载直接从缓存中获取而不用请求服务器，从而响应的更快</p>
-<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/507d2f8b12f14e48983267afcb44b349~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
-<h3 id="1-强缓存"><a href="#1-强缓存" class="headerlink" title="1. 强缓存"></a>1. 强缓存</h3><p>第一次请求，服务器把资源过期的时间通过响应头中的<code>Expires</code>和<code>Cache-Control</code>两个字段告诉浏览器。通过这两个字段的内容，浏览器之后请求这个服务器的资源前，会判断有没有过期，如果没有过期就直接使用，不用再发HTTP请求。</p>
-<p><strong>（1）Expires</strong></p>
-<p><code>Expires</code>即过期时间，存在于服务端返回的响应头中，告诉浏览器在这个过期时间之前可以直接从缓存里面获取数据，无需再次请求。比如下面这样:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 表示资源在2019年11月22号8点41分过期，过期了就得向服务端发请求。</span></span><br><span class="line"><span class="title class_">Expires</span>: <span class="title class_">Wed</span>, <span class="number">22</span> <span class="title class_">Nov</span> <span class="number">2019</span> <span class="number">08</span>:<span class="number">41</span>:<span class="number">00</span> <span class="variable constant_">GMT</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>缺点：</strong> <strong>服务器的时间和浏览器的时间可能并不一致</strong>，那服务器返回的这个过期时间可能就是不准确的。因此这种方式很快在后来的HTTP1.1版本中被抛弃了。</p>
-<p><strong>（2）Cache-Control</strong></p>
-<p>基于<code>Expires</code>的缺点，在HTTP1.1中采用了<code>Cache-Control</code>。<code>Cache-Control</code>通过过期时长来控制缓存。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代表这个响应返回后在 3600 秒，也就是一个小时之内可以直接使用缓存。</span></span><br><span class="line"><span class="title class_">Cache</span>-<span class="title class_">Control</span>:max-age=<span class="number">3600</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>Cache-Control<code>请求头</code>常见属性</strong></p>
-<table>
-<thead>
-<tr>
-<th>字段(单位秒)</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>max-age&#x3D;300</td>
-<td>拒绝接受长于300秒的资源，为0时表示获取最新资源</td>
-</tr>
-<tr>
-<td>max-stale&#x3D;100</td>
-<td>缓存过期之后的100秒内，依然拿来用</td>
-</tr>
-<tr>
-<td>min-fresh&#x3D;50</td>
-<td>缓存到期时间还剩余50秒开始，就不给拿了，不新鲜了</td>
-</tr>
-<tr>
-<td>no-cache</td>
-<td>协商缓存验证</td>
-</tr>
-<tr>
-<td>no-store</td>
-<td>不使用缓存</td>
-</tr>
-<tr>
-<td>only-if-chached</td>
-<td>只使用缓存，没有就报504错误</td>
-</tr>
-<tr>
-<td>no-transform</td>
-<td>不得对资源进行转换或转变。Content-Encoding, Content-Range, Content-Type等HTTP头不能由代理修改。</td>
-</tr>
-</tbody></table>
-<p><strong>Cache-Control<code>响应头</code>常见属性</strong></p>
-<table>
-<thead>
-<tr>
-<th>字段(单位秒)</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>max-age&#x3D;300</td>
-<td>缓存有效期300秒</td>
-</tr>
-<tr>
-<td>s-maxage&#x3D;500</td>
-<td>有效期500秒，优先级高于max-age，适用于共享缓存(如CDN)</td>
-</tr>
-<tr>
-<td>public</td>
-<td>可以被任何终端缓存，包括代理服务器、CDN等</td>
-</tr>
-<tr>
-<td>private</td>
-<td>只能被用户的浏览器终端缓存(私有缓存)</td>
-</tr>
-<tr>
-<td>no-cache</td>
-<td>先和服务端确认资源是否发生变化，没有就使用</td>
-</tr>
-<tr>
-<td>no-store</td>
-<td>不缓存</td>
-</tr>
-<tr>
-<td>no-transform</td>
-<td>与上面请求指令中的一样</td>
-</tr>
-<tr>
-<td>must-revalidate</td>
-<td>客户端缓存过期了就向源服务器验证</td>
-</tr>
-<tr>
-<td>proxy-revalidate</td>
-<td>代理缓存过期了就去源服务器重新获取</td>
-</tr>
-</tbody></table>
-<p><strong>（3）强缓存总结</strong></p>
-<p>强缓存最开始是使用<code>Expires</code>，它通过返回日期来控制缓存的时间，但是潜在的问题是如果浏览器的时间和服务器的时间不一致就会产生缓存失效的问题；于是在<code>HTTP1.1</code>中提出了<code>Cache-Control</code>，<code>Cache-Control</code>通过返回接收到请求后存储的时间来控制缓存的时间。</p>
-<p>当<strong>Expires</strong>和<strong>Cache-Control</strong>同时存在的时候，<strong>Cache-Control</strong>会优先考虑。</p>
-<p>强缓存的缺点是<strong>不管资源有没有变化，都会重新发起请求，重新获取资源</strong>。而我们希望的是在资源文件没有更新的情况下，即使过期了也不重新获取资源，继续使用旧资源。所以当强缓存失效后，就会进入协商缓存。</p>
-<h3 id="2-协商缓存"><a href="#2-协商缓存" class="headerlink" title="2. 协商缓存"></a>2. 协商缓存</h3><p>强缓存失效之后，浏览器在请求头中携带相应的<code>缓存tag</code>来向服务器发请求，由服务器根据这个tag，来决定是否使用缓存，这就是<strong>协商缓存</strong>。</p>
-<p>具体来说，这样的缓存tag分为两种: <strong>Last-Modified</strong> 和 <strong>ETag</strong>。这两者各有优劣，并不存在谁对谁有<code>绝对的优势</code>，跟上面强缓存的两个 tag 不一样。</p>
-<p><strong>（1）Last-Modified</strong></p>
-<p>第一次请求资源时，服务器除了会返回给浏览器上面说的过期时间，还会在响应头添加 <code>Last-Modified</code> 字段，告诉浏览器该资源的最后修改时间</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">last-<span class="attr">modified</span>: <span class="title class_">Fri</span>, <span class="number">27</span> <span class="title class_">Oct</span> <span class="number">2021</span> <span class="number">08</span>:<span class="number">35</span>:<span class="number">57</span> <span class="variable constant_">GMT</span></span><br></pre></td></tr></table></figure>
-
-<p>然后浏览器再次请求的时候就把这个时间再通过另一个字段<code>If-Modified-Since</code>，发送给服务器</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>-modified-<span class="attr">since</span>: <span class="title class_">Fri</span>, <span class="number">27</span> <span class="title class_">Oct</span> <span class="number">2021</span> <span class="number">08</span>:<span class="number">35</span>:<span class="number">57</span> <span class="variable constant_">GMT</span></span><br></pre></td></tr></table></figure>
-
-<p>服务器再把浏览器传来的<code>if-modified-since</code>和服务器的<code>last-modified</code>这两个字段的时间对比：</p>
-<ul>
-<li>如果是一样的，就说明文件没有被更新过，就返回状态码304和空响应体给浏览器，浏览器直接拿过期了的资源继续使用即可；</li>
-<li>如果对比不一样说明资源有更新，就返回状态码200和新的资源</li>
-</ul>
-<p><strong>缺点：</strong></p>
-<ul>
-<li>如果本地打开了缓存文件，即使没有对文件进行修改，但还是会造成<code>Last-Modified</code>被修改，服务器端不能命中缓存导致发送相同资源</li>
-<li>因为<code>Last-Modified</code>只能以秒计时，如果在不可感知的时间内修改了文件，服务器端会认为还是命中了，无法返回正确的资源</li>
-<li>如果资源有周期性变化，如资源修改后，在一个周期内又改回了原来的样子，我们认为这个周期前的缓存是可以使用的，但是<code>Last-Modified</code>不这样认为</li>
-</ul>
-<p><strong>（2）ETag</strong></p>
-<p>第一次请求资源时，服务器除了会在响应头上返回<code>Expires</code>、<code>Cache-Control</code>、<code>Last-Modified</code>，还在返回<code>Etag</code>字段，表示当前资源文件的一个唯一标识。这个标识符由服务器基于文件内容编码生成，能精准感知文件的变化，只要文件内容不同，<code>ETag</code>就会重新生成</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etag: W/&quot;132489-1627839023000&quot;</span><br></pre></td></tr></table></figure>
-
-<p>然后浏览器再次请求的时候就把这个文件标识 再通过另一个字段 <code>If-None-Match</code>，发送给服务器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if-none-match: W/&quot;132489-1627839023000&quot;</span><br></pre></td></tr></table></figure>
-
-<p>服务器再把这两个字段的时间对比：</p>
-<ul>
-<li>如果发现是一样的，就说明文件没有被更新过，就返回状态码304和空响应体给浏览器，浏览器直接拿过期了的资源继续使用；</li>
-<li>如果对比不一样说明资源有更新，就返回状态码200和新的资源</li>
-</ul>
-<p><strong>（3）协商缓存总结</strong></p>
-<p><strong><code>Last-Modified 和 ETag 的区别</code></strong></p>
-<ul>
-<li><code>Etag</code> 感知文件精准度要高于 <code>Last-Modified</code></li>
-<li>同时使用时，服务器校验优先 <code>Etag</code>&#x2F;<code>If-None-Match</code></li>
-<li><code>Last-Modified</code> 性能上要优于 <code>Etag</code>，因为 <code>Etag</code> 生成过程中需要服务器付出额外开销，会影响服务器端的性能，所以它并不能完全替代 <code>Last-Modified</code>，只能作为补充和强化</li>
-</ul>
-<h3 id="3-浏览器缓存总结"><a href="#3-浏览器缓存总结" class="headerlink" title="3. 浏览器缓存总结"></a>3. 浏览器缓存总结</h3><p>第一次请求资源时，服务器在响应头上返回<code>Expires</code>、<code>Cache-Control</code>、<code>Last-Modified</code>和<code>Etag</code>字段。</p>
-<p><code>Expires</code>和<code>Cache-Control</code>是强缓存阶段的，强缓存最开始是使用<code>Expires</code>，它通过返回日期来控制缓存的时间，但是潜在的问题是如果浏览器的时间和服务器的时间不一致就会产生缓存失效的问题；于是在<code>HTTP1.1</code>中提出了<code>Cache-Control</code>，<code>Cache-Control</code>通过返回接收到请求后存储的时间来控制缓存的时间。当<strong>Expires</strong>和<strong>Cache-Control</strong>同时存在的时候，<strong>Cache-Control</strong>会优先考虑。</p>
-<p>强缓存的缺点是<strong>不管资源有没有变化，都会重新发起请求，重新获取资源</strong>。而我们希望的是在资源文件没有更新的情况下，即使过期了也不重新获取资源，继续使用旧资源。所以当强缓存失效后，就会进入协商缓存。</p>
-<p><code>Last-Modified</code>和<code>Etag</code>是协商缓存阶段的，<code>Last-Modified</code>是记录文件最后一次修改的时间，但是有很多的缺点，如：在补课感知的时间内改变了、周期性的变化以及打开文件却没有修改等，都会造成<br><code>Last-Modified</code>修改。<code>Etag</code>则能精准感知文件的变化，只要文件内容不同，<code>ETag</code>就会重新生成。 <code>Etag</code> 感知文件精准度要高于 <code>Last-Modified</code>但是<code>Last-Modified</code> 性能上要优于 <code>Etag</code>，因为 <code>Etag</code> 生成过程中需要服务器付出额外开销，会影响服务器端的性能，所以它并不能完全替代 <code>Last-Modified</code>，只能作为补充和强化</p>
-<h3 id="4-缓存文案"><a href="#4-缓存文案" class="headerlink" title="4. 缓存文案"></a>4. 缓存文案</h3><ul>
-<li>协商缓存一般存储：<code>HTML</code></li>
-<li>强缓存一般存储：<code>css</code>, <code>image</code>, <code>js</code>，文件名带上 <code>hash</code></li>
-</ul>
-<h2 id="浏览器本地存储-cookie、localStorage和sessionStore"><a href="#浏览器本地存储-cookie、localStorage和sessionStore" class="headerlink" title="浏览器本地存储:cookie、localStorage和sessionStore"></a>浏览器本地存储:cookie、localStorage和sessionStore</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6993358764481085453#heading-11">(建议收藏)为什么第二次打开页面快？五步吃透前端缓存，让页面飞起</a></p>
-</blockquote>
-<h3 id="1-cookie"><a href="#1-cookie" class="headerlink" title="1. cookie"></a>1. cookie</h3><p><code>HTTP</code> 协议是一个无状态协议，<code>Cookie</code> 最开始被设计出来其实并不是来做本地存储的，而是为了弥补<code>HTTP</code>在<strong>状态管理上的不足</strong>。</p>
-<p>Cookie 本质上就是浏览器里面存储的一个很小的文本文件，内部以键值对的方式来存储(在chrome开发者面板的<code>Application</code>这一栏可以看到)。</p>
-<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/77e9f1df70e04c75b9203948a928c92d~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
-<p>向同一个域名下发送请求，都会携带相同的 Cookie，服务器拿到 Cookie 进行解析，便能拿到客户端的状态。</p>
-<p><strong>Cookie都有哪些字段：</strong></p>
-<ul>
-<li><code>Name</code>、<code>Size</code> 故名思意</li>
-<li><code>Value</code>：保存用户登录状态，应该将该值加密，不能使用明文</li>
-<li><code>Path</code>：可以访问此 Cookie 的路径。比如 juejin.cn&#x2F;editor ，path是&#x2F;editor，只有&#x2F;editor这个路径下的才可以读取 Cookie</li>
-<li><code>httpOnly</code>：表示禁止通过 JS 访问 Cookie，减少 XSS 攻击。</li>
-<li><code>Secure</code>：只能在 https 请求中携带</li>
-<li><code>SameSite</code>：规定浏览器不能在跨域请求中携带 Cookie 减少 CSRF 攻击，详细说明<a target="_blank" rel="noopener" href="https://juejin.cn/post/6991888178890145828" title="https://juejin.cn/post/6991888178890145828">看这里</a></li>
-<li><code>Domain</code>：域名，跨域或者 Cookie 的白名单，允许一个子域获取或操作父域的 Cookie，实现单点登录的话会非常有用</li>
-<li><code>Expires</code>&#x2F;<code>Max-size</code>：指定时间或秒数的过期时间，没设置的话就和 Session 一样关闭浏览器就失效</li>
-</ul>
-<p><strong>缺点：</strong></p>
-<ul>
-<li>容量缺陷。Cookie 的体积上限只有<code>4KB</code>，只能用来存储少量的信息。</li>
-<li>性能缺陷。Cookie 紧跟域名，不管域名下面的某一个地址需不需要这个 Cookie ，请求都会携带上完整的 Cookie，这样随着请求数的增多，其实会造成巨大的性能浪费的，因为请求携带了很多不必要的内容。</li>
-<li>安全缺陷。由于 Cookie 以纯文本的形式在浏览器和服务器中传递，很容易被非法用户截获，然后进行一系列的篡改，在 Cookie 的有效期内重新发送给服务器，这是相当危险的。另外，在<code>HttpOnly</code>为 false 的情况下，Cookie 信息能直接通过 JS 脚本来读取。</li>
-<li>夸域名不能共享 Cookie</li>
-</ul>
-<h3 id="2-localStorage"><a href="#2-localStorage" class="headerlink" title="2. localStorage"></a>2. localStorage</h3><p><code>localStorage</code>有一点跟<code>Cookie</code>一样，就是针对一个域名，即在同一个域名下，会存储相同的一段<strong>localStorage</strong>。</p>
-<p>不过它相对<code>Cookie</code>还是有相当多的区别的:</p>
-<ul>
-<li>容量。localStorage 的容量上限为<strong>5M</strong>，相比于<code>Cookie</code>的 4K 大大增加。当然这个 5M 是针对一个域名的，因此对于一个域名是持久存储的。</li>
-<li>只存在客户端，默认不参与与服务端的通信。这样就很好地避免了 Cookie 带来的<strong>性能问题</strong>和<strong>安全问题</strong>。</li>
-<li>接口封装。通过<code>localStorage</code>暴露在全局，并通过它的 <code>setItem</code> 和 <code>getItem</code>等方法进行操作，非常方便。</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置</span></span><br><span class="line"><span class="keyword">let</span> obj = &#123; <span class="attr">name</span>: <span class="string">&quot;wk&quot;</span>, <span class="attr">age</span>: <span class="number">18</span> &#125;;</span><br><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;wk&quot;</span>); </span><br><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;info&quot;</span>, <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(obj));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取值</span></span><br><span class="line"><span class="keyword">let</span> name = <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> info = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;info&quot;</span>));</span><br></pre></td></tr></table></figure>
-
-<h4 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h4><p>利用<code>localStorage</code>的较大容量和持久特性，可以利用<code>localStorage</code>存储一些内容稳定的资源，比如官网的<code>logo</code>，存储<code>Base64</code>格式的图片资源，因此利用<code>localStorage</code></p>
-<h3 id="3-sessionStorage"><a href="#3-sessionStorage" class="headerlink" title="3. sessionStorage"></a>3. sessionStorage</h3><p><code>sessionStorage</code>以下方面和<code>localStorage</code>一致:</p>
-<ul>
-<li>容量。容量上限也为 5M。</li>
-<li>只存在客户端，默认不参与与服务端的通信。</li>
-<li>接口封装。除了<code>sessionStorage</code>名字有所变化，存储方式、操作方式均和<code>localStorage</code>一样。</li>
-</ul>
-<p>但<code>sessionStorage</code>和<code>localStorage</code>有一个本质的区别，那就是前者只是会话级别的存储，并不是持久化存储。会话结束，也就是页面关闭，这部分<code>sessionStorage</code>就不复存在了。</p>
-<h4 id="应用场景-1"><a href="#应用场景-1" class="headerlink" title="应用场景"></a>应用场景</h4><ul>
-<li>可以用它对表单信息进行维护，将表单信息存储在里面，可以保证页面即使刷新也不会让之前的表单信息丢失。</li>
-<li>可以用它存储本次浏览记录。如果关闭页面后不需要这些记录，用<code>sessionStorage</code>就再合适不过了。</li>
-</ul>
-<h3 id="4-IndexedDB"><a href="#4-IndexedDB" class="headerlink" title="4. IndexedDB"></a>4. IndexedDB</h3><p><code>IndexedDB</code>是运行在浏览器中的<code>非关系型数据库</code>, 本质上是数据库，绝不是和刚才WebStorage的 5M 一个量级，理论上这个容量是没有上限的。</p>
-<p>关于它的使用，本文侧重原理，而且 MDN 上的教程文档已经非常详尽，这里就不做赘述了，感兴趣可以看一下<a href="https://link.juejin.cn/?target=https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API/Using_IndexedDB" title="https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API/Using_IndexedDB">使用文档</a>。</p>
-<p>接着我们来分析一下<code>IndexedDB</code>的一些重要特性，除了拥有数据库本身的特性，比如<code>支持事务</code>，<code>存储二进制数据</code>，还有这样一些特性需要格外注意：</p>
-<ul>
-<li>键值对存储。内部采用<code>对象仓库</code>存放数据，在这个对象仓库中数据采用<strong>键值对</strong>的方式来存储。</li>
-<li>异步操作。数据库的读写属于 I&#x2F;O 操作, 浏览器中对异步 I&#x2F;O 提供了支持。</li>
-<li>受同源策略限制，即无法访问跨域的数据库。</li>
-</ul>
-<h3 id="5-对比"><a href="#5-对比" class="headerlink" title="5. 对比"></a>5. 对比</h3><table>
-<thead>
-<tr>
-<th></th>
-<th>Cookie</th>
-<th>SessionStorage</th>
-<th>LocalStorage</th>
-<th>indexDB</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>存储大小</td>
-<td>4k</td>
-<td>5M或更大</td>
-<td>5M或更大</td>
-<td>无限</td>
-</tr>
-<tr>
-<td>存储时间</td>
-<td>可指定时间,没指定关闭窗口就失效</td>
-<td>浏览器窗口关闭就失效</td>
-<td>永久有效</td>
-<td>永久有效</td>
-</tr>
-<tr>
-<td>作用域</td>
-<td>同浏览器，所有同源标签页</td>
-<td>当前标签页</td>
-<td>同浏览器，所有同源标签页</td>
-<td></td>
-</tr>
-<tr>
-<td>存在于</td>
-<td>请求中来回传递</td>
-<td>客户端本地</td>
-<td>客户端本地</td>
-<td>客户端本地</td>
-</tr>
-<tr>
-<td>同源策略</td>
-<td>同浏览器，只能被同源同路径页面访问共享</td>
-<td>自己用</td>
-<td>同浏览器，只能被同源页面访问共享</td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="从网络的角度：输入URL发生了什么"><a href="#从网络的角度：输入URL发生了什么" class="headerlink" title="从网络的角度：输入URL发生了什么"></a>从网络的角度：输入URL发生了什么</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904021308735502">(1.6w字)浏览器灵魂之问，请问你能接得住几个？</a></p>
-</blockquote>
-<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9a5b870563504bf98894d07114de5e94~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
-<h2 id="从浏览器解析的角度：输入URL发生了什么"><a href="#从浏览器解析的角度：输入URL发生了什么" class="headerlink" title="从浏览器解析的角度：输入URL发生了什么"></a>从浏览器解析的角度：输入URL发生了什么</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904021308735502">(1.6w字)浏览器灵魂之问，请问你能接得住几个？</a></p>
-</blockquote>
-<p>进过网络请求以后，因为浏览器不认识HTML和CSS的语法，所以需要先将HTML和CSS转换成浏览器认识的DOM树和CSSOM树，接着浏览器会将DOM树和CSSOM树生成一棵布局树。接着要做的事情就是要将这些内容渲染到屏幕上，让用户可以看得见。</p>
-<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f8e936917e7045c29dea0a98d77eaff7~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
-<h2 id="从浏览器渲染的角度：输入URL发生了什么"><a href="#从浏览器渲染的角度：输入URL发生了什么" class="headerlink" title="从浏览器渲染的角度：输入URL发生了什么"></a>从浏览器渲染的角度：输入URL发生了什么</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904021308735502">(1.6w字)浏览器灵魂之问，请问你能接得住几个？</a></p>
-</blockquote>
-<p>渲染的过程挺复杂的，没看明白，日后有机会接触再去了解。</p>
-<h2 id="从浏览器回流和重绘的角度：输入URL发生了什么"><a href="#从浏览器回流和重绘的角度：输入URL发生了什么" class="headerlink" title="从浏览器回流和重绘的角度：输入URL发生了什么"></a>从浏览器回流和重绘的角度：输入URL发生了什么</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904021308735502">(1.6w字)浏览器灵魂之问，请问你能接得住几个？</a></p>
-</blockquote>
-<p><strong>回流</strong>：当我们对 DOM 的修改引发了 DOM 几何尺寸的变化（比如修改元素的宽、高或隐藏元素等）时，浏览器需要重新计算元素的几何属性（其他元素的几何属性和位置也会因此受到影响），然后再将计算的结果绘制出来。这个过程就是回流（也叫重排）。</p>
-<p><strong>重绘</strong>：当我们对 DOM 的修改导致了样式的变化、却并未影响其几何属性（比如修改了颜色或背景色）时，浏览器不需重新计算元素的几何属性、直接为该元素绘制新的样式（跳过了上图所示的回流环节）。这个过程叫做重绘。</p>
-<p>由此我们可以看出，<strong>重绘不一定导致回流，回流一定会导致重绘</strong>。硬要比较的话，回流比重绘做的事情更多，带来的开销也更大。但这两个说到底都是吃性能的，所以都不是什么善茬。我们在开发中，要从代码层面出发，尽可能把回流和重绘的次数最小化。</p>
-<h2 id="跨域的解决办法"><a href="#跨域的解决办法" class="headerlink" title="跨域的解决办法"></a>跨域的解决办法</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903767226351623">九种跨域方式实现原理（完整版)</a></p>
-</blockquote>
-<ul>
-<li>JSONP</li>
-<li>CORS：后端设置可以跨域的网站</li>
-<li>服务器之间没有跨域，可以用服务器向资源服务器请求到数据进行一次代理</li>
-<li>webSocket可以建立双向通信，支持跨域</li>
-</ul>
-<h2 id="网络安全"><a href="#网络安全" class="headerlink" title="网络安全"></a>网络安全</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6991888178890145828#heading-13">吃透浏览器安全（同源限制&#x2F;XSS&#x2F;CSRF&#x2F;中间人攻击）｜ 8月更文挑战</a></p>
-</blockquote>
-<ul>
-<li>同源策略</li>
-<li>XSS攻击</li>
-<li>CSRF攻击</li>
-<li>对称加密、非对称加密</li>
-<li>HTTPS、数字签名</li>
-</ul>
 
       
     </div>
