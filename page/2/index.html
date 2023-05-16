@@ -124,18 +124,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -160,6 +160,188 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/21/js%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E2%80%94%E2%80%94%E5%81%A5%E5%A3%AE%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="wk">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wk的博客">
+      <meta itemprop="description" content="一个前端程序员">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | wk的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/21/js%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E2%80%94%E2%80%94%E5%81%A5%E5%A3%AE%E6%80%A7/" class="post-title-link" itemprop="url">js代码质量——健壮性</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-03-21 13:40:38" itemprop="dateCreated datePublished" datetime="2022-03-21T13:40:38+08:00">2022-03-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-05-07 17:48:17" itemprop="dateModified" datetime="2023-05-07T17:48:17+08:00">2023-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>对于初入职场的我们，最重要的就是学习如何写出高质量的 js 代码。学习的途径也很简单，多看，多写，多总结：</p>
+<ul>
+<li>多看：看大佬们写的代码，学习他们智慧的结晶</li>
+<li>多写：纸上得来终觉浅，不停的敲代码才能发现自己的问题，提升自己</li>
+<li>多总结：我一直以来奉行的学习方法有两种——<strong>问题驱动学习</strong>和<strong>输出倒闭输入</strong>。只有自己认真的思考总结过，才能发现很多问题的细节，真正的去掌握知识。</li>
+</ul>
+<p>当然，<strong>我也是一个初入前端的小菜鸡</strong>，本篇博客有内容或认知上的错误属于正常现象，希望各位观众老爷们不吝赐教。本篇博客也不是一次就完成，后面每次小猪遇到新的问题都会跟进博客，当然也欢迎大家来评论区补充！</p>
+<h2 id="0-什么是代码健壮性？"><a href="#0-什么是代码健壮性？" class="headerlink" title="0 什么是代码健壮性？"></a>0 什么是代码健壮性？</h2><p>在学校看论文时就经常遇到鲁棒性，在公司学习时经常听到其他人提到代码的健壮性，所以每每听到周会大佬们讨论时都会莫名觉厉。</p>
+<p>健壮性，顾名思义，健康强壮。拿这个词来形容人，就是说明这个人身体健康强壮，在遇到小感冒，跌打损伤，不会让他卧床不起。拿这个词来形容代码，道理也一样，在代码遇到各种个样的异常问题，如读取一个值不是预期类型、查询不到指定的路径等，代码不会轻易的挂掉，而是有它自己的一套措施。</p>
+<p>如果你的代码现在还有一碰就倒，并且一蹶不振的现象。不用担心，这篇文章就是帮助你的代码变强的修炼秘籍。</p>
+<p><img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fdingyue.ws.126.net%2F2020%2F0614%2Fbc9bb44ep00qbw7zv0061c000zt00plc.png&refer=http%3A%2F%2Fdingyue.ws.126.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1650426335&t=48153ed46627f80e9cd2ff67a9068c66" alt="strong"></p>
+<h2 id="1-函数"><a href="#1-函数" class="headerlink" title="1 函数"></a>1 函数</h2><p><strong>一、函数默认参数妙用</strong></p>
+<p><strong>场景：</strong></p>
+<p>假设我们又如下的初始化工作需要进行，在代码的最开始我们需要对<code>config</code>对象进行初始化工作</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">initConfig</span>(<span class="params">config</span>) &#123;</span><br><span class="line">    config.<span class="title function_">map</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">        item.<span class="property">content</span> = <span class="title class_">Number</span>(item.<span class="property">content</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果我们不小心忘记给它传递参数，浏览器会报如下错误，提示我们 config 没有 map 方法，因为此时 config 为 undefined</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b0a1055f039343268ed3f1bc6ca600a2~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<p><strong>解决办法：</strong></p>
+<p>我们可以给函数的参数加上一个默认的值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">initConfig</span>(<span class="params">config = []</span>) &#123;</span><br><span class="line">    config.<span class="title function_">map</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">        item.<span class="property">content</span> = <span class="title class_">Number</span>(item.<span class="property">content</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结：</strong></p>
+<p>这里我们可以默认设置其他的类型，如字符串、数字、对象等，提高代码的健壮性</p>
+<h2 id="2-解构赋值"><a href="#2-解构赋值" class="headerlink" title="2 解构赋值"></a>2 解构赋值</h2><p>**解构： **  ES6 允许按照一定模式，从数组和对象中提取值，对变量进行赋值，这被称为解构</p>
+<p><strong>一、数组</strong></p>
+<p><strong>场景：</strong></p>
+<p>假设我们需要一个数组的值分别给几个变量，我们会使用数组的解构</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">handleArr</span>(<span class="params">arr</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> [a, b, c] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">    <span class="keyword">return</span> a + b + c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们需要结构的数组不能确定值百分之百正确时，也就是没有多或者少时，我们任然按照上面的写法便会出现问题</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0a172ac80e8643bfb4ab4edc9cdebae0~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<p><strong>解决办法：</strong></p>
+<p>给解构赋值指定默认值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">handleArr</span>(<span class="params">arr</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> [a = <span class="number">1</span>, b = <span class="number">2</span>, c = <span class="number">3</span>] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">    <span class="keyword">return</span> a + b + c</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"></span><br><span class="line"><span class="title function_">handleArr</span>(arr)	<span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>总结：</strong></p>
+<p>开发时常用到这种方法一次取出多个值，但是要考虑到解构的值不存在的情况，设置好默认值提高代码的健壮性</p>
+<p><strong>二、对象</strong></p>
+<p><strong>场景：</strong></p>
+<p>对象的场景和数组的原理是一样，只不过对象解构的场景用到得更多。</p>
+<p><strong>解决办法：</strong></p>
+<p>给对象解构赋值指定默认值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">handleObj</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; name, list = [] &#125; = obj</span><br><span class="line">  <span class="keyword">if</span>(name) &#123;</span><br><span class="line">    list.<span class="title function_">map</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(item)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;add1&#x27;</span>,</span><br><span class="line">  <span class="attr">list</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结：</strong></p>
+<p>对象解构的内容可能是字符串、数字、数组或是对象等，对于不同的变量类型，我们需要指定不同的默认值，确保代码的健壮性</p>
+<h2 id="3-接口请求"><a href="#3-接口请求" class="headerlink" title="3 接口请求"></a>3 接口请求</h2><p>前面两点讨论的是不要轻易相信前端自己的数据，那么从后端接口传来的数据就更不要轻易相信。</p>
+<p><strong>一、后端响应的数据</strong></p>
+<p><strong>场景：</strong></p>
+<p>假设后后端规定接口响应的内容如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">code</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">msg</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="attr">data</span>: []</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们前端代码可能会这样写</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">handleData</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; code, msg, data &#125;  = <span class="keyword">await</span> <span class="title function_">fetchList</span>()</span><br><span class="line">  data.<span class="title function_">map</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(item)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果后端接口出现了异常</p>
+<ul>
+<li>后端接口挂掉，取出来的 data 为 undefined</li>
+<li>后端返回的 data 出现异常，不是数组</li>
+<li>….</li>
+</ul>
+<p>那么代码中执行的 map 方法就会报错</p>
+<p><strong>解决办法：</strong></p>
+<p>为了防止接口不反回 data 字段，我们可以给解构指定默认值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">handleData</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; code, msg, data = [] &#125;  = <span class="keyword">await</span> <span class="title function_">fetchList</span>()</span><br><span class="line">  data.<span class="title function_">map</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(item)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了防止接口返回的是数组，我们可以对类型进行检查</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">handleData</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; code, msg, data = [] &#125;  = <span class="keyword">await</span> <span class="title function_">fetchList</span>()</span><br><span class="line">  <span class="title class_">Array</span>.<span class="title function_">isArray</span>(data) &amp;&amp; data.<span class="title function_">map</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(item)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结：</strong></p>
+<p>我们约定好的接口传过来的数据可能出现数据不存在，类型对不上等异常错误，在相应地方加上异常的处理提高代码的健壮性</p>
+<p><strong>二、异常捕获</strong></p>
+<blockquote>
+<p>除了接口数据的处理，我们还要做好异常的处理，这里参考一篇博客：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6996315680651870244">JavaScript 中的异常处理</a></p>
+</blockquote>
+<h2 id="4-lodash"><a href="#4-lodash" class="headerlink" title="4 lodash"></a>4 lodash</h2><p>在进行业务开发时，经常会忽略一些代码健壮性考虑的地方。我们可以使用现有的工具库提升代码健壮性，同时也可以让开发者更关注于业务逻辑的开发。这里推荐的工具库是 lodash。</p>
+<blockquote>
+<p>文档传送门：<a target="_blank" rel="noopener" href="https://www.lodashjs.com/docs/lodash.get">Lodash中文文档</a></p>
+</blockquote>
+<p><strong>一、取 object 值</strong></p>
+<p>我们在上面提到了使用解构的方法取对象的值，在这里我们可以使用<code>_.get()</code>方法，进而不用再关注可能出现的异常。</p>
+<p><strong>方法：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_.<span class="title function_">get</span>(object, path, [defaultValue])</span><br></pre></td></tr></table></figure>
+
+<p>根据 <code>object</code>对象的<code>path</code>路径获取值。 如果解析 value 是 <code>undefined</code> 会以 <code>defaultValue</code> 取代。</p>
+<p><strong>参数：</strong></p>
+<ol>
+<li><code>bject</code> <em>(Object)</em>: 要检索的对象。</li>
+<li><code>path</code> <em>(Array|string)</em>: 要获取属性的路径。</li>
+<li><code>[defaultValue]</code> <em>(*)</em>: 如果解析值是 <code>undefined</code> ，这值会被返回。</li>
+</ol>
+<p><strong>返回值：</strong></p>
+<p>返回解析的值。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2052,167 +2234,6 @@ t7 = &lt; x = 3, y = 3, z = 3&gt; // expected: 9
 <p>编译器会隐式地帮我们用&amp;p去调用ScaleBy这个方法。这种简写方法只适用于“变量”，包括struct里的字段比如p.X，以及array和slice内的元素比如perim[0]。我们不能通过一个无法取到地址的接收器来调用指针方法，比如临时变量的内存地址就无法获取得到：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Point&#123;<span class="number">1</span>, <span class="number">2</span>&#125;.ScaleBy(<span class="number">2</span>) <span class="comment">// compile error: can&#x27;t take address of Point literal</span></span><br></pre></td></tr></table></figure>
 
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/04/go%E7%9A%84%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="wk">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="wk的博客">
-      <meta itemprop="description" content="一个前端程序员">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | wk的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/04/go%E7%9A%84%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">go的数据结构</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-11-04 17:06:13" itemprop="dateCreated datePublished" datetime="2021-11-04T17:06:13+08:00">2021-11-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-05-07 17:47:05" itemprop="dateModified" datetime="2023-05-07T17:47:05+08:00">2023-05-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%90%8E%E7%AB%AF/go/" itemprop="url" rel="index"><span itemprop="name">go</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="函数声明"><a href="#函数声明" class="headerlink" title="函数声明"></a>函数声明</h2><p>函数声明包括<strong>函数名</strong>、<strong>形参</strong>、<strong>返回值</strong>和<strong>函数体</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hypot</span><span class="params">(x, y <span class="type">float64</span>)</span></span> <span class="type">float64</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> math.Sqrt(x*x + y*y)</span><br><span class="line">&#125;</span><br><span class="line">fmt.Println(hypot(<span class="number">3</span>,<span class="number">4</span>)) <span class="comment">// &quot;5&quot;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>形式参数列表描述了函数的参数名以及参数类型。这些参数作为局部变量，其值由参数调用者提供。</li>
-<li>返回值列表描述了函数返回值的变量名以及类型。如果函数返回一个无名变量或者没有返回值，返回值列表的括号是可以省略的。</li>
-</ul>
-<p><strong>如果一组形参或返回值有相同的类型，我们不必为每个形参都写出参数类型。</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(i, j, k <span class="type">int</span>, s, t <span class="type">string</span>)</span></span>                 &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(i <span class="type">int</span>, j <span class="type">int</span>, k <span class="type">int</span>,  s <span class="type">string</span>, t <span class="type">string</span>)</span></span> &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>返回值也可以像形式参数一样被命名。</strong> </p>
-<ul>
-<li>在这种情况下，每个返回值被声明成一个局部变量，并根据该返回值的类型，将其初始化为该类型的零值。 </li>
-<li>如果一个函数在声明时，包含返回值列表，该函数必须以 return语句结尾，除非函数明显无法运行到结尾处。</li>
-</ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(x <span class="type">int</span>, y <span class="type">int</span>)</span></span> <span class="type">int</span>   &#123;<span class="keyword">return</span> x + y&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sub</span><span class="params">(x, y <span class="type">int</span>)</span></span> (z <span class="type">int</span>)   &#123; z = x - y; <span class="keyword">return</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在函数体中，<strong>函数的形参作为局部变量，被初始化为调用者提供的值</strong>。函数的形参和有名返回值作为函数最外层的局部变量，被存储在相同的词法块中。</p>
-<p><strong>实参通过值的方式传递，因此函数的形参是实参的拷贝。</strong> 对形参进行修改不会影响实参。但是，如果实参包括引用类型，如指针，slice(切片)、map、function、channel等类型，实参可能会由于函数的间接引用被修改。</p>
-<h2 id="返回多个值"><a href="#返回多个值" class="headerlink" title="返回多个值"></a>返回多个值</h2><p><strong>在Go中，一个函数可以返回多个值。</strong> 许多标准库中的函数返回2个值，一个是期望得到的返回值，另一个是函数出错时的错误信息。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">findLinks</span><span class="params">(url <span class="type">string</span>)</span></span> ([]<span class="type">string</span>, <span class="type">error</span>) &#123;</span><br><span class="line">    resp, err := http.Get(url)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> resp.StatusCode != http.StatusOK &#123;</span><br><span class="line">        resp.Body.Close()</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, fmt.Errorf(<span class="string">&quot;getting %s: %s&quot;</span>, url, resp.Status)</span><br><span class="line">    &#125;</span><br><span class="line">    doc, err := html.Parse(resp.Body)</span><br><span class="line">    resp.Body.Close()</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, fmt.Errorf(<span class="string">&quot;parsing %s as HTML: %v&quot;</span>, url, err)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> visit(<span class="literal">nil</span>, doc), <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>调用多返回值函数时，返回给调用者的是一组值，调用者必须显式的将这些值分配给变量</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">links, err := findLinks(url)</span><br></pre></td></tr></table></figure>
-
-<p><strong>如果某个值不被使用，可以将其分配给blank identifier</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">links, _ := findLinks(url) <span class="comment">// errors ignored</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>如果一个函数所有的返回值都有显式的变量名，那么该函数的return语句可以省略操作数。这称之为bare return。</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CountWordsAndImages</span><span class="params">(url <span class="type">string</span>)</span></span> (words, images <span class="type">int</span>, err <span class="type">error</span>) &#123;</span><br><span class="line">    resp, err := http.Get(url)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    doc, err := html.Parse(resp.Body)</span><br><span class="line">    resp.Body.Close()</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        err = fmt.Errorf(<span class="string">&quot;parsing HTML: %s&quot;</span>, err)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    words, images = countWordsAndImages(doc)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>按照返回值列表的次序，返回所有的返回值，在上面的例子中，每一个return语句等价于：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return words, images, err</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h2><p>参数数量可变的函数称为可变参数函数。典型的例子就是fmt.Printf和类似函数。Printf首先接收一个必备的参数，之后接收任意个数的后续参数。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sum</span><span class="params">(vals ...<span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    total := <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> _, val := <span class="keyword">range</span> vals &#123;</span><br><span class="line">        total += val</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> total</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fmt.Println(sum())           <span class="comment">// &quot;0&quot;</span></span><br><span class="line">fmt.Println(sum(<span class="number">3</span>))          <span class="comment">// &quot;3&quot;</span></span><br><span class="line">fmt.Println(sum(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)) <span class="comment">// &quot;10&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>如果原始参数已经是切片类型，只需在最后一个参数后加上省略符。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">values := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line">fmt.Println(sum(values...)) <span class="comment">// &quot;10&quot;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><p>拥有函数名的函数只能在包级语法块中被声明，通过函数字面量（function literal），我们可绕过这一限制，在任何表达式中表示一个函数值。函数字面量的语法和函数声明相似，区别在于func关键字后没有函数名。函数值字面量是一种表达式，它的值被称为匿名函数（anonymous function）。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">strings.Map(<span class="function"><span class="keyword">func</span><span class="params">(r <span class="type">rune</span>)</span></span> <span class="type">rune</span> &#123; </span><br><span class="line">    <span class="keyword">return</span> r + <span class="number">1</span> </span><br><span class="line">&#125;, <span class="string">&quot;HAL-9000&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>在函数内部可以声明匿名函数，但不能声明一个正常的函数</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">(data1 <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">   fmt.Println(data1)</span><br><span class="line">   b := <span class="function"><span class="keyword">func</span><span class="params">(data2 <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">      fmt.Println(data2)</span><br><span class="line">   &#125;</span><br><span class="line">   b(<span class="number">3</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="闭包函数"><a href="#闭包函数" class="headerlink" title="闭包函数"></a>闭包函数</h2><p>通过这种方式定义的函数可以访问完整的词法环境（感觉类似js的闭包），这意味着在函数中定义的内部函数可以引用该函数的变量，如下例所示：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// squares返回一个匿名函数。</span></span><br><span class="line"><span class="comment">// 该匿名函数每次被调用时都会返回下一个数的平方。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">squares</span><span class="params">()</span></span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> x <span class="type">int</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span> &#123;</span><br><span class="line">        x++</span><br><span class="line">        <span class="keyword">return</span> x * x</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    f := squares()</span><br><span class="line">    fmt.Println(f()) <span class="comment">// &quot;1&quot;</span></span><br><span class="line">    fmt.Println(f()) <span class="comment">// &quot;4&quot;</span></span><br><span class="line">    fmt.Println(f()) <span class="comment">// &quot;9&quot;</span></span><br><span class="line">    fmt.Println(f()) <span class="comment">// &quot;16&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="自执行函数"><a href="#自执行函数" class="headerlink" title="自执行函数"></a>自执行函数</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="comment">// 自执行函数</span></span><br><span class="line">   (<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">      fmt.Println(<span class="string">&quot;hello world&quot;</span>)</span><br><span class="line">   &#125;)()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="Deferred函数"><a href="#Deferred函数" class="headerlink" title="Deferred函数"></a>Deferred函数</h2><p>延迟调用，即无论在哪，加了defer的函数会最后执行</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">defer</span> def1()</span><br><span class="line">   fmt.Println(<span class="string">&quot;1&quot;</span>)</span><br><span class="line">   fmt.Println(<span class="string">&quot;2&quot;</span>)</span><br><span class="line">   <span class="keyword">defer</span> def2()</span><br><span class="line">   fmt.Println(<span class="string">&quot;3&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">def1</span><span class="params">()</span></span> &#123;</span><br><span class="line">   fmt.Println(<span class="string">&quot;i am defer1&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">def2</span><span class="params">()</span></span> &#123;</span><br><span class="line">   fmt.Println(<span class="string">&quot;i am defer2&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>最后输出结果：</p>
-<ul>
-<li>1</li>
-<li>2</li>
-<li>3</li>
-<li>i am defer2</li>
-<li>i am defer1</li>
-<li></li>
-</ul>
 
       
     </div>
